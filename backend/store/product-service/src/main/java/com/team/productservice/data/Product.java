@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Product {
   @Id
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private Long id;
 
   @NotBlank
@@ -23,13 +25,21 @@ public class Product {
   private String description;
 
   @Positive
-  private Integer cost;
+  private Double cost;
 
-  @Positive
+  @PositiveOrZero
   private Long countInStock;
 
   @NotNull
   @JoinColumn(name = "product_id")
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Image> images;
+
+  public Product(String name, String description, Double cost, Long countInStock, List<Image> images) {
+    this.name = name;
+    this.description = description;
+    this.cost = cost;
+    this.countInStock = countInStock;
+    this.images = images;
+  }
 }
