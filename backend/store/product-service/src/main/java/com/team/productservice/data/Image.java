@@ -15,4 +15,8 @@ public class Image {
 
   @NotNull
   private byte[] content;
+
+  public Image(@NotNull byte[] content) {
+    this.content = content;
+  }
 }

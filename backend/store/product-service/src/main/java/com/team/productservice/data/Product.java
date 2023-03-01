@@ -32,4 +32,12 @@ public class Product {
   @JoinColumn(name = "product_id")
   @OneToMany(fetch = FetchType.LAZY)
   private List<Image> images;
+
+  public Product(String name, String description, Integer cost, Long countInStock, List<Image> images) {
+    this.name = name;
+    this.description = description;
+    this.cost = cost;
+    this.countInStock = countInStock;
+    this.images = images;
+  }
 }
