@@ -12,13 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class CommonProductService implements ProductService {
   private final ProductRepository productRepository;
+  private static final String RESOURCE_DIRECTORY = System.getProperty("user.dir") + "src/main/resources/static/";
 
   private enum TestProduct {
     BUCKWHEAT_PORRIDGE(
@@ -26,7 +26,7 @@ public class CommonProductService implements ProductService {
       "If you are going hunting or fishing, be sure to take Grodfood buckwheat porridge with pork. Hearty, tasty and convenient porridge with meat You will definitely like it!",
       1.99,
       10L,
-      List.of(map(new File("backend/store/product-service/src/main/resources/static/buckwheat-porridge/0.jpg")))
+      List.of(map(new File(RESOURCE_DIRECTORY + "buckwheat-porridge/0.jpg")))
     ),
     COOL_JACKET(
       "Cool Jacket",
@@ -34,8 +34,8 @@ public class CommonProductService implements ProductService {
       139.99,
       5L,
       List.of(
-        map(new File("backend/store/product-service/src/main/resources/static/cool-jacket/0.jpeg")),
-        map(new File("backend/store/product-service/src/main/resources/static/cool-jacket/1.jpeg"))
+        map(new File(RESOURCE_DIRECTORY + "cool-jacket/0.jpeg")),
+        map(new File(RESOURCE_DIRECTORY + "cool-jacket/1.jpeg"))
       )
     ),
     WIDE_PANTS(
@@ -43,7 +43,7 @@ public class CommonProductService implements ProductService {
       "Want to be wide but don't feel like wasting time in the gym? Order yourself these crisp wide panties, be in the subject, dude.",
       99.99,
       15L,
-      List.of(map(new File("backend/store/product-service/src/main/resources/static/wide-pants/0.jpg")))
+      List.of(map(new File(RESOURCE_DIRECTORY + "wide-pants/0.jpg")))
     ),
     IPHONE(
       "iPhone",
@@ -51,10 +51,10 @@ public class CommonProductService implements ProductService {
       1099.99,
       20L,
       List.of(
-        map(new File("backend/store/product-service/src/main/resources/static/iphone/0.jpeg")),
-        map(new File("backend/store/product-service/src/main/resources/static/iphone/1.jpeg")),
-        map(new File("backend/store/product-service/src/main/resources/static/iphone/2.jpeg")),
-        map(new File("backend/store/product-service/src/main/resources/static/iphone/3.jpeg"))
+        map(new File(RESOURCE_DIRECTORY + "iphone/0.jpeg")),
+        map(new File(RESOURCE_DIRECTORY + "iphone/1.jpeg")),
+        map(new File(RESOURCE_DIRECTORY + "iphone/2.jpeg")),
+        map(new File(RESOURCE_DIRECTORY + "iphone/3.jpeg"))
       )
     );
 
