@@ -101,4 +101,9 @@ public class CommonProductService implements ProductService {
       }
     }
   }
+
+  @Override
+  public List<Product> getAll() {
+    return productRepository.findAll();
+  }
 }
