@@ -2,6 +2,7 @@ package com.team.productservice.service.startup;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.repository.ProductRepository;
+import com.team.productservice.service.startup.strategy.SetupStrategy;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
@@ -14,22 +15,13 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
   private boolean firstCall = false;
-  private final ProductRepository productRepository;
+  private final SetupStrategy setupStrategy;
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     if (!firstCall) {
-      setupProducts();
+      setupStrategy.setup();
       firstCall = true;
-    }
-  }
-
-  private void setupProducts() {
-    for (SetupProducts testProduct : SetupProducts.values()) {
-      Product product = testProduct.toValue();
-      if (!productRepository.existsByName(product.getName())) {
-        productRepository.save(product);
-      }
     }
   }
 }
