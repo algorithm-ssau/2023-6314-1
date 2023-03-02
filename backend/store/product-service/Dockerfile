@@ -8,4 +8,4 @@ COPY /mvnw.cmd /mvnw.cmd
 COPY /pom.xml /pom.xml
 COPY /src /src
 COPY /build.sh /build.sh
-#CMD ./build.sh
+CMD ./build.sh
