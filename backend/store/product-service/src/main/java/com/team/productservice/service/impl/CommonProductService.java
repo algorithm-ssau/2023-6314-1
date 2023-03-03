@@ -12,13 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class CommonProductService implements ProductService {
   private final ProductRepository productRepository;
+  private static final String RESOURCE_DIRECTORY = System.getProperty("user.dir") + "src/main/resources/static/";
 
   @Override
   public List<Product> getAll() {

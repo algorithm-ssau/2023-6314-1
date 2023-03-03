@@ -1,0 +1,26 @@
+version: "3.5"
+
+services:
+  product-service:
+    container_name: product-service
+    build: product-service/
+    image: sanopse/product-service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - product-database
+    restart: always
+
+  product-database:
+    container_name: product-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
