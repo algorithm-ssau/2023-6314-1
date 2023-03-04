@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    default: prod
+    active: dev
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/users_db
+    username: postgres
+    password: postgres
+
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 3000MB
+
+  test:
+    database:
+      replace: none
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: 8002
