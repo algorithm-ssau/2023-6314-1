@@ -1,1 +1,1 @@
-create database products;
+create database product_db;
