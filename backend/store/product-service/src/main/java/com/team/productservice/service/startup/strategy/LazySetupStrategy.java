@@ -2,7 +2,7 @@ package com.team.productservice.service.startup.strategy;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.repository.ProductRepository;
-import com.team.productservice.service.startup.SetupProducts;
+import com.team.productservice.service.startup.SetupProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,9 +18,8 @@ public class LazySetupStrategy extends SetupStrategy {
 
   @Override
   public void setup() {
-    long count = productRepository.count();
-    if (count == 0) {
-      for (SetupProducts testProduct : SetupProducts.values()) {
+    if (productRepository.count() == 0) {
+      for (SetupProduct testProduct : SetupProduct.values()) {
         Product product = testProduct.toValue();
         productRepository.save(product);
       }

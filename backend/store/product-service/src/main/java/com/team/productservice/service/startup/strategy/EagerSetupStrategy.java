@@ -2,7 +2,7 @@ package com.team.productservice.service.startup.strategy;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.repository.ProductRepository;
-import com.team.productservice.service.startup.SetupProducts;
+import com.team.productservice.service.startup.SetupProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class EagerSetupStrategy extends SetupStrategy {
 
   @Override
   public void setup() {
-    for (SetupProducts testProduct : SetupProducts.values()) {
+    for (SetupProduct testProduct : SetupProduct.values()) {
       Product product = testProduct.toValue();
       if (!productRepository.existsByName(product.getName())) {
         productRepository.save(product);

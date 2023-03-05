@@ -18,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CommonProductService implements ProductService {
   private final ProductRepository productRepository;
-  private static final String RESOURCE_DIRECTORY = System.getProperty("user.dir") + "src/main/resources/static/";
 
   @Override
   public List<Product> getAll() {

@@ -4,12 +4,12 @@ services:
   product-service:
     container_name: product-service
     build: product-service/
-    image: sanopse/product-service
+    image: product-service
     ports:
       - "8001:8001"
     depends_on:
       - product-database
-    restart: always
+    restart: on-failure
 
   product-database:
     container_name: product-database
@@ -20,7 +20,54 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - database:/var/lib/postgresql/data
+      - product_database:/var/lib/postgresql/data
+    restart: always
+
+  user-service:
+    container_name: user-service
+    build: user-service/
+    image: user-service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - user-database
+    restart: on-failure
+
+  user-database:
+    container_name: user-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - user_database:/var/lib/postgresql/data
+    restart: always
+
+  order-service:
+    container_name: order-service
+    build: order-service/
+    image: order-service
+    ports:
+      - "8003:8003"
+    depends_on:
+      - order-database
+    restart: on-failure
+
+  order-database:
+    container_name: order-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - order_database:/var/lib/postgresql/data
+    restart: always
 
 volumes:
-  database:
+  product_database:
+  user_database:
+  order_database:

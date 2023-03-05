@@ -5,6 +5,7 @@ RUN mvn -f ./pom.xml clean package
 
 FROM openjdk:latest
 MAINTAINER Pavel Kazhukov <sanpavkaz@gmail.com>
-COPY --from=build /target/product-service-0.0.1-SNAPSHOT.jar /build/product-service-0.0.1-SNAPSHOT.jar
+COPY --from=build /target/product-service-0.0.1-SNAPSHOT.jar product-service-0.0.1-SNAPSHOT.jar
+COPY --from=build /target/classes/images /images
 EXPOSE 8001
-ENTRYPOINT ["java","-jar","/build/product-service-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","product-service-0.0.1-SNAPSHOT.jar"]
