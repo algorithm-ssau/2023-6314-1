@@ -8,21 +8,12 @@ spring:
     hibernate:
       ddl-auto: update
     database: postgresql
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://product-database:5432/products
+    url: jdbc:postgresql://product-database:5432/product_db
     username: postgres
     password: postgres
-
-  servlet:
-    multipart:
-      max-file-size: 300MB
-      max-request-size: 3000MB
 
   test:
     database:
