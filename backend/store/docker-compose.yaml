@@ -22,5 +22,12 @@ services:
       - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - database:/var/lib/postgresql/data
 
+  python-service:
+    container_name: python-service
+    build: python-service/
+    ports:
+      - "8004:8004"
+    restart: always
+
 volumes:
   database:
