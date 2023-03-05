@@ -67,6 +67,13 @@ services:
       - order_database:/var/lib/postgresql/data
     restart: always
 
+  python-service:
+    container_name: python-service
+    build: python-service/
+    ports:
+      - "8004:8004"
+    restart: always
+
 volumes:
   product_database:
   user_database:
