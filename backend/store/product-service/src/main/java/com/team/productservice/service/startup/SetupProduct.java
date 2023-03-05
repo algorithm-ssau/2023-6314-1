@@ -1,20 +1,26 @@
 package com.team.productservice.service.startup;
 
+import com.team.productservice.ProductServiceApplication;
 import com.team.productservice.data.Image;
 import com.team.productservice.data.Product;
+import org.apache.catalina.loader.WebappClassLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
-public enum SetupProducts {
+public enum SetupProduct {
   BUCKWHEAT_PORRIDGE(
     "Buckwheat Porridge",
     "If you are going hunting or fishing, be sure to take Grodfood buckwheat porridge with pork. Hearty, tasty and convenient porridge with meat You will definitely like it!",
     1.99,
     10L,
-    List.of(map(new File("backend/store/product-service/src/main/resources/static/buckwheat-porridge/0.jpg")))
+    List.of("buckwheat-porridge/0.jpeg")
   ),
   COOL_JACKET(
     "Cool Jacket",
@@ -22,8 +28,8 @@ public enum SetupProducts {
     139.99,
     5L,
     List.of(
-      map(new File("backend/store/product-service/src/main/resources/static/cool-jacket/0.jpeg")),
-      map(new File("backend/store/product-service/src/main/resources/static/cool-jacket/1.jpeg"))
+      "cool-jacket/0.jpeg",
+      "cool-jacket/1.jpeg"
     )
   ),
   WIDE_PANTS(
@@ -31,7 +37,7 @@ public enum SetupProducts {
     "Want to be wide but don't feel like wasting time in the gym? Order yourself these crisp wide panties, be in the subject, dude.",
     99.99,
     15L,
-    List.of(map(new File("backend/store/product-service/src/main/resources/static/wide-pants/0.jpg")))
+    List.of("wide-pants/0.jpeg")
   ),
   IPHONE(
     "iPhone",
@@ -39,10 +45,10 @@ public enum SetupProducts {
     1099.99,
     20L,
     List.of(
-      map(new File("backend/store/product-service/src/main/resources/static/iphone/0.jpeg")),
-      map(new File("backend/store/product-service/src/main/resources/static/iphone/1.jpeg")),
-      map(new File("backend/store/product-service/src/main/resources/static/iphone/2.jpeg")),
-      map(new File("backend/store/product-service/src/main/resources/static/iphone/3.jpeg"))
+      "iphone/0.jpeg",
+      "iphone/1.jpeg",
+      "iphone/2.jpeg",
+      "iphone/3.jpeg"
     )
   );
 
@@ -52,12 +58,16 @@ public enum SetupProducts {
   private final Long countInStock;
   private final List<Image> images;
 
-  SetupProducts(String name, String description, Double cost, Long countInStock, List<Image> images) {
+  //   /src/main/resources/static/buckwheat-porridge/buckwheat-porridge-wide-pants-0.jpeg
+
+  SetupProduct(String name, String description, Double cost, Long countInStock, List<String> imagePaths) {
     this.name = name;
     this.description = description;
     this.cost = cost;
     this.countInStock = countInStock;
-    this.images = images;
+    this.images = imagePaths.stream()
+      .map(path -> map(new File("/images/" + path)))
+      .toList();
   }
 
   private static Image map(File from) {
