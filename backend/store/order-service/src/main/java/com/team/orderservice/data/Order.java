@@ -2,14 +2,11 @@ package com.team.orderservice.data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Data
@@ -31,7 +28,7 @@ public class Order {
   @Column(name = "products")
   private List<Long> products;
 
-  @NotNull
+  @PositiveOrZero
   @Column(name = "user_id")
   private Long userId;
 

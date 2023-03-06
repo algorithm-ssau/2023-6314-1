@@ -18,8 +18,8 @@ public enum SetupOrder {
       "Juneau",
       "Alaska (AK)",
       "USA",
-      99801,
-      new Coordinate(58.30603649973212, -134.42328215777576)
+      "99801",
+      new Coordinate("58.30603649973212", "-134.42328215777576")
     ),
     List.of(1L, 2L, 3L),
     1L,
@@ -31,8 +31,8 @@ public enum SetupOrder {
       "город Воскресенск",
       "Нижегородская область",
       "Россия",
-      863005,
-      new Coordinate(83.298754, 32.828425)
+      "863005",
+      new Coordinate("83.298754", "32.828425")
     ),
     List.of(4L),
     2L,
@@ -44,8 +44,8 @@ public enum SetupOrder {
       "город Видное",
       "Курганская область",
       "Россия",
-      878634,
-      new Coordinate(-12.675799, -55.407463)
+      "878634",
+      new Coordinate("-12.675799", "-55.407463")
     ),
     List.of(1L, 3L),
     3L,
@@ -57,8 +57,8 @@ public enum SetupOrder {
       "город Мытищи",
       "Иркутская область",
       "Россия",
-      902437,
-      new Coordinate(-26.34422, 44.281123)
+      "902437",
+      new Coordinate("-26.34422", "44.281123")
     ),
     List.of(2L, 4L),
     3L,
@@ -70,8 +70,8 @@ public enum SetupOrder {
       "Preston",
       "Idaho (ID)",
       "USA",
-      83263,
-      new Coordinate(41.99900968774081, -111.8976923637181)
+      "83263",
+      new Coordinate("41.99900968774081", "-111.8976923637181")
     ),
     List.of(1L, 2L, 3L, 4L),
     2L,
