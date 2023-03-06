@@ -31,8 +31,16 @@ public class User {
   @Transient
   private String password;
 
-  private boolean active = false;
+  private boolean active = true;
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  public User(String name, String email, String password, boolean active, Role role) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.active = active;
+    this.role = role;
+  }
 }
