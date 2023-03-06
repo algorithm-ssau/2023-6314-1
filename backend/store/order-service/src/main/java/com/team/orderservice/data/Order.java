@@ -1,10 +1,7 @@
 package com.team.orderservice.data;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +27,9 @@ public class Order {
 
   @ElementCollection
   private List<Long> products;
+
+  @NotNull
+  private Long userId;
 
   @Basic
   private long payloadDateTimeMinutes;
