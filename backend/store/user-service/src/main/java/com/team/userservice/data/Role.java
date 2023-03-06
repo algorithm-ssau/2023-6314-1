@@ -1,9 +1,12 @@
 package com.team.userservice.data;
 
+import com.team.userservice.exception.RoleNotFoundException;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 public enum Role {
   USER("ROLE_USER"), ADMIN("ROLE_ADMIN");
 
@@ -14,7 +17,12 @@ public enum Role {
     this.name = name;
   }
 
-  public String toValue() {
-    return name;
+  public static Role forValue(String name) {
+    for (Role role : Role.values()) {
+      if (role.name.equals(name)) {
+        return role;
+      }
+    }
+    throw new RoleNotFoundException("Role with name: " + name + " not found");
   }
 }
