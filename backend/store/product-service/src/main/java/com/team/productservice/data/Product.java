@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Product {
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotBlank
