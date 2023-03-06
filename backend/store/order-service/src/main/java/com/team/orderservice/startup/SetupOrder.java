@@ -22,7 +22,7 @@ public enum SetupOrder {
       new Coordinate(58.30603649973212, -134.42328215777576)
     ),
     List.of(1L, 2L, 3L),
-    OffsetDateTime.now().minusMonths(2),
+    1L,
     OffsetDateTime.now().plusMonths(1)
   ),
   ORDER_2(
@@ -35,7 +35,7 @@ public enum SetupOrder {
       new Coordinate(83.298754, 32.828425)
     ),
     List.of(4L),
-    OffsetDateTime.now().minusMonths(3),
+    2L,
     OffsetDateTime.now().plusMonths(1)
   ),
   ORDER_3(
@@ -48,7 +48,7 @@ public enum SetupOrder {
       new Coordinate(-12.675799, -55.407463)
     ),
     List.of(1L, 3L),
-    OffsetDateTime.now().minusMonths(4),
+    3L,
     OffsetDateTime.now().plusMonths(1)
   ),
   ORDER_4(
@@ -61,7 +61,7 @@ public enum SetupOrder {
       new Coordinate(-26.34422, 44.281123)
     ),
     List.of(2L, 4L),
-    OffsetDateTime.now().minusMonths(2),
+    3L,
     OffsetDateTime.now().plusMonths(1)
   ),
   ORDER_5(
@@ -74,23 +74,21 @@ public enum SetupOrder {
       new Coordinate(41.99900968774081, -111.8976923637181)
     ),
     List.of(1L, 2L, 3L, 4L),
-    OffsetDateTime.now().minusMonths(3),
+    2L,
     OffsetDateTime.now().plusMonths(2)
   );
 
   private final Address arrivalAddress;
   private final List<Long> products;
-  private final OffsetDateTime payloadDateTime;
+  private final Long userId;
+  private final OffsetDateTime payloadDateTime = OffsetDateTime.now();
   private final OffsetDateTime arrivalDateTime;
-  private final OffsetDateTime timestamp = OffsetDateTime.now();
 
-  SetupOrder(Address arrivalAddress,
-             List<Long> products,
-             OffsetDateTime payloadDateTime,
-             OffsetDateTime arrivalDateTime) {
+
+  SetupOrder(Address arrivalAddress, List<Long> products, Long userId, OffsetDateTime arrivalDateTime) {
     this.arrivalAddress = arrivalAddress;
     this.products = products;
-    this.payloadDateTime = payloadDateTime;
+    this.userId = userId;
     this.arrivalDateTime = arrivalDateTime;
   }
 }
