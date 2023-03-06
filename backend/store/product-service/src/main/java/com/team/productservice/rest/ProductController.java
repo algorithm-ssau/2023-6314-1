@@ -1,4 +1,4 @@
-package com.team.productservice.controller;
+package com.team.productservice.rest;
 
 import com.team.productservice.dto.ProductResponseDto;
 import com.team.productservice.service.ProductService;
