@@ -6,6 +6,7 @@ import com.team.userservice.dto.UserResponseDto;
 import com.team.userservice.mapper.impl.UserRequestMapper;
 import com.team.userservice.mapper.impl.UserResponseMapper;
 import com.team.userservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto) {
+  public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserRequestDto userRequestDto) {
     User user = userRequestMapper.map(userRequestDto);
     userService.save(user);
     return ResponseEntity.ok().build();
@@ -43,7 +44,7 @@ public class UserController {
 
   @PutMapping("{id}")
   public ResponseEntity<UserResponseDto> update(@PathVariable Long id,
-                                                @RequestBody UserRequestDto userRequestDto) {
+                                                @Valid @RequestBody UserRequestDto userRequestDto) {
     User user = userRequestMapper.map(userRequestDto);
     user.setId(id);
     userService.update(user);
