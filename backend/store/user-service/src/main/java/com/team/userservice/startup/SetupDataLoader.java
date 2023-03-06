@@ -2,7 +2,7 @@ package com.team.userservice.startup;
 
 import com.team.userservice.data.User;
 import com.team.userservice.repository.UserRepository;
-import com.team.userservice.startup.mapper.impl.SetupUserMapper;
+import com.team.userservice.mapper.impl.SetupUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;

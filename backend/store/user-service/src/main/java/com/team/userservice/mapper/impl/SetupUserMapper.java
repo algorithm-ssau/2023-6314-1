@@ -1,4 +1,4 @@
-package com.team.userservice.startup.mapper.impl;
+package com.team.userservice.mapper.impl;
 
 import com.team.userservice.data.User;
 import com.team.userservice.mapper.ObjectMapper;
