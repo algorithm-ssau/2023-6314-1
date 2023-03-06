@@ -23,6 +23,5 @@ public class UserResponseDto {
 
   private boolean active = true;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+  private RoleDto role;
 }
