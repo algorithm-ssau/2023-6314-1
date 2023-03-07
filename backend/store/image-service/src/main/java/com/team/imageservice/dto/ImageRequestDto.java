@@ -1,8 +1,6 @@
-package com.team.productservice.dto;
+package com.team.imageservice.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.team.imageservice.data.Image;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,5 +12,8 @@ import lombok.NoArgsConstructor;
 public class ImageRequestDto {
   @NotNull
   private byte[] content;
-}
 
+  public Image toImage() {
+    return new Image(content);
+  }
+}
