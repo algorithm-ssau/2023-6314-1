@@ -1,25 +1,18 @@
-package com.team.productservice.data;
+package com.team.productservice.dto;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
-public class Image {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
-
+@AllArgsConstructor
+public class ImageRequestDto {
   @NotNull
   private byte[] content;
-
-  public Image(@NotNull byte[] content) {
-    this.content = content;
-  }
 }
+

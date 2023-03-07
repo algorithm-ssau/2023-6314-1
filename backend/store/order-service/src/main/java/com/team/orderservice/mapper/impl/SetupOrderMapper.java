@@ -12,6 +12,7 @@ public class SetupOrderMapper implements ObjectMapper<SetupOrder, Order> {
     Order order = new Order();
     order.setArrivalAddress(from.getArrivalAddress());
     order.setProducts(from.getProducts());
+    order.setUserId(from.getUserId());
     order.setPayloadDateTime(from.getPayloadDateTime());
     order.setArrivalDateTime(from.getArrivalDateTime());
     return order;
