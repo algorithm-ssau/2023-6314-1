@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
   boolean existsByName(String name);
+  boolean existsById(Long id);
 }
