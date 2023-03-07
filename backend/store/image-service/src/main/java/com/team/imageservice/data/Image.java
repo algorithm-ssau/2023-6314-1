@@ -1,4 +1,4 @@
-package com.team.productservice.data;
+package com.team.imageservice.data;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
