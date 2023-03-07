@@ -1,6 +1,5 @@
 package com.team.orderservice.rest;
 
-import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.team.orderservice.data.Order;
 import com.team.orderservice.dto.OrderRequestDto;
 import com.team.orderservice.dto.OrderResponseDto;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -45,7 +45,7 @@ public class OrderController {
 
   //TODO
   @GetMapping("/mine")
-  public ResponseEntity<List<OrderResponseDto>> getAllByUserId() {
+  public ResponseEntity<List<OrderResponseDto>> getMineOrders() {
     return getAll();
   }
 
@@ -59,6 +59,14 @@ public class OrderController {
   @DeleteMapping("/{id}")
   public ResponseEntity<OrderResponseDto> deleteById(@PathVariable Long id) {
     orderService.deleteById(id);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("/mine")
+  public ResponseEntity<OrderResponseDto> deleteMineOrders() {
+    ResponseEntity<List<OrderResponseDto>> all = getAll();
+    List<OrderResponseDto> body = Objects.requireNonNull(all.getBody());
+    body.forEach(dto -> orderService.deleteById(dto.getId()));
     return ResponseEntity.ok().build();
   }
 }

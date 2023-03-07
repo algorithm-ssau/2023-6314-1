@@ -10,4 +10,5 @@ public interface OrderService {
   List<Order> getAllByUserId(Long userId);
   Order getById(Long id);
   void deleteById(Long id);
+  void deleteAllByUserId(Long userID);
 }

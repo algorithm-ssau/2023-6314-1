@@ -39,4 +39,9 @@ public class CommonOrderService implements OrderService {
   public void deleteById(Long id) {
     orderRepository.deleteById(id);
   }
+
+  @Override
+  public void deleteAllByUserId(Long userID) {
+    orderRepository.deleteAllByUserId(userID);
+  }
 }
