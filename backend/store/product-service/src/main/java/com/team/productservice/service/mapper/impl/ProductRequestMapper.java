@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ProductRequestMapper implements ObjectMapper<ProductRequestDto, Product> {
-  private final ImageRequestMapper imageRequestMapper;
 
   @Override
   public Product map(ProductRequestDto from) {
@@ -18,9 +17,7 @@ public class ProductRequestMapper implements ObjectMapper<ProductRequestDto, Pro
       from.getDescription(),
       from.getCost(),
       from.getCountInStock(),
-      from.getImages().stream()
-        .map(imageRequestMapper::map)
-        .toList()
+      from.getImageIds()
     );
   }
 }

@@ -27,7 +27,7 @@ public class ProductResponseDto {
   private Long countInStock;
 
   @Size(min = 1, max = 20)
-  private List<ImageResponseDto> images;
+  private List<Long> imageIds;
 
 
 }

@@ -1,19 +1,10 @@
 package com.team.productservice.service.startup;
 
-import com.team.productservice.ProductServiceApplication;
-import com.team.productservice.data.Image;
-import com.team.productservice.data.Product;
-import org.apache.catalina.loader.WebappClassLoader;
+import lombok.Getter;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
+@Getter
 public enum SetupProduct {
   BUCKWHEAT_PORRIDGE(
     "Buckwheat Porridge",
@@ -56,36 +47,13 @@ public enum SetupProduct {
   private final String description;
   private final Double cost;
   private final Long countInStock;
-  private final List<Image> images;
-
-  //   /src/main/resources/static/buckwheat-porridge/buckwheat-porridge-wide-pants-0.jpeg
+  private final List<String> imagePaths;
 
   SetupProduct(String name, String description, Double cost, Long countInStock, List<String> imagePaths) {
     this.name = name;
     this.description = description;
     this.cost = cost;
     this.countInStock = countInStock;
-    this.images = imagePaths.stream()
-      .map(path -> map(new File("/images/" + path)))
-      .toList();
-  }
-
-  private static Image map(File from) {
-    try {
-      byte[] fromBytes = Files.readAllBytes(from.toPath());
-      return new Image(fromBytes);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public Product toValue() {
-    Product product = new Product();
-    product.setCost(cost);
-    product.setDescription(description);
-    product.setCountInStock(countInStock);
-    product.setImages(images);
-    product.setName(name);
-    return product;
+    this.imagePaths = imagePaths;
   }
 }

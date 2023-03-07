@@ -5,12 +5,10 @@ import com.team.productservice.dto.ProductResponseDto;
 import com.team.productservice.service.mapper.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @RequiredArgsConstructor
 public class ProductResponseMapper implements ObjectMapper<Product, ProductResponseDto> {
-  private final ImageResponseMapper imageResponseMapper;
 
   @Override
   public ProductResponseDto map(Product from) {
@@ -20,9 +18,7 @@ public class ProductResponseMapper implements ObjectMapper<Product, ProductRespo
       from.getDescription(),
       from.getCost(),
       from.getCountInStock(),
-      from.getImages().stream()
-        .map(imageResponseMapper::map)
-        .toList()
+      from.getImageIds()
     );
   }
 }

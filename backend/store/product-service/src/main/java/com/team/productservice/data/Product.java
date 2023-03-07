@@ -32,14 +32,14 @@ public class Product {
 
   @NotNull
   @JoinColumn(name = "product_id")
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Image> images;
+  @ElementCollection
+  private List<Long> imageIds;
 
-  public Product(String name, String description, Double cost, Long countInStock, List<Image> images) {
+  public Product(String name, String description, Double cost, Long countInStock, List<Long> imageIds) {
     this.name = name;
     this.description = description;
     this.cost = cost;
     this.countInStock = countInStock;
-    this.images = images;
+    this.imageIds = imageIds;
   }
 }

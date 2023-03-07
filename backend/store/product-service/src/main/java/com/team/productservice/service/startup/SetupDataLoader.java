@@ -2,26 +2,35 @@ package com.team.productservice.service.startup;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.repository.ProductRepository;
-import com.team.productservice.service.startup.strategy.SetupStrategy;
-import lombok.AllArgsConstructor;
+import com.team.productservice.service.mapper.impl.SetupProductMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 @Profile("dev")
-public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+@RequiredArgsConstructor
+public class SetupDataLoader{
   private boolean firstCall = false;
-  private final SetupStrategy setupStrategy;
+  private final SetupProductMapper setupProductMapper;
+  private final ProductRepository productRepository;
 
-  @Override
+  @EventListener(ContextRefreshedEvent.class)
   public void onApplicationEvent(ContextRefreshedEvent event) {
     if (!firstCall) {
-      setupStrategy.setup();
+      setup();
       firstCall = true;
+    }
+  }
+
+  private void setup() {
+    if (productRepository.count() == 0) {
+      for (SetupProduct setupProduct : SetupProduct.values()) {
+        Product product = setupProductMapper.map(setupProduct);
+        productRepository.save(product);
+      }
     }
   }
 }
