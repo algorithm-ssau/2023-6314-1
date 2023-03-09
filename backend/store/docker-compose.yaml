@@ -24,7 +24,7 @@ services:
     build: gateway-service/
     image: gateway-service
     ports:
-      - "80:80"
+      - "8080:8080"
     depends_on:
       - config-service
       - discovery-service

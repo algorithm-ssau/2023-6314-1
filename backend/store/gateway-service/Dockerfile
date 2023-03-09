@@ -6,5 +6,5 @@ RUN mvn -f ./pom.xml clean package
 FROM openjdk:latest
 MAINTAINER Pavel Kazhukov <sanpavkaz@gmail.com>
 COPY --from=build /target/gateway-service-0.0.1-SNAPSHOT.jar gateway-service-0.0.1-SNAPSHOT.jar
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","gateway-service-0.0.1-SNAPSHOT.jar"]
