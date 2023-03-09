@@ -7,6 +7,7 @@ services:
     image: config-service
     ports:
       - "8888:8888"
+    restart: always
 
   discovery-service:
     container_name: discovery-service
@@ -16,6 +17,17 @@ services:
       - "8761:8761"
     depends_on:
       - config-service
+    restart: always
+
+  gateway-service:
+    container_name: gateway-service
+    build: gateway-service/
+    image: gateway-service
+    ports:
+      - "80:80"
+    depends_on:
+      - config-service
+      - discovery-service
     restart: always
 
   product-service:
@@ -28,6 +40,7 @@ services:
       - product-database
       - discovery-service
       - config-service
+      - gateway-service
     restart: on-failure
 
   product-database:
@@ -52,6 +65,7 @@ services:
       - user-database
       - discovery-service
       - config-service
+      - gateway-service
     restart: on-failure
 
   user-database:
@@ -76,6 +90,7 @@ services:
       - order-database
       - discovery-service
       - config-service
+      - gateway-service
     restart: on-failure
 
   order-database:
