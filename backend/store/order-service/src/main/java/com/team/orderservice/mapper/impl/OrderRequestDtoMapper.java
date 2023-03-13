@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderRequestDtoMapper implements ObjectMapper<OrderRequestDto, Order> {
   private final AddressRequestDtoMapper addressRequestDtoMapper;
+  private final StatusRequestDtoMapper statusRequestDtoMapper;
 
   @Override
   public Order map(OrderRequestDto from) {

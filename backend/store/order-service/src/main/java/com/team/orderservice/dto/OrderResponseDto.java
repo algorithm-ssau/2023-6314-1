@@ -31,4 +31,6 @@ public class OrderResponseDto {
   @FutureOrPresent
   private OffsetDateTime arrivalDateTime;
 
+  @NotNull
+  private StatusDto status;
 }
