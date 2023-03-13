@@ -25,9 +25,12 @@ public class OrderController {
 
   @GetMapping
   public ResponseEntity<List<OrderResponseDto>> getAll() {
-    List<OrderResponseDto> orderResponseDtos = orderService.getAll().stream()
-      .map(orderResponseDtoMapper::map).toList();
-    return ResponseEntity.ok().body(orderResponseDtos);
+    List<Order> orderList = orderService.getAll();
+    return ResponseEntity.ok().body(
+      orderList.stream()
+        .map(orderResponseDtoMapper::map)
+        .toList()
+    );
   }
 
   @PostMapping
