@@ -97,8 +97,6 @@ services:
       - image_database:/var/lib/postgresql/data
     restart: always
 
-
-
 volumes:
   product_database:
   user_database:

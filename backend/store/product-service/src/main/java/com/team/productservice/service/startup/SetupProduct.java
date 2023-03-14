@@ -43,6 +43,8 @@ public enum SetupProduct {
     )
   );
 
+  private final String imageDir = "/images";
+
   private final String name;
   private final String description;
   private final Double cost;
@@ -54,6 +56,6 @@ public enum SetupProduct {
     this.description = description;
     this.cost = cost;
     this.countInStock = countInStock;
-    this.imagePaths = imagePaths;
+    this.imagePaths = imagePaths.stream().map(path -> imageDir + "/" + path).toList();
   }
 }
