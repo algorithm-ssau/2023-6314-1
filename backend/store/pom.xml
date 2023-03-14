@@ -19,6 +19,9 @@
         <module>product-service</module>
         <module>user-service</module>
         <module>order-service</module>
+        <module>config-service</module>
+        <module>discovery-service</module>
+        <module>gateway-service</module>
     </modules>
 
     <build>
