@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,23 +23,27 @@ public class SetupProductMapper implements ObjectMapper<SetupProduct, Product> {
 
   @Override
   public Product map(SetupProduct from) {
-    List<Long> imageIds = from.getImagePaths().stream()
-      .filter(path -> {
-        File file = new File(path);
-        return file.exists() && !file.isDirectory();
-      }).map(path -> {
-        ImageRequestDto imageRequestDto1 = readFromFile(path);
-        Long savedImageId = imageServiceClient.save(imageRequestDto1).getBody();
-        return Objects.requireNonNull(savedImageId);
-      }).toList();
-
     return new Product(
       from.getName(),
       from.getDescription(),
       from.getCost(),
       from.getCountInStock(),
-      imageIds
+      saveImages(from.getImagePaths())
     );
+  }
+
+  private List<Long> saveImages(List<String> paths) {
+    List<Long> savedIds = new ArrayList<>();
+    for (String path : paths) {
+      if (new File(path).exists()) {
+        ImageRequestDto imageRequestDto = readFromFile(path);
+        Long savedImageId = imageServiceClient.save(imageRequestDto).getBody();
+        savedIds.add(savedImageId);
+      } else {
+        System.out.println("Image" + path + " not found");
+      }
+    }
+    return savedIds;
   }
 
   private ImageRequestDto readFromFile(String filePath) {
