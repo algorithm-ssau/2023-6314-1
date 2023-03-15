@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    default: prod
+    active: dev
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://image-database:5432/image_db
+    username: postgres
+    password: postgres
+
+  test:
+    database:
+      replace: none
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: 8005
