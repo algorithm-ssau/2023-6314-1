@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "image-service", url = "http://172.22.0.8:8005/")
+@FeignClient(name = "image-service", url = "http://image-service:8005/")
 public interface ImageServiceClient {
   @RequestMapping(value = "api/images/{id}", method = RequestMethod.GET)
   ResponseEntity<ImageResponseDto> get(@PathVariable Long id);
