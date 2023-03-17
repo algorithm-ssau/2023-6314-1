@@ -1,11 +1,9 @@
 package com.team.orderservice.rest;
 
 import com.team.orderservice.data.Order;
-import com.team.orderservice.dto.OrderRequestDto;
-import com.team.orderservice.dto.OrderResponseDto;
+import com.team.orderservice.dto.OrderDto;
 import com.team.orderservice.dto.SummaryDto;
-import com.team.orderservice.mapper.impl.OrderRequestDtoMapper;
-import com.team.orderservice.mapper.impl.OrderResponseDtoMapper;
+import com.team.orderservice.mapper.OrderMapper;
 import com.team.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +18,22 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OrderController {
   private final OrderService orderService;
-  private final OrderRequestDtoMapper orderRequestDtoMapper;
-  private final OrderResponseDtoMapper orderResponseDtoMapper;
+  private final OrderMapper.Request.Common commonRequestOrderMapper;
+  private final OrderMapper.Response.Common commonResponseOrderMapper;
 
   @GetMapping
-  public ResponseEntity<List<OrderResponseDto>> getAll() {
-    List<OrderResponseDto> orderResponseDtos = orderService.getAll().stream()
-      .map(orderResponseDtoMapper::map).toList();
+  public ResponseEntity<List<OrderDto.Response.Common>> getAll() {
+    var orderResponseDtos = orderService.getAll().stream()
+      .map(commonResponseOrderMapper::toDto)
+      .toList();
     return ResponseEntity.ok().body(orderResponseDtos);
   }
 
   @PostMapping
-  public ResponseEntity<OrderResponseDto> create(@Valid @RequestBody OrderRequestDto orderRequestDto) {
-    Order order = orderRequestDtoMapper.map(orderRequestDto);
+  public ResponseEntity<OrderDto.Response.Common> create(
+    @Valid @RequestBody OrderDto.Request.Common orderRequestDto
+  ) {
+    Order order = commonRequestOrderMapper.toDomain(orderRequestDto);
     orderService.create(order);
     return ResponseEntity.ok().build();
   }
@@ -45,27 +46,27 @@ public class OrderController {
 
   //TODO
   @GetMapping("/mine")
-  public ResponseEntity<List<OrderResponseDto>> getMineOrders() {
+  public ResponseEntity<List<OrderDto.Response.Common>> getMineOrders() {
     return getAll();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<OrderResponseDto> getById(@PathVariable Long id) {
+  public ResponseEntity<OrderDto.Response.Common> getById(@PathVariable Long id) {
     Order order = orderService.getById(id);
-    OrderResponseDto orderResponseDto = orderResponseDtoMapper.map(order);
+    OrderDto.Response.Common orderResponseDto = commonResponseOrderMapper.toDto(order);
     return ResponseEntity.ok().body(orderResponseDto);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<OrderResponseDto> deleteById(@PathVariable Long id) {
+  public ResponseEntity<OrderDto.Response.Common> deleteById(@PathVariable Long id) {
     orderService.deleteById(id);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/mine")
-  public ResponseEntity<OrderResponseDto> deleteMineOrders() {
-    ResponseEntity<List<OrderResponseDto>> all = getAll();
-    List<OrderResponseDto> body = Objects.requireNonNull(all.getBody());
+  public ResponseEntity<OrderDto.Response.Common> deleteMineOrders() {
+    ResponseEntity<List<OrderDto.Response.Common>> all = getAll();
+    List<OrderDto.Response.Common> body = Objects.requireNonNull(all.getBody());
     body.forEach(dto -> orderService.deleteById(dto.getId()));
     return ResponseEntity.ok().build();
   }
