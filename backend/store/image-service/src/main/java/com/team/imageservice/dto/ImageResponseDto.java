@@ -10,12 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImageResponseDto {
+  @NotNull
   private Long id;
 
   @NotNull
   private byte[] content;
-
-  public static ImageResponseDto from(Image image) {
-    return new ImageResponseDto(image.getId(), image.getContent());
-  }
 }
