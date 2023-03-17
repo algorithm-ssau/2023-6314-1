@@ -8,6 +8,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Product {
   private String description;
 
   @Positive
-  private Double cost;
+  private BigDecimal cost;
 
   @PositiveOrZero
   private Long countInStock;
@@ -35,7 +36,8 @@ public class Product {
   @ElementCollection
   private List<Long> imageIds;
 
-  public Product(String name, String description, Double cost, Long countInStock, List<Long> imageIds) {
+  public Product(String name, String description, BigDecimal cost,
+                 Long countInStock, List<Long> imageIds) {
     this.name = name;
     this.description = description;
     this.cost = cost;
