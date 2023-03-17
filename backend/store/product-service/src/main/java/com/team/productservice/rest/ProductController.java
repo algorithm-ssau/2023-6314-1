@@ -1,16 +1,16 @@
 package com.team.productservice.rest;
 
 import com.team.productservice.data.Product;
-import com.team.productservice.dto.ProductRequestDto;
-import com.team.productservice.dto.ProductResponseDto;
+import com.team.productservice.dto.ProductDto;
+import com.team.productservice.mapper.ProductMapper;
+import com.team.productservice.rest.dto.ImageRequestDto;
 import com.team.productservice.service.ProductService;
-import com.team.productservice.service.mapper.impl.ProductRequestMapper;
-import com.team.productservice.service.mapper.impl.ProductResponseMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,46 +18,56 @@ import java.util.List;
 @RequestMapping("/api/products/")
 public class ProductController {
   private final ProductService productService;
-  private final ProductResponseMapper productResponseMapper;
-  private final ProductRequestMapper productRequestMapper;
+  private final ProductMapper.Request.Common reqCommonMapper;
+  private final ProductMapper.Request.Create reqCreateMapper;
+  private final ProductMapper.Response.Common respCommonMapper;
+  private final ImageServiceClient imageServiceClient;
 
   @GetMapping
-  public ResponseEntity<List<ProductResponseDto>> getAll() {
-    return ResponseEntity.ok().body(
-      productService.getAll().stream()
-        .map(productResponseMapper::map)
-        .toList()
-    );
+  public ResponseEntity<List<ProductDto.Response.Common>> getAll() {
+    var responses = productService.getAll().stream()
+      .map(respCommonMapper::toDto)
+      .toList();
+    return ResponseEntity.ok().body(responses);
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<ProductResponseDto> get(@PathVariable Long id) {
+  public ResponseEntity<ProductDto.Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
-    ProductResponseDto productResponseDto = productResponseMapper.map(product);
-    return ResponseEntity.ok().body(productResponseDto);
+    var common = respCommonMapper.toDto(product);
+    return ResponseEntity.ok().body(common);
   }
 
   @PostMapping
-  public ResponseEntity<ProductResponseDto> create(@Valid @RequestBody ProductRequestDto productRequestDto) {
-    Product product = productRequestMapper.map(productRequestDto);
+  public ResponseEntity<ProductDto.Response.Common> create(@Valid @RequestBody ProductDto.Request.Create productRequestDto) {
+    var imagesId = saveImagesToServiceFrom(productRequestDto);
+    Product product = reqCreateMapper.toDomain(productRequestDto, imagesId);
     productService.save(product);
     return ResponseEntity.ok().build();
   }
 
+  private List<Long> saveImagesToServiceFrom(ProductDto.Request.Create productRequestDto) {
+    List<Long> imagesId = new ArrayList<>();
+    for (byte[] imageContent : productRequestDto.getImagesContent()) {
+      var imageRequestDto = new ImageRequestDto(imageContent);
+      var imageId = imageServiceClient.save(imageRequestDto).getBody();
+      imagesId.add(imageId);
+    }
+    return imagesId;
+  }
+
   @PutMapping("{id}")
-  public ResponseEntity<ProductResponseDto> update(@PathVariable Long id,
-                                                   @Valid @RequestBody ProductRequestDto productRequestDto) {
-    Product product = productRequestMapper.map(productRequestDto);
+  public ResponseEntity<ProductDto.Response.Common> update(@PathVariable Long id,
+                                                   @Valid @RequestBody ProductDto.Request.Common productRequestDto) {
+    Product product = reqCommonMapper.toDomain(productRequestDto);
     product.setId(id);
     productService.update(product);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<ProductResponseDto> delete(@PathVariable Long id) {
+  public ResponseEntity<ProductDto.Response.Common> delete(@PathVariable Long id) {
     productService.deleteById(id);
     return ResponseEntity.ok().build();
   }
-
-
 }
