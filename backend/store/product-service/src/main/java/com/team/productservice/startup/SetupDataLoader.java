@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 @Profile("dev")
 @RequiredArgsConstructor
-public class SetupDataLoader{
+public class SetupDataLoader {
   private boolean firstCall = false;
   private final ImageServiceClient imageServiceClient;
   private final ProductMapper.Startup.Common setupProductMapper;
