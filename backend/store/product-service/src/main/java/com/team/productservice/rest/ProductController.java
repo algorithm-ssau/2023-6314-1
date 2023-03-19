@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.team.productservice.dto.ProductDto.*;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/products/")
@@ -24,7 +26,7 @@ public class ProductController {
   private final ImageServiceClient imageServiceClient;
 
   @GetMapping
-  public ResponseEntity<List<ProductDto.Response.Common>> getAll() {
+  public ResponseEntity<List<Response.Common>> getAll() {
     var responses = productService.getAll().stream()
       .map(respCommonMapper::toDto)
       .toList();
@@ -32,21 +34,21 @@ public class ProductController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<ProductDto.Response.Common> get(@PathVariable Long id) {
+  public ResponseEntity<Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
     var common = respCommonMapper.toDto(product);
     return ResponseEntity.ok().body(common);
   }
 
   @PostMapping
-  public ResponseEntity<ProductDto.Response.Common> create(@Valid @RequestBody ProductDto.Request.Create productRequestDto) {
-    var imagesId = saveImagesToServiceFrom(productRequestDto);
-    Product product = reqCreateMapper.toDomain(productRequestDto, imagesId);
+  public ResponseEntity<Response.Common> create(@Valid @RequestBody Request.Create dto) {
+    var imagesId = saveImagesToServiceFrom(dto);
+    Product product = reqCreateMapper.toDomain(dto, imagesId);
     productService.save(product);
     return ResponseEntity.ok().build();
   }
 
-  private List<Long> saveImagesToServiceFrom(ProductDto.Request.Create productRequestDto) {
+  private List<Long> saveImagesToServiceFrom(Request.Create productRequestDto) {
     List<Long> imagesId = new ArrayList<>();
     for (byte[] imageContent : productRequestDto.getImagesContent()) {
       var imageRequestDto = new ImageRequestDto(imageContent);
@@ -57,8 +59,10 @@ public class ProductController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<ProductDto.Response.Common> update(@PathVariable Long id,
-                                                   @Valid @RequestBody ProductDto.Request.Common productRequestDto) {
+  public ResponseEntity<Response.Common> update(
+    @PathVariable Long id,
+    @Valid @RequestBody Request.Common productRequestDto
+  ) {
     Product product = reqCommonMapper.toDomain(productRequestDto);
     product.setId(id);
     productService.update(product);
@@ -66,7 +70,7 @@ public class ProductController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<ProductDto.Response.Common> delete(@PathVariable Long id) {
+  public ResponseEntity<Response.Common> delete(@PathVariable Long id) {
     productService.deleteById(id);
     return ResponseEntity.ok().build();
   }
