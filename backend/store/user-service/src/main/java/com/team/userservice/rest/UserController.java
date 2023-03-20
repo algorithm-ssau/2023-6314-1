@@ -62,4 +62,11 @@ public class UserController {
     userService.deleteById(id);
     return ResponseEntity.ok().build();
   }
+
+  @GetMapping("{email}")
+  public ResponseEntity<UserDto.Response.Common> findByEmail(@PathVariable String email) {
+    var user = userService.findByEmail(email);
+    var userResponseDto = commonResponseUserMapper.toDto(user);
+    return ResponseEntity.ok().body(userResponseDto);
+  }
 }
