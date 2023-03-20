@@ -1,14 +1,13 @@
 package com.team.userservice.rest;
 
 import com.team.userservice.data.User;
-import com.team.userservice.dto.UserRequestDto;
-import com.team.userservice.dto.UserResponseDto;
-import com.team.userservice.mapper.impl.UserRequestMapper;
-import com.team.userservice.mapper.impl.UserResponseMapper;
+import com.team.userservice.dto.UserDto;
+import com.team.userservice.mapper.UserMapper;
 import com.team.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,41 +17,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
-  private final UserRequestMapper userRequestMapper;
-  private final UserResponseMapper userResponseMapper;
+  private final PasswordEncoder passwordEncoder;
+  private final UserMapper.Request.Common commonRequestUserMapper;
+  private final UserMapper.Response.Common commonResponseUserMapper;
 
   @GetMapping
-  public ResponseEntity<List<UserResponseDto>> getAll() {
-    List<UserResponseDto> userResponseDtos = userService.findAll().stream()
-      .map(userResponseMapper::map)
+  public ResponseEntity<List<UserDto.Response.Common>> getAll() {
+    var userResponseDtos = userService.findAll().stream()
+      .map(commonResponseUserMapper::toDto)
       .toList();
     return ResponseEntity.ok().body(userResponseDtos);
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<UserResponseDto> get(@PathVariable Long id) {
-    UserResponseDto userResponseDto = userResponseMapper.map(userService.findById(id));
+  public ResponseEntity<UserDto.Response.Common> get(@PathVariable Long id) {
+    var userResponseDto = commonResponseUserMapper.toDto(userService.findById(id));
     return ResponseEntity.ok().body(userResponseDto);
   }
 
   @PostMapping
-  public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserRequestDto userRequestDto) {
-    User user = userRequestMapper.map(userRequestDto);
+  public ResponseEntity<UserDto.Response.Common> create(
+    @Valid @RequestBody UserDto.Request.Common userRequestDto
+  ) {
+    var encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
+    User user = commonRequestUserMapper.toDomain(userRequestDto, encodedPassword);
     userService.save(user);
     return ResponseEntity.ok().build();
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<UserResponseDto> update(@PathVariable Long id,
-                                                @Valid @RequestBody UserRequestDto userRequestDto) {
-    User user = userRequestMapper.map(userRequestDto);
+  public ResponseEntity<UserDto.Response.Common> update(
+    @PathVariable Long id,
+    @Valid @RequestBody UserDto.Request.Common userRequestDto
+  ) {
+    var encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
+    User user = commonRequestUserMapper.toDomain(userRequestDto, encodedPassword);
     user.setId(id);
     userService.update(user);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<UserResponseDto> delete(@PathVariable Long id) {
+  public ResponseEntity<UserDto.Response.Common> delete(@PathVariable Long id) {
     userService.deleteById(id);
     return ResponseEntity.ok().build();
   }

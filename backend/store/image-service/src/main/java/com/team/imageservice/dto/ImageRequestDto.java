@@ -12,8 +12,4 @@ import lombok.NoArgsConstructor;
 public class ImageRequestDto {
   @NotNull
   private byte[] content;
-
-  public Image toImage() {
-    return new Image(content);
-  }
 }

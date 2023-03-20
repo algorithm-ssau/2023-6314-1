@@ -84,8 +84,12 @@ public enum SetupOrder {
   private final OffsetDateTime payloadDateTime = OffsetDateTime.now();
   private final OffsetDateTime arrivalDateTime;
 
-
-  SetupOrder(Address arrivalAddress, List<Long> products, Long userId, OffsetDateTime arrivalDateTime) {
+  SetupOrder(
+    Address arrivalAddress,
+    List<Long> products,
+    Long userId,
+    OffsetDateTime arrivalDateTime
+  ) {
     this.arrivalAddress = arrivalAddress;
     this.products = products;
     this.userId = userId;
