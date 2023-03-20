@@ -12,7 +12,7 @@ import java.util.Locale;
 public enum UserMapper {;
   public enum Request {;
     @Component
-    public static class Common {
+    public static final class Common {
       public User toDomain(UserDto.Request.Common dto, String encodedPassword) {
         return new User(
           dto.getName(),
@@ -27,7 +27,7 @@ public enum UserMapper {;
 
   public enum Response {;
     @Component
-    public static class Common {
+    public static final class Common {
       public UserDto.Response.Common toDto(User user) {
         return new UserDto.Response.Common(
           user.getId(),
@@ -42,7 +42,7 @@ public enum UserMapper {;
 
   public enum Startup {;
     @Component
-    public static class Common {
+    public static final class Common {
       public User toDomain(SetupUser setupUser, String encodedPassword) {
         return new User(
           setupUser.getName(),
