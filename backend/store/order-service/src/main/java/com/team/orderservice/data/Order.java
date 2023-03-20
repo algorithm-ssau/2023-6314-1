@@ -40,7 +40,23 @@ public class Order {
   @Column(name = "arrival_date_time", columnDefinition = "timestamp with time zone")
   private OffsetDateTime arrivalDateTime;
 
-  public Order(Address arrivalAddress, List<Long> products, Long userId, OffsetDateTime arrivalDateTime) {
+  public Order(
+    Address arrivalAddress,
+    List<Long> products,
+    Long userId,
+    OffsetDateTime payloadDateTime,
+    OffsetDateTime arrivalDateTime
+  ) {
+    this(arrivalAddress, products, userId, arrivalDateTime);
+    this.payloadDateTime = payloadDateTime;
+  }
+
+  public Order(
+    Address arrivalAddress,
+    List<Long> products,
+    Long userId,
+    OffsetDateTime arrivalDateTime
+  ) {
     this.arrivalAddress = arrivalAddress;
     this.products = products;
     this.userId = userId;

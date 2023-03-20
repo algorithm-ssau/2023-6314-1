@@ -28,6 +28,10 @@ services:
     depends_on:
       - config-service
       - discovery-service
+      - product-service
+      - user-service
+      - order-service
+      - python-service
     restart: always
 
   product-service:
@@ -41,7 +45,6 @@ services:
       - image-service
       - discovery-service
       - config-service
-      - gateway-service
     restart: on-failure
 
   product-database:
@@ -66,7 +69,6 @@ services:
       - user-database
       - discovery-service
       - config-service
-      - gateway-service
     restart: on-failure
 
   user-database:
@@ -91,7 +93,6 @@ services:
       - order-database
       - discovery-service
       - config-service
-      - gateway-service
     restart: on-failure
 
   order-database:
