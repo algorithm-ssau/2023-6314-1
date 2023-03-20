@@ -1,0 +1,4 @@
+jwt:
+  token:
+    secret: authorize-secret
+    expired: 900000
