@@ -20,8 +20,8 @@ public class SetupDataLoader{
   @EventListener(ContextRefreshedEvent.class)
   public void onApplicationEvent(ContextRefreshedEvent event) {
     if (!firstCall) {
-      setup();
       firstCall = true;
+      setup();
     }
   }
 
