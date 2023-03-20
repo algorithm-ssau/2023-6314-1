@@ -23,6 +23,7 @@
         <module>config-service</module>
         <module>discovery-service</module>
         <module>gateway-service</module>
+        <module>authorize-service</module>
     </modules>
 
     <build>
