@@ -3,7 +3,7 @@ version: "3.5"
 services:
   config-service:
     container_name: config-service
-    build: config-service/
+    build: config-service
     image: config-service
     ports:
       - "8888:8888"
@@ -41,22 +41,10 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - product-database
+      - database
       - image-service
       - discovery-service
       - config-service
-    restart: on-failure
-
-  product-database:
-    container_name: product-database
-    image: postgres:15.2-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - product_database:/var/lib/postgresql/data
     restart: always
 
   user-service:
@@ -66,21 +54,9 @@ services:
     ports:
       - "8002:8002"
     depends_on:
-      - user-database
+      - database
       - discovery-service
       - config-service
-    restart: on-failure
-
-  user-database:
-    container_name: user-database
-    image: postgres:15.2-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - user_database:/var/lib/postgresql/data
     restart: always
 
   order-service:
@@ -90,21 +66,9 @@ services:
     ports:
       - "8003:8003"
     depends_on:
-      - order-database
+      - database
       - discovery-service
       - config-service
-    restart: on-failure
-
-  order-database:
-    container_name: order-database
-    image: postgres:15.2-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - order_database:/var/lib/postgresql/data
     restart: always
 
   python-service:
@@ -121,19 +85,22 @@ services:
     ports:
       - "8005:8005"
     depends_on:
-      - image-database
-    restart: on-failure
+      - database
+    restart: always
 
-  image-database:
-    container_name: image-database
+  database:
+    container_name: database
     image: postgres:15.2-alpine
     environment:
       PGUSER: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - order_database:/var/lib/postgresql/data
       - image_database:/var/lib/postgresql/data
+      - user_database:/var/lib/postgresql/data
+      - product_database:/var/lib/postgresql/data
     restart: always
 
 volumes:
