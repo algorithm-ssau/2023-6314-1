@@ -1,51 +1,51 @@
 version: "3.5"
 
 services:
-  config-service:
-    container_name: config-service
-    build: config-service
-    image: config-service
-    ports:
-      - "8888:8888"
-    restart: always
+#  config-service:
+#    container_name: config-service
+#    build: config-service
+#    image: config-service
+#    ports:
+#      - "8888:8888"
+#    restart: always
 
-  discovery-service:
-    container_name: discovery-service
-    build: discovery-service/
-    image: discovery-service
-    ports:
-      - "8761:8761"
-    depends_on:
-      - config-service
-    restart: always
-
-  gateway-service:
-    container_name: gateway-service
-    build: gateway-service/
-    image: gateway-service
-    ports:
-      - "8080:8080"
-    depends_on:
-      - config-service
-      - discovery-service
-      - product-service
-      - user-service
-      - order-service
-      - python-service
-    restart: always
-
-  product-service:
-    container_name: product-service
-    build: product-service/
-    image: product-service
-    ports:
-      - "8001:8001"
-    depends_on:
-      - database
-      - image-service
-      - discovery-service
-      - config-service
-    restart: always
+#  discovery-service:
+#    container_name: discovery-service
+#    build: discovery-service/
+#    image: discovery-service
+#    ports:
+#      - "8761:8761"
+#    depends_on:
+#      - config-service
+#    restart: always
+#
+#  gateway-service:
+#    container_name: gateway-service
+#    build: gateway-service/
+#    image: gateway-service
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#      - product-service
+#      - user-service
+#      - order-service
+#      - python-service
+#    restart: always
+#
+#  product-service:
+#    container_name: product-service
+#    build: product-service/
+#    image: product-service
+#    ports:
+#      - "8001:8001"
+#    depends_on:
+#      - database
+#      - image-service
+#      - discovery-service
+#      - config-service
+#    restart: always
 
   user-service:
     container_name: user-service
@@ -55,38 +55,38 @@ services:
       - "8002:8002"
     depends_on:
       - database
-      - discovery-service
-      - config-service
+#      - discovery-service
+#      - config-service
     restart: always
 
-  order-service:
-    container_name: order-service
-    build: order-service/
-    image: order-service
-    ports:
-      - "8003:8003"
-    depends_on:
-      - database
-      - discovery-service
-      - config-service
-    restart: always
-
-  python-service:
-    container_name: python-service
-    build: python-service/
-    ports:
-      - "8004:8004"
-    restart: always
-
-  image-service:
-    container_name: image-service
-    build: image-service/
-    image: image-service
-    ports:
-      - "8005:8005"
-    depends_on:
-      - database
-    restart: always
+#  order-service:
+#    container_name: order-service
+#    build: order-service/
+#    image: order-service
+#    ports:
+#      - "8003:8003"
+#    depends_on:
+#      - database
+#      - discovery-service
+#      - config-service
+#    restart: always
+#
+#  python-service:
+#    container_name: python-service
+#    build: python-service/
+#    ports:
+#      - "8004:8004"
+#    restart: always
+#
+#  image-service:
+#    container_name: image-service
+#    build: image-service/
+#    image: image-service
+#    ports:
+#      - "8005:8005"
+#    depends_on:
+#      - database
+#    restart: always
 
   database:
     container_name: database
