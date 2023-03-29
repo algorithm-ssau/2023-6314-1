@@ -3,10 +3,6 @@ package com.team.userservice.startup;
 import com.team.userservice.data.Role;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 
 @Getter
 public enum SetupUser {
