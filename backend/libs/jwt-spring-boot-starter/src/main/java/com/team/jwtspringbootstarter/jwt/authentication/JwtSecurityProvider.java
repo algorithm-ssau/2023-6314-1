@@ -32,7 +32,7 @@ public class JwtSecurityProvider {
     String bearerToken = request.getHeader(accessTokenData.getHeader());
     if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
       log.debug("Resolved token: {}", bearerToken);
-      return bearerToken.substring(BEARER_PREFIX.length(), bearerToken.length());
+      return bearerToken.substring(BEARER_PREFIX.length());
     }
     log.warn("Token: {} not have prefix: {}", bearerToken, BEARER_PREFIX);
     throw new TokenResolvingException("Token not have access token prefix: " + BEARER_PREFIX);
