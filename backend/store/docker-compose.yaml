@@ -32,6 +32,7 @@ services:
       - user-service
       - order-service
       - python-service
+      - authorize-service
     restart: always
 
   product-service:
@@ -135,6 +136,19 @@ services:
       - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - image_database:/var/lib/postgresql/data
     restart: always
+
+  authorize-service:
+    container_name: authorize-service
+    build: authorize-service/
+    image: authorize-service
+    ports:
+      - "8075:8075"
+    depends_on:
+      - user-database
+      - user-service
+      - discovery-service
+      - config-service
+    restart: on-failure
 
 volumes:
   product_database:
