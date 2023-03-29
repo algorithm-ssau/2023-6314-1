@@ -1,13 +1,40 @@
+#spring:
+#  profiles:
+#    active: dev
+#
+#  application:
+#    name: user-service
+#
+#  cloud:
+#    config:
+#      uri: http://config-service:8888
+#      fail-fast: true
+#      username: admin
+#      password: admin
+
 spring:
   profiles:
     active: dev
 
-  application:
-    name: user-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
 
-  cloud:
-    config:
-      uri: http://config-service:8888
-      fail-fast: true
-      username: admin
-      password: admin
+  datasource:
+    url: jdbc:postgresql://database:5432/user_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+
+  test:
+    database:
+      replace: none
+
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: 8002
