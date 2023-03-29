@@ -41,7 +41,7 @@ public class UserController {
   ) {
     var encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
     User user = commonRequestUserMapper.toDomain(userRequestDto, encodedPassword);
-    userService.save(user);
+    userService.create(user);
     return ResponseEntity.ok().build();
   }
 
@@ -61,12 +61,5 @@ public class UserController {
   public ResponseEntity<UserDto.Response.Common> delete(@PathVariable Long id) {
     userService.deleteById(id);
     return ResponseEntity.ok().build();
-  }
-
-  @GetMapping("{email}")
-  public ResponseEntity<UserDto.Response.Common> findByEmail(@PathVariable String email) {
-    var user = userService.findByEmail(email);
-    var userResponseDto = commonResponseUserMapper.toDto(user);
-    return ResponseEntity.ok().body(userResponseDto);
   }
 }
