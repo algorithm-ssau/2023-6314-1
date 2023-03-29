@@ -29,11 +29,13 @@ public enum OrderMapper {;
     @RequiredArgsConstructor
     public static class Common {
       private final AddressMapper.Response.Common commonAddressMapper;
+      private final StatusMapper.Response.Common commonStatusMapper;
 
       public OrderDto.Response.Common toDto(Order order) {
         return new OrderDto.Response.Common(
           order.getId(),
           commonAddressMapper.toDto(order.getArrivalAddress()),
+          commonStatusMapper.toDto(order.getStatus()),
           order.getProducts(),
           order.getPayloadDateTime(),
           order.getArrivalDateTime()
