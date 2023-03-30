@@ -31,7 +31,7 @@ services:
       - product-service
       - user-service
       - order-service
-#      - python-service
+      - python-service
     restart: always
 
   product-service:
@@ -71,12 +71,12 @@ services:
       - config-service
     restart: always
 
-#  python-service:
-#    container_name: python-service
-#    build: python-service/
-#    ports:
-#      - "8004:8004"
-#    restart: always
+  python-service:
+    container_name: python-service
+    build: python-service/
+    ports:
+      - "8004:8004"
+    restart: always
 
   image-service:
     container_name: image-service
