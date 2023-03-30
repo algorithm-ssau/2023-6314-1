@@ -41,7 +41,7 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - product_database
+      - product-database
       - image-service
       - discovery-service
       - config-service
@@ -54,7 +54,7 @@ services:
     ports:
       - "8002:8002"
     depends_on:
-      - user_database
+      - user-database
       - discovery-service
       - config-service
     restart: always
@@ -66,7 +66,7 @@ services:
     ports:
       - "8003:8003"
     depends_on:
-      - order_database
+      - order-database
       - discovery-service
       - config-service
     restart: always
@@ -79,11 +79,11 @@ services:
     ports:
       - "8005:8005"
     depends_on:
-      - image_database
+      - image-database
     restart: always
 
-  order_database:
-    container_name: order_database
+  order-database:
+    container_name: order-database
     image: postgres:15.2-alpine
     environment:
       PGUSER: postgres
@@ -91,11 +91,11 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - order_database:/var/lib/postgresql/data
+      - order-database-volume:/var/lib/postgresql/data
     restart: always
 
-  user_database:
-    container_name: user_database
+  user-database:
+    container_name: user-database
     image: postgres:15.2-alpine
     environment:
       PGUSER: postgres
@@ -103,11 +103,11 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - user_database:/var/lib/postgresql/data
+      - user-database-volume:/var/lib/postgresql/data
     restart: always
 
-  image_database:
-    container_name: image_database
+  image-database:
+    container_name: image-database
     image: postgres:15.2-alpine
     environment:
       PGUSER: postgres
@@ -115,11 +115,11 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - image_database:/var/lib/postgresql/data
+      - image-database-volume:/var/lib/postgresql/data
     restart: always
 
-  product_database:
-    container_name: product_database
+  product-database:
+    container_name: product-database
     image: postgres:15.2-alpine
     environment:
       PGUSER: postgres
@@ -127,7 +127,7 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - product_database:/var/lib/postgresql/data
+      - product-database-volume:/var/lib/postgresql/data
     restart: always
 
   python-service:
@@ -138,7 +138,7 @@ services:
     restart: always
 
 volumes:
-  product_database:
-  user_database:
-  order_database:
-  image_database:
+  product-database-volume:
+  user-database-volume:
+  order-database-volume:
+  image-database-volume:
