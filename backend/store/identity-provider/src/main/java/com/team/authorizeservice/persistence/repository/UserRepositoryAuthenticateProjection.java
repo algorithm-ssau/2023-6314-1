@@ -16,15 +16,19 @@ public class UserRepositoryAuthenticateProjection {
   private final RowMapper<User> userAuthRowMapper;
 
   @Autowired
-  public UserRepositoryAuthenticateProjection(JdbcTemplate jdbcTemplate, RowMapper<User> userAuthRowMapper) {
+  public UserRepositoryAuthenticateProjection(JdbcTemplate jdbcTemplate, 
+                                              RowMapper<User> userAuthRowMapper) {
     this.jdbcTemplate = jdbcTemplate;
     this.userAuthRowMapper = userAuthRowMapper;
   }
 
   public User findByEmail(String email) {
-    String query = "select id, name, email, password, active, role from users where email = ?";
-    var users = jdbcTemplate.query(query, new Object[]{email}, new int[]{Types.VARCHAR}, userAuthRowMapper);
-    var user = users.get(0);
+    var user = jdbcTemplate.query(
+      "select id, name, email, password, active, role from users where email = ? limit 1",
+      new String[]{email},
+      new int[]{Types.VARCHAR},
+      userAuthRowMapper
+    ).get(0);
     log.debug("Selected user: {} from users database", user);
 
     return user;

@@ -26,28 +26,27 @@ public class JwtSecurityProvider {
   private final TokenPropertiesExtractor.TokenData refreshTokenData;
 
   @Autowired
-  public JwtSecurityProvider(
-    UserDetailsService userDetailsService,
-    TokenPropertiesExtractor tokenPropertiesExtractor
-  ) {
+  public JwtSecurityProvider(UserDetailsService userDetailsService,
+                             TokenPropertiesExtractor tokenPropertiesExtractor) {
     this.userDetailsService = userDetailsService;
     this.refreshTokenData = tokenPropertiesExtractor.pullRefreshTokenData();
   }
 
   public String resolveRefreshToken(HttpServletRequest request) {
-
     var cookies = request.getCookies();
     for (Cookie cookie : cookies) {
       if (cookie.getName().equals(REFRESH_TOKEN_COOKIE_NAME)) {
         return cookie.getValue();
       }
     }
-    throw new TokenResolvingException("Token not been presented in cookie with name: " + REFRESH_TOKEN_COOKIE_NAME);
+    throw new TokenResolvingException("Token not been presented in cookie with name: "
+      + REFRESH_TOKEN_COOKIE_NAME);
   }
 
   public boolean validateRefreshToken(String token) {
     try {
-      return !extractRefreshTokenClaims(token).getExpiration().before(new Date());
+      var refreshTokenExpiration = extractRefreshTokenClaims(token).getExpiration();
+      return refreshTokenExpiration.after(new Date());
     } catch (JwtException | IllegalArgumentException ex) {
       throw new JwtAuthenticationException("JWT token is expired or invalid");
     }

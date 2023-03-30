@@ -30,12 +30,10 @@ public class CommonTokenService implements TokenService {
   private final TokenPropertiesExtractor.TokenData refreshTokenData;
 
   @Autowired
-  public CommonTokenService(
-    RefreshSessionService refreshSessionService,
-    JwtSecurityProvider jwtSecurityProvider,
-    TokenBuilder tokenBuilder,
-    TokenPropertiesExtractor tokenPropertiesExtractor
-  ) {
+  public CommonTokenService(RefreshSessionService refreshSessionService,
+                            JwtSecurityProvider jwtSecurityProvider,
+                            TokenBuilder tokenBuilder,
+                            TokenPropertiesExtractor tokenPropertiesExtractor) {
     this.refreshSessionService = refreshSessionService;
     this.tokenBuilder = tokenBuilder;
     this.jwtSecurityProvider = jwtSecurityProvider;

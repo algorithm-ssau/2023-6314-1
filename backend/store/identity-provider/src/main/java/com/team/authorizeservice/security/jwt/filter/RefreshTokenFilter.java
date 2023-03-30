@@ -29,29 +29,27 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
   }
 
   @Override
-  public void doFilterInternal(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain
-  ) throws IOException, ServletException {
+  public void doFilterInternal(HttpServletRequest request,
+                               HttpServletResponse response,
+                               FilterChain chain) throws IOException, ServletException {
     try {
-      var token = jwtSecurityProvider.resolveRefreshToken(request);
-      log.debug("Resolved token: {}", token);
-
-      if (isValidExistsToken(token)) {
-        chain.doFilter(request, response);
-      } else {
-        throw new JwtAuthenticationException("Token is not valid or does not exist");
-      }
+      var resolvedToken = jwtSecurityProvider.resolveRefreshToken(request);
+      var validToken = requiredValidToken(resolvedToken);
+      log.debug("Resolved token: {}", validToken);
+      chain.doFilter(request, response);
     } catch (JwtAuthenticationException ex) {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.getWriter().write(new ObjectMapper().writeValueAsString(ex.getMessage()));
     }
   }
 
-  private boolean isValidExistsToken(String token) {
-    return token != null
+  private String requiredValidToken(String token) {
+    var isValidAndExistsToken = token != null
       && jwtSecurityProvider.validateRefreshToken(token)
       && refreshSessionService.existsByToken(token);
+    if (!isValidAndExistsToken) {
+      throw new JwtAuthenticationException("Token is not valid or does not exist");
+    }
+    return token;
   }
 }

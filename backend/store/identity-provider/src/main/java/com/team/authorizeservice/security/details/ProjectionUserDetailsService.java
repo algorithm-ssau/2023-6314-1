@@ -1,5 +1,6 @@
 package com.team.authorizeservice.security.details;
 
+import com.team.authorizeservice.persistence.model.User;
 import com.team.authorizeservice.persistence.repository.UserRepositoryAuthenticateProjection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,8 @@ public class ProjectionUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String usernameAsEmail) throws UsernameNotFoundException {
-    var userAuth = Objects.requireNonNull(
-      projectionService.findByEmail(usernameAsEmail),
-      "User not present"
-    );
+    var maybeNullUserAuth = projectionService.findByEmail(usernameAsEmail);
+    var userAuth = Objects.requireNonNull(maybeNullUserAuth, "User not present");
     log.info("User with username: {} successfully loaded from database", usernameAsEmail);
 
     return new ProjectionUserDetails(

@@ -3,6 +3,7 @@ package com.team.authorizeservice.rest.controller;
 import com.team.authorizeservice.rest.dto.AuthenticationDto;
 import com.team.authorizeservice.rest.dto.RequestMetadata;
 import com.team.authorizeservice.security.details.ProjectionUserDetails;
+import com.team.authorizeservice.service.api.AuthenticationService;
 import com.team.authorizeservice.service.api.RefreshSessionService;
 import com.team.authorizeservice.service.api.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -22,30 +23,23 @@ import java.util.Map;
 public class AuthenticationController {
   private final TokenService tokenService;
   private final RefreshSessionService refreshSessionService;
-  private final AuthenticationManager authenticationManager;
+  private final AuthenticationService authenticationService;
 
   @Autowired
-  public AuthenticationController(
-    TokenService tokenService,
-    RefreshSessionService refreshSessionService,
-    AuthenticationManager authenticationManager
-  ) {
+  public AuthenticationController(TokenService tokenService,
+                                  RefreshSessionService refreshSessionService,
+                                  AuthenticationService authenticationService) {
     this.tokenService = tokenService;
     this.refreshSessionService = refreshSessionService;
-    this.authenticationManager = authenticationManager;
+    this.authenticationService = authenticationService;
   }
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(
-    @Valid @RequestBody AuthenticationDto dto,
-    HttpServletRequest request
-  ) {
-    var authToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
-    var authenticate = authenticationManager.authenticate(authToken);
-    var user = (ProjectionUserDetails) authenticate.getPrincipal();
-    var requestMetadata = new RequestMetadata(request);
-    var tokenGroup = tokenService.generateTokenGroup(user, requestMetadata);
-    return ResponseEntity.ok(Map.of("userId", user.getId(), "tokenGroup", tokenGroup));
+  public ResponseEntity<?> login(@Valid @RequestBody AuthenticationDto dto,
+                                 HttpServletRequest request) {
+    var authenticatedUser = authenticationService.authenticate(dto.getEmail(), dto.getPassword());
+    var tokenGroup = tokenService.generateTokenGroup(authenticatedUser, new RequestMetadata(request));
+    return ResponseEntity.ok(Map.of("userId", authenticatedUser.getId(), "tokenGroup", tokenGroup));
   }
 
   @PostMapping("/logout")
@@ -55,20 +49,14 @@ public class AuthenticationController {
   }
 
   @PostMapping("/refresh")
-  public ResponseEntity<?> refresh(
-    @CookieValue("refreshToken") String refreshToken,
-    HttpServletRequest request
-  ) {
-    return ResponseEntity.ok(
-      tokenService.refreshByToken(refreshToken, new RequestMetadata(request))
-    );
+  public ResponseEntity<?> refresh(@CookieValue("refreshToken") String refreshToken,
+                                   HttpServletRequest request) {
+    var refreshedTokenGroup = tokenService.refreshByToken(refreshToken, new RequestMetadata(request));
+    return ResponseEntity.ok(refreshedTokenGroup);
   }
-
-  //  @PostMapping("activate/{link}")
 
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<?> handle(AuthenticationException ex) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value())
-      .body(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(ex.getMessage());
   }
 }

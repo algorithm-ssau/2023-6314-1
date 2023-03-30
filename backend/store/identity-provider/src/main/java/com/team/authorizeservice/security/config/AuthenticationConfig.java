@@ -49,9 +49,7 @@ public class AuthenticationConfig {
   }
 
   @Bean
-  public FilterRegistrationBean<RefreshTokenFilter> refreshTokenFilterFilterRegistrationBean(
-    RefreshTokenFilter refreshTokenFilter
-  ) {
+  public FilterRegistrationBean<RefreshTokenFilter> refreshTokenFilterRegistrationBean(RefreshTokenFilter refreshTokenFilter) {
     FilterRegistrationBean<RefreshTokenFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(refreshTokenFilter);
     registrationBean.addUrlPatterns("/api/auth/logout", "/api/auth/refresh");

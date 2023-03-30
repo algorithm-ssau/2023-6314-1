@@ -9,6 +9,5 @@ public interface RefreshSessionRepository extends JpaRepository<RefreshSession, 
   List<RefreshSession> findByUserId(Long userId);
   void deleteAllByUserId(Long userId);
   void deleteByRefreshToken(String refreshToken);
-  RefreshSession findByRefreshToken(String refreshToken);
   boolean existsByRefreshToken(String refreshToken);
 }
