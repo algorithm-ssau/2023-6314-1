@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class ProductServiceApplication{
 	public static void main(String[] args) {
 		SpringApplication.run(ProductServiceApplication.class, args);

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class OrderServiceApplication {
 
   public static void main(String[] args) {
