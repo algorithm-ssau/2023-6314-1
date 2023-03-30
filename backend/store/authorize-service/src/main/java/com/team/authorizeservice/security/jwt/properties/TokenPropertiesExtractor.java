@@ -13,6 +13,12 @@ import java.security.Key;
 @Component
 @Slf4j
 public class TokenPropertiesExtractor {
+  @Value("${jwt.token.access.secret}")
+  private String accessSecret;
+
+  @Value("${jwt.token.access.expired}")
+  private long accessValidityInMilliseconds;
+
   @Value("${jwt.token.refresh.secret}")
   private String refreshSecret;
 
@@ -22,6 +28,7 @@ public class TokenPropertiesExtractor {
   @PostConstruct
   private void init() {
     refreshSecret = Encoders.BASE64.encode(refreshSecret.getBytes());
+    accessSecret = Encoders.BASE64.encode(accessSecret.getBytes());
     log.debug("Encoded access and refresh secret key");
   }
 
@@ -29,6 +36,10 @@ public class TokenPropertiesExtractor {
   public static class TokenData {
     Key secretKey;
     long validityDateInMilliseconds;
+  }
+
+  public TokenData pullAccessTokenData() {
+    return generateTokenData(accessSecret, accessValidityInMilliseconds);
   }
 
   public TokenData pullRefreshTokenData() {
