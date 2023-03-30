@@ -4,7 +4,7 @@ import com.team.userservice.data.User;
 import com.team.userservice.mapper.UserMapper;
 import com.team.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationListener;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
