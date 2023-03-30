@@ -14,17 +14,18 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Profile("dev")
-public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+@Slf4j
+public class SetupDataLoader {
   private boolean firstSetup = false;
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final UserMapper.Startup.Common commonStartupMapper;
 
   @EventListener(ContextRefreshedEvent.class)
-  public void onApplicationEvent(ContextRefreshedEvent event) {
+  public void startInitializing(){
     if (!firstSetup) {
-      setup();
       firstSetup = true;
+      setup();
     }
   }
 
