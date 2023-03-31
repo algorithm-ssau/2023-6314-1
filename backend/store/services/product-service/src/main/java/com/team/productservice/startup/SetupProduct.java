@@ -1,4 +1,4 @@
-package com.team.productservice.service.startup;
+package com.team.productservice.startup;
 
 import lombok.Getter;
 

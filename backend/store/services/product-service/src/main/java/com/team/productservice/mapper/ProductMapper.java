@@ -2,7 +2,7 @@ package com.team.productservice.mapper;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.dto.ProductDto;
-import com.team.productservice.service.startup.SetupProduct;
+import com.team.productservice.startup.SetupProduct;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
