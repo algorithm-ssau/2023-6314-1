@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.team</groupId>
-    <artifactId>authorize-service</artifactId>
+    <artifactId>identity-provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>authorize-service</name>
-    <description>JWT based authorize service</description>
+    <description>JWT based identity-provider</description>
 
     <properties>
         <java.version>17</java.version>
