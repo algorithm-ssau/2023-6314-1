@@ -1,4 +1,4 @@
-package com.team.productservice.rest.dto;
+package com.team.productservice.rest.client.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageRequestDto {
+public class ImageResponseDto {
+  private Long id;
+
   @NotNull
   private byte[] content;
 }
