@@ -1,4 +1,4 @@
-package com.team.productservice.rest.advice;
+package com.team.productservice.rest.server.advice;
 
 import com.team.productservice.exception.ProductNotFoundException;
 import org.springframework.http.ResponseEntity;

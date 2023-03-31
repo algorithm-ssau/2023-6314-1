@@ -1,4 +1,4 @@
-package com.team.productservice.rest;
+package com.team.productservice.rest.server;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
