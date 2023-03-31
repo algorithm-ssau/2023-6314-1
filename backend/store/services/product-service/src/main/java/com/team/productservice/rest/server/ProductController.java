@@ -2,14 +2,15 @@ package com.team.productservice.rest.server;
 
 import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
-import com.team.productservice.rest.dto.ImageRequestDto;
-import com.team.productservice.service.ProductService;
+import com.team.productservice.rest.client.ImageServiceClient;
+import com.team.productservice.rest.client.dto.ImageRequestDto;
+import com.team.productservice.service.api.ProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.team.productservice.dto.ProductDto.*;
@@ -41,20 +42,13 @@ public class ProductController {
 
   @PostMapping
   public ResponseEntity<Response.Common> create(@Valid @RequestBody Request.Create dto) {
-    var imagesId = saveImagesToServiceFrom(dto);
+    List<ImageRequestDto> imageRequestDtos = Arrays.stream(dto.getImagesContent())
+      .map(ImageRequestDto::new)
+      .toList();
+    List<Long> imagesId = imageServiceClient.saveAll(imageRequestDtos);
     Product product = reqCreateMapper.toDomain(dto, imagesId);
     productService.save(product);
     return ResponseEntity.ok().build();
-  }
-
-  private List<Long> saveImagesToServiceFrom(Request.Create productRequestDto) {
-    List<Long> imagesId = new ArrayList<>();
-    for (byte[] imageContent : productRequestDto.getImagesContent()) {
-      var imageRequestDto = new ImageRequestDto(imageContent);
-      var imageId = imageServiceClient.save(imageRequestDto).getBody();
-      imagesId.add(imageId);
-    }
-    return imagesId;
   }
 
   @PutMapping("{id}")
