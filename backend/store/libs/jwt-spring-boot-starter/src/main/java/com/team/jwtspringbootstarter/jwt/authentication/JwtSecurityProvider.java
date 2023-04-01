@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 
 @Slf4j
@@ -30,12 +32,16 @@ public class JwtSecurityProvider {
 
   public String resolveToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(accessTokenData.getHeader());
-    if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+    if (bearerToken == null) {
+      log.warn("Token: {} not present in headers: {}", bearerToken, request.getHeaderNames());
+      throw new TokenResolvingException("Token not present in headers");
+    } else if (!bearerToken.startsWith(BEARER_PREFIX)) {
+      log.warn("Token: {} not have prefix: {}", bearerToken, BEARER_PREFIX);
+      throw new TokenResolvingException("Token not have access token prefix: " + BEARER_PREFIX);
+    } else {
       log.debug("Resolved token: {}", bearerToken);
       return bearerToken.substring(BEARER_PREFIX.length());
     }
-    log.warn("Token: {} not have prefix: {}", bearerToken, BEARER_PREFIX);
-    throw new TokenResolvingException("Token not have access token prefix: " + BEARER_PREFIX);
   }
 
   public boolean validateToken(String token) {
@@ -54,15 +60,19 @@ public class JwtSecurityProvider {
   }
 
   private Collection<? extends GrantedAuthority> extractAuthorities(Claims claims) {
-    var collection = claims.get("authorities", Collection.class);
+    var value = claims.get("authorities", Collection.class);
     Collection<GrantedAuthority> authorities = new ArrayList<>();
-    for (Object o : collection) {
-      authorities.add((GrantedAuthority) o);
+    for (Object o : value) {
+      Collection<String> authorityNames = ((Map<String, String>) o).values();
+      for (String authority : authorityNames) {
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + authority));
+      }
     }
     return authorities;
   }
 
   private Claims extractTokenClaims(String token) {
+
     return Jwts.parserBuilder()
       .setSigningKey(accessTokenData.getSecretKey())
       .build()
