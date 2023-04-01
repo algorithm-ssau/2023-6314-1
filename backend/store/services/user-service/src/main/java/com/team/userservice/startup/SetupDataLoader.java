@@ -3,7 +3,7 @@ package com.team.userservice.startup;
 import com.team.userservice.data.User;
 import com.team.userservice.mapper.UserMapper;
 import com.team.userservice.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 @Profile("dev")
 @Slf4j
 public class SetupDataLoader {
@@ -20,6 +19,13 @@ public class SetupDataLoader {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final UserMapper.Startup.Common commonStartupMapper;
+
+  @Autowired
+  public SetupDataLoader(PasswordEncoder passwordEncoder, UserRepository userRepository, UserMapper.Startup.Common commonStartupMapper) {
+    this.passwordEncoder = passwordEncoder;
+    this.userRepository = userRepository;
+    this.commonStartupMapper = commonStartupMapper;
+  }
 
   @EventListener(ContextRefreshedEvent.class)
   public void startInitializing(){

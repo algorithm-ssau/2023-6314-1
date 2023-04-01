@@ -10,7 +10,7 @@ import java.util.List;
 public enum ProductMapper {;
   public enum Request {;
     @Component
-    public static class Common {
+    public static final class Common {
       public Product toDomain(ProductDto.Request.Common dto) {
         return new Product(
           dto.getName(),
@@ -23,7 +23,7 @@ public enum ProductMapper {;
     }
 
     @Component
-    public static class Create {
+    public static final class Create {
       public Product toDomain(ProductDto.Request.Create dto, List<Long> imagesId) {
         return new Product(
           dto.getName(),
@@ -38,7 +38,7 @@ public enum ProductMapper {;
 
   public enum Response {;
     @Component
-    public static class Common {
+    public static final class Common {
       public ProductDto.Response.Common toDto(Product product) {
         return new ProductDto.Response.Common(
           product.getId(),
@@ -54,7 +54,7 @@ public enum ProductMapper {;
 
   public enum Startup {;
     @Component
-    public static class Common {
+    public static final class Common {
       public Product toDomain(SetupProduct setupProduct, List<Long> imagesId) {
         return new Product(
           setupProduct.getName(),

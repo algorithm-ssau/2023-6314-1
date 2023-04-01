@@ -1,10 +1,17 @@
 package com.team.userservice.data;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.OffsetDateTime;
 
 @Entity
 @Data
@@ -25,19 +32,25 @@ public class User {
   private String email;
 
   @Size(min = 6, max = 80)
-  @Transient
   private String password;
-
-  private boolean active = true;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public User(String name, String email, String password, boolean active, Role role) {
+  @Column(name = "created")
+  private OffsetDateTime created = OffsetDateTime.now();
+
+  @LastModifiedDate
+  @Column(name = "updated")
+  private OffsetDateTime updated = created;
+
+  private Boolean active = true;
+
+  public User(String name, String email, String password, Role role, Boolean active) {
     this.name = name;
     this.email = email;
     this.password = password;
-    this.active = active;
     this.role = role;
+    this.active = active;
   }
 }

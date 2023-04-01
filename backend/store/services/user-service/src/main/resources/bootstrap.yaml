@@ -12,37 +12,6 @@ spring:
       username: admin
       password: admin
 
-#spring:
-#  profiles:
-#      active: dev
-#
-#  application:
-#      name: user-service
-#
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: update
-#    database: postgresql
-#
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/user_db
-#    driver-class-name: org.postgresql.Driver
-#    username: postgres
-#    password: postgres
-#
-#  test:
-#    database:
-#      replace: none
-#
-#  sql:
-#    init:
-#      platform: postgres
-#
-#server:
-#  port: 8002
-
-
 jwt:
   token:
     access:

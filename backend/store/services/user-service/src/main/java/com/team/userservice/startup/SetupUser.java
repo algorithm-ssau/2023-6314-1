@@ -3,7 +3,6 @@ package com.team.userservice.startup;
 import com.team.userservice.data.Role;
 import lombok.Getter;
 
-
 @Getter
 public enum SetupUser {
   USER_1(
@@ -37,7 +36,7 @@ public enum SetupUser {
   private final String name;
   private final String email;
   private final String password;
-  private final boolean active = false;
+  private final boolean active = true;
   private final Role role;
 
   SetupUser(String name, String email, String password, Role role) {

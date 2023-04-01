@@ -9,7 +9,7 @@ public enum AddressMapper {;
   public enum Request {;
     @Component
     @RequiredArgsConstructor
-    public static class Common {
+    public static final class Common {
       private final CoordinateMapper.Request.Common commonCoordinateMapper;
 
       public Address toDomain(AddressDto.Request.Common dto) {
@@ -28,7 +28,7 @@ public enum AddressMapper {;
   public enum Response {;
     @Component
     @RequiredArgsConstructor
-    public static class Common {
+    public static final class Common {
       private final CoordinateMapper.Response.Common commonCoordinateMapper;
 
       public AddressDto.Response.Common toDto(Address address) {
