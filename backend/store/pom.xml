@@ -11,19 +11,19 @@
     <packaging>pom</packaging>
 
     <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <modules>
-        <module>product-service</module>
-        <module>user-service</module>
-        <module>order-service</module>
-        <module>image-service</module>
-        <module>config-service</module>
-        <module>discovery-service</module>
-        <module>gateway-service</module>
-        <module>identity-provider</module>
+        <module>services/product-service</module>
+        <module>services/user-service</module>
+        <module>services/order-service</module>
+        <module>services/image-service</module>
+        <module>services/config-service</module>
+        <module>services/discovery-service</module>
+        <module>services/gateway-service</module>
+        <module>services/identity-provider</module>
     </modules>
 
     <build>
