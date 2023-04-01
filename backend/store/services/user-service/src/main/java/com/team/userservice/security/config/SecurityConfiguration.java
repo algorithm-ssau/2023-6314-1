@@ -3,6 +3,7 @@ package com.team.userservice.security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,8 +16,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class SecurityConfiguration {
+
   @Bean
-  public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
+  @Primary
+  public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
     http
       .csrf().disable()
       .cors().disable()
