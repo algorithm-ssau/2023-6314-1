@@ -38,7 +38,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
       log.debug("Resolved token: {}", validToken);
       chain.doFilter(request, response);
     } catch (JwtAuthenticationException ex) {
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      response.setStatus(HttpStatus.FORBIDDEN.value());
       response.getWriter().write(new ObjectMapper().writeValueAsString(ex.getMessage()));
     }
   }
