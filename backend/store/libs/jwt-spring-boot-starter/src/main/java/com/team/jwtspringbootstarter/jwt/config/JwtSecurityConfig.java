@@ -25,18 +25,18 @@ public class JwtSecurityConfig {
       .build();
   }
 
-  @Bean
-  public TokenPropertiesExtractor tokenPropertiesExtractor() {
-    return new TokenPropertiesExtractor();
-  }
-
-  @Bean
-  public JwtSecurityProvider jwtSecurityProvider(TokenPropertiesExtractor tokenPropertiesExtractor) {
-    return new JwtSecurityProvider(tokenPropertiesExtractor);
-  }
-
-  @Bean
-  public AccessTokenFilter accessTokenFilter(JwtSecurityProvider jwtSecurityProvider) {
-    return new AccessTokenFilter(jwtSecurityProvider);
-  }
+//  @Bean
+//  public TokenPropertiesExtractor tokenPropertiesExtractor() {
+//    return new TokenPropertiesExtractor();
+//  }
+//
+//  @Bean
+//  public JwtSecurityProvider jwtSecurityProvider(TokenPropertiesExtractor tokenPropertiesExtractor) {
+//    return new JwtSecurityProvider(tokenPropertiesExtractor);
+//  }
+//
+//  @Bean
+//  public AccessTokenFilter accessTokenFilter(JwtSecurityProvider jwtSecurityProvider) {
+//    return new AccessTokenFilter(jwtSecurityProvider);
+//  }
 }
