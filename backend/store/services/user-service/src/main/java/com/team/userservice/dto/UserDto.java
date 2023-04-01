@@ -13,7 +13,7 @@ public enum UserDto {;
   private interface Name { @NotBlank String getName(); }
   private interface EmailAddress { @Email String getEmail(); }
   private interface Password { @Size(min = 5, max = 80) String getPassword(); }
-  private interface Active { @NotNull Boolean getActive(); }
+  private interface Active { Boolean getActive(); }
   private interface Role { @NotNull RoleDto getRole(); }
   private interface CreatedDateTime { @PastOrPresent OffsetDateTime getCreatedDateTime(); }
   private interface UpdatedDateTime { @PastOrPresent OffsetDateTime getUpdatedDateTime(); }
@@ -21,33 +21,26 @@ public enum UserDto {;
   public enum Request {;
     @Value
     public static class Common implements
-      Name, EmailAddress, Password, Active, Role, CreatedDateTime, UpdatedDateTime
+      Name, EmailAddress, Password, Active, Role
     {
       String name;
       String email;
       String password;
       Boolean active;
       RoleDto role;
-      OffsetDateTime createdDateTime;
-      OffsetDateTime updatedDateTime;
 
       @JsonCreator
       public Common(
         @JsonProperty("name") String name,
         @JsonProperty("email") String email,
         @JsonProperty("password") String password,
-        @JsonProperty("active") Boolean active,
-        @JsonProperty("role") RoleDto role,
-        @JsonProperty("createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty("updatedDateTime") OffsetDateTime updatedDateTime
+        @JsonProperty("role") RoleDto role
       ) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.active = true;
         this.role = role;
-        this.createdDateTime = createdDateTime;
-        this.updatedDateTime = updatedDateTime;
       }
     }
   }
