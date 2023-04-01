@@ -46,18 +46,6 @@ services:
       - image-service
       - discovery-service
       - config-service
-    restart: on-failure
-
-  product-database:
-    container_name: product-database
-    image: postgres:15.2-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - product_database:/var/lib/postgresql/data
     restart: always
 
   user-service:
@@ -70,18 +58,6 @@ services:
       - user-database
       - discovery-service
       - config-service
-    restart: on-failure
-
-  user-database:
-    container_name: user-database
-    image: postgres:15.2-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - user_database:/var/lib/postgresql/data
     restart: always
 
   order-service:
@@ -92,6 +68,29 @@ services:
       - "8003:8003"
     depends_on:
       - order-database
+      - discovery-service
+      - config-service
+    restart: always
+
+  image-service:
+    container_name: image-service
+    build: image-service/
+    image: image-service
+    ports:
+      - "8005:8005"
+    depends_on:
+      - image-database
+    restart: always
+
+  identity-provider:
+    container_name: identity-provider
+    build: identity-provider/
+    image: identity-provider
+    ports:
+      - "8075:8075"
+    depends_on:
+      - user-database
+      - user-service
       - discovery-service
       - config-service
     restart: on-failure
@@ -105,25 +104,20 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - order_database:/var/lib/postgresql/data
+      - order-database-volume:/var/lib/postgresql/data
     restart: always
 
-  python-service:
-    container_name: python-service
-    build: python-service
-    ports:
-      - "8004:8004"
+  user-database:
+    container_name: user-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - user-database-volume:/var/lib/postgresql/data
     restart: always
-
-  image-service:
-    container_name: image-service
-    build: image-service/
-    image: image-service
-    ports:
-      - "8005:8005"
-    depends_on:
-      - image-database
-    restart: on-failure
 
   image-database:
     container_name: image-database
@@ -134,24 +128,30 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - image_database:/var/lib/postgresql/data
+      - image-database-volume:/var/lib/postgresql/data
     restart: always
 
-  identity-provider:
-    container_name: identity-provider
-    build: identity-provider/
-    image: identity-provider
+  product-database:
+    container_name: product-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - product-database-volume:/var/lib/postgresql/data
+    restart: always
+
+  python-service:
+    container_name: python-service
+    build: python-service/
     ports:
-      - "8075:8075"
-#    depends_on:
-#      - user-database
-##     - user-service
-#      - discovery-service
-#      - config-service
-    restart: on-failure
+      - "8004:8004"
+    restart: always
 
 volumes:
-  product_database:
-  user_database:
-  order_database:
-  image_database:
+  product-database-volume:
+  user-database-volume:
+  order-database-volume:
+  image-database-volume:

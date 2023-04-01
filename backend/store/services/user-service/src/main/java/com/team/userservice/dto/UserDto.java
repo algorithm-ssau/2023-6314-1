@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.time.OffsetDateTime;
 
+
 public enum UserDto {;
   private interface Id { @NotNull Long getId(); }
   private interface Name { @NotBlank String getName(); }

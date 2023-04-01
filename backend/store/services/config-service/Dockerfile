@@ -1,10 +1,7 @@
-FROM maven:3.8.7-openjdk-18-slim AS build
-COPY src /src
-COPY pom.xml /pom.xml
-RUN mvn -f ./pom.xml clean package
-
-FROM openjdk:latest
+FROM eclipse-temurin:17-jre-alpine as build
 MAINTAINER Pavel Kazhukov <sanpavkaz@gmail.com>
-COPY --from=build /target/config-service-0.0.1-SNAPSHOT.jar config-service-0.0.1-SNAPSHOT.jar
+
+FROM build
 EXPOSE 8888
-ENTRYPOINT ["java","-jar","config-service-0.0.1-SNAPSHOT.jar"]
+COPY target/config-service-0.0.1-SNAPSHOT.jar /config-service-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar", "config-service-0.0.1-SNAPSHOT.jar"]
