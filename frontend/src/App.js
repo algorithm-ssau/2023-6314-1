@@ -4,6 +4,8 @@ import axios from "axios";
 import data from './data';
 
 function App() {
+  const [poducts,setProducts]=useState([]);
+  const [images,setImages]=useState([]);
   return (
     <div >
       <header>
