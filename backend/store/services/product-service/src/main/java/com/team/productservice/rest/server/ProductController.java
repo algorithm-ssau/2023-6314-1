@@ -7,7 +7,6 @@ import com.team.productservice.rest.client.dto.ImageRequestDto;
 import com.team.productservice.service.api.ProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +19,6 @@ import static com.team.productservice.dto.ProductDto.*;
 @AllArgsConstructor
 @RequestMapping("/api/products/")
 public class ProductController {
-  private static final HttpHeaders DEFAULT_HEADERS;
-
-  static {
-    DEFAULT_HEADERS = new HttpHeaders();
-    DEFAULT_HEADERS.set("Access-Control-Allow-Origin", "*");
-  }
 
   private final ProductService productService;
   private final ProductMapper.Request.Common reqCommonMapper;
@@ -39,14 +32,14 @@ public class ProductController {
     var responses = productService.getAll().stream()
       .map(respCommonMapper::toDto)
       .toList();
-    return ResponseEntity.ok().headers(DEFAULT_HEADERS).body(responses);
+    return ResponseEntity.ok().body(responses);
   }
 
   @GetMapping("{id}")
   public ResponseEntity<Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
     var common = respCommonMapper.toDto(product);
-    return ResponseEntity.ok().headers(DEFAULT_HEADERS).body(common);
+    return ResponseEntity.ok().body(common);
   }
 
   @PostMapping
@@ -57,7 +50,7 @@ public class ProductController {
     List<Long> imagesId = imageServiceClient.saveAll(imageRequestDtos);
     Product product = reqCreateMapper.toDomain(dto, imagesId);
     productService.save(product);
-    return ResponseEntity.ok().headers(DEFAULT_HEADERS).build();
+    return ResponseEntity.ok().build();
   }
 
   @PutMapping("{id}")
@@ -68,12 +61,12 @@ public class ProductController {
     Product product = reqCommonMapper.toDomain(productRequestDto);
     product.setId(id);
     productService.update(product);
-    return ResponseEntity.ok().headers(DEFAULT_HEADERS).build();
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("{id}")
   public ResponseEntity<Response.Common> delete(@PathVariable Long id) {
     productService.deleteById(id);
-    return ResponseEntity.ok().headers(DEFAULT_HEADERS).build();
+    return ResponseEntity.ok().build();
   }
 }
