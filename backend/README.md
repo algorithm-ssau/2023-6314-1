@@ -4,7 +4,6 @@
 
 - установить [JDK](https://jdk.java.net/archive/) хотя-бы 17 версии
 - установить [Docker](https://docs.docker.com/engine/install/)
-- запустить Docker
 - открыть cmd по директории: projectFolder/backend/store
 - выполнить команду set JAVA_HOME="путь до jdk"/"jdk" (Либо установить переменную среду JAVA_HOME="путь до jdk"/"jdk")
 - выполнить команду mvnw package -am -Dmaven.test.skip -T 1C (Если Linux: ./mvnw package -am -o -Dmaven.test.skip -T 1C)
