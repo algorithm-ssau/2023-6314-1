@@ -37,7 +37,9 @@ public class ProductController {
   public ResponseEntity<Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
     var common = respCommonMapper.toDto(product);
-    return ResponseEntity.ok().body(common);
+    return ResponseEntity.ok()
+      .header("Access-Control-Allow-Origin", "*")
+      .body(common);
   }
 
   @PostMapping
