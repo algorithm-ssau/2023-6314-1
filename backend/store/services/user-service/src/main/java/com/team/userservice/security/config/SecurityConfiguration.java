@@ -17,21 +17,37 @@ import org.springframework.security.web.SecurityFilterChain;
 @ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class SecurityConfiguration {
 
+//  @Bean
+//  @Primary
+//  public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
+//    http
+//      .csrf().disable()
+//      .cors().disable()
+//      .httpBasic().disable()
+//      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//    .and()
+//      .authorizeHttpRequests()
+//      .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+//      .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+//      .requestMatchers(HttpMethod.GET, "/api/users/").hasRole("ADMIN")
+//      .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("ADMIN")
+//      .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("ADMIN")
+//      .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("ADMIN");
+////    .and()
+////      .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//    return http.build();
+//  }
+
   @Bean
-  @Primary
-  public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
-    http
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity
       .csrf().disable()
       .cors().disable()
-      .httpBasic().disable()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    .and()
-      .authorizeHttpRequests()
-      .requestMatchers(HttpMethod.GET, "/api/users/").hasRole("ADMIN")
-      .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("ADMIN")
-      .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("ADMIN")
-      .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("ADMIN");
-    return http.build();
+      .and()
+      .authorizeHttpRequests().anyRequest().permitAll()
+      .and()
+      .build();
   }
 
   @Bean
