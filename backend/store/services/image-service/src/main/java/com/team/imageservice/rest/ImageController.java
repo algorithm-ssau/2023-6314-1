@@ -6,6 +6,7 @@ import com.team.imageservice.mapper.ImageMapper;
 import com.team.imageservice.service.ImageDeliveryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +15,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ImageController {
   private final ImageDeliveryService imageDeliveryService;
-  private final ImageMapper.Request.Common commonImageRequestMapper;
   private final ImageMapper.Response.Common commonImageResponseMapper;
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ImageDto.Response.Common> get(@PathVariable Long id) {
+  @GetMapping(value = "/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+  public @ResponseBody byte[] get(@PathVariable Long id) {
     Image presentImage = imageDeliveryService.getById(id);
     var commonImageResponse = commonImageResponseMapper.toDto(presentImage);
-    return ResponseEntity.ok().body(commonImageResponse);
+    return commonImageResponse.getContent();
   }
 
   @PostMapping
-  public ResponseEntity<Long> save(@Valid @RequestBody ImageDto.Request.Common imageRequestDto) {
-    var image = commonImageRequestMapper.toDomain(imageRequestDto);
+  public ResponseEntity<Long> save(@Valid @RequestBody byte[] imageBytes) {
+    var image = new Image(imageBytes);
     Long indexOfSavedImage = imageDeliveryService.save(image);
     return ResponseEntity.ok().body(indexOfSavedImage);
   }
