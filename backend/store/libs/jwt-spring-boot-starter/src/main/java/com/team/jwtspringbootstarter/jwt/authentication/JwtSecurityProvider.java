@@ -14,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 
 @Slf4j
@@ -30,18 +27,11 @@ public class JwtSecurityProvider {
     this.accessTokenData = tokenPropertiesExtractor.pullAccessTokenData();
   }
 
-  public String resolveToken(HttpServletRequest request) {
+  public Optional<String> resolveToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(accessTokenData.getHeader());
-    if (bearerToken == null) {
-      log.warn("Token: {} not present in headers: {}", bearerToken, request.getHeaderNames());
-      throw new TokenResolvingException("Token not present in headers");
-    } else if (!bearerToken.startsWith(BEARER_PREFIX)) {
-      log.warn("Token: {} not have prefix: {}", bearerToken, BEARER_PREFIX);
-      throw new TokenResolvingException("Token not have access token prefix: " + BEARER_PREFIX);
-    } else {
-      log.debug("Resolved token: {}", bearerToken);
-      return bearerToken.substring(BEARER_PREFIX.length());
-    }
+    return bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)
+      ? Optional.of(bearerToken.substring(BEARER_PREFIX.length()))
+      : Optional.empty();
   }
 
   public boolean validateToken(String token) {
@@ -72,7 +62,6 @@ public class JwtSecurityProvider {
   }
 
   private Claims extractTokenClaims(String token) {
-
     return Jwts.parserBuilder()
       .setSigningKey(accessTokenData.getSecretKey())
       .build()
