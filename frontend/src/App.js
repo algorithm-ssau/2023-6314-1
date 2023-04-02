@@ -9,9 +9,15 @@ function App() {
   useEffect(()=>{
     const fetchData=async()=>{
       const result = await axios.get('http://localhost:8001/api/products/')
-      setProducts(result.data);      
+      setProducts(result.data);  
+      console.log(result.data);       
     };
+    const fetchImage=async()=>{
+      const result = await axios.get('http://localhost:8005/api/images/1');       
+      console.log(result.data);    
+    };    
     fetchData();
+    fetchImage();
   },[])  
   return (
     <div >
@@ -22,16 +28,16 @@ function App() {
       <h1>Featured Products</h1>
         <div className="products">
           {products.map((product) => (
-            <div className="product" key={product.slug}>
-              <a href={`/product/${product.slug}`}>
-                <img src={product.image} alt={product.name} />
+            <div className="product" key={product.id}>
+              <a href={`/product/${product.id}`}>
+                <img src={images[product.id]} alt={product.name} />
               </a>
               <div className="product-info">
-                <a href={`/product/${product.slug}`}>
+                <a href={`/product/${product.id}`}>
                   <p>{product.name}</p>
                 </a>
                 <p>
-                  <strong>${product.price}</strong>
+                  <strong>${product.cost}</strong>
                 </p>
                 <button>Add to cart</button>
               </div>
