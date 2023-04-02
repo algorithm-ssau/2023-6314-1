@@ -41,10 +41,7 @@ public class SetupDataLoader {
     if (productRepository.count() == 0) {
       for (SetupProduct setupProduct : SetupProduct.values()) {
         byte[][] allFilesBytes = readAllFilesBytes(setupProduct.getImagePaths());
-        List<ImageRequestDto> imageRequestDtos = Arrays.stream(allFilesBytes)
-          .map(ImageRequestDto::new)
-          .toList();
-        List<Long> imagesId = imageServiceClient.saveAll(imageRequestDtos);
+        List<Long> imagesId = imageServiceClient.saveAll(allFilesBytes);
         Product product = setupProductMapper.toDomain(setupProduct, imagesId);
         productRepository.save(product);
       }
@@ -56,8 +53,7 @@ public class SetupDataLoader {
     for (int i = 0; i < allBytes.length; i++) {
       try (InputStream resourceAsStream = getClass().getResourceAsStream(paths.get(i))) {
         Objects.requireNonNull(resourceAsStream);
-        BufferedImage image = ImageIO.read(resourceAsStream);
-        allBytes[i] = ((DataBufferByte) image.getData().getDataBuffer()).getData();
+        allBytes[i] = resourceAsStream.readAllBytes();
       } catch (IOException exception) {
         throw new RuntimeException(exception);
       }
