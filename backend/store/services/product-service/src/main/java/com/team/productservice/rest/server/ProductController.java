@@ -44,10 +44,7 @@ public class ProductController {
 
   @PostMapping
   public ResponseEntity<Response.Common> create(@Valid @RequestBody Request.Create dto) {
-    List<ImageRequestDto> imageRequestDtos = Arrays.stream(dto.getImagesContent())
-      .map(ImageRequestDto::new)
-      .toList();
-    List<Long> imagesId = imageServiceClient.saveAll(imageRequestDtos);
+    List<Long> imagesId = imageServiceClient.saveAll(dto.getImagesContent());
     Product product = reqCreateMapper.toDomain(dto, imagesId);
     productService.save(product);
     return ResponseEntity.ok().build();
