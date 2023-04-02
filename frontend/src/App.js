@@ -4,8 +4,15 @@ import axios from "axios";
 import data from './data';
 
 function App() {
-  const [poducts,setProducts]=useState([]);
+  const [products,setProducts]=useState([]);
   const [images,setImages]=useState([]);
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const result = await axios.get('http://localhost:8001/api/products/')
+      setProducts(result.data);      
+    };
+    fetchData();
+  },[])  
   return (
     <div >
       <header>
@@ -14,7 +21,7 @@ function App() {
       <main>
       <h1>Featured Products</h1>
         <div className="products">
-          {data.products.map((product) => (
+          {products.map((product) => (
             <div className="product" key={product.slug}>
               <a href={`/product/${product.slug}`}>
                 <img src={product.image} alt={product.name} />
