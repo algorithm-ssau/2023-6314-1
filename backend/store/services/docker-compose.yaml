@@ -3,7 +3,7 @@ version: "3.5"
 services:
   config-service:
     container_name: config-service
-    build: config-service
+    build: config-service/
     image: config-service
     ports:
       - "8888:8888"
@@ -32,6 +32,7 @@ services:
       - user-service
       - order-service
       - python-service
+      - identity-provider
     restart: always
 
   product-service:
@@ -71,7 +72,6 @@ services:
       - config-service
     restart: always
 
-
   image-service:
     container_name: image-service
     build: image-service/
@@ -81,6 +81,19 @@ services:
     depends_on:
       - image-database
     restart: always
+
+  identity-provider:
+    container_name: identity-provider
+    build: identity-provider/
+    image: identity-provider
+    ports:
+      - "8075:8075"
+    depends_on:
+      - user-database
+      - user-service
+      - discovery-service
+      - config-service
+    restart: on-failure
 
   order-database:
     container_name: order-database

@@ -1,6 +1,7 @@
 package com.team.userservice.service.impl;
 
 import com.team.userservice.data.User;
+import com.team.userservice.exception.UserAlreadyExistsException;
 import com.team.userservice.exception.UserNotFoundException;
 import com.team.userservice.repository.UserRepository;
 import com.team.userservice.service.UserService;
@@ -31,8 +32,13 @@ public class CommonUserService implements UserService {
   }
 
   @Override
-  public void save(User user) {
-    userRepository.save(user);
+  public void create(User user) {
+    var email = user.getEmail();
+    if (userRepository.findByEmail(email).isEmpty()) {
+      userRepository.save(user);
+    } else {
+      throw new UserAlreadyExistsException("User with email " + email + " already exists");
+    }
   }
 
   @Override
@@ -43,6 +49,6 @@ public class CommonUserService implements UserService {
     } else if (!userRepository.existsById(userId)) {
       throw new UserNotFoundException("Cannot find user with id: " + userId);
     }
-    save(user);
+    create(user);
   }
 }

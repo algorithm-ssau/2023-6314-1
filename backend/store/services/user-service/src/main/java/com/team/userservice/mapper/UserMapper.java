@@ -12,14 +12,14 @@ import java.util.Locale;
 public enum UserMapper {;
   public enum Request {;
     @Component
-    public static class Common {
+    public static final class Common {
       public User toDomain(UserDto.Request.Common dto, String encodedPassword) {
         return new User(
           dto.getName(),
           dto.getEmail(),
           encodedPassword,
-          dto.getActive(),
-          Role.forValue("ROLE_" + dto.getRole().toValue().toUpperCase(Locale.ROOT))
+          Role.forValue("ROLE_" + dto.getRole().toValue().toUpperCase(Locale.ROOT)),
+          dto.getActive()
         );
       }
     }
@@ -27,14 +27,16 @@ public enum UserMapper {;
 
   public enum Response {;
     @Component
-    public static class Common {
+    public static final class Common {
       public UserDto.Response.Common toDto(User user) {
         return new UserDto.Response.Common(
           user.getId(),
           user.getName(),
           user.getEmail(),
-          user.isActive(),
-          RoleDto.forValue(user.getRole().getName().split("ROLE_")[1].toLowerCase())
+          user.getActive(),
+          RoleDto.forValue(user.getRole().getName().split("ROLE_")[1].toLowerCase()),
+          user.getCreated(),
+          user.getUpdated()
         );
       }
     }
@@ -42,14 +44,14 @@ public enum UserMapper {;
 
   public enum Startup {;
     @Component
-    public static class Common {
+    public static final class Common {
       public User toDomain(SetupUser setupUser, String encodedPassword) {
         return new User(
           setupUser.getName(),
           setupUser.getEmail(),
           encodedPassword,
-          setupUser.isActive(),
-          setupUser.getRole()
+          setupUser.getRole(),
+          setupUser.isActive()
         );
       }
     }

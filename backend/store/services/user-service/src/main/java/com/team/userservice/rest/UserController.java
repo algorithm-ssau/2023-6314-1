@@ -41,7 +41,7 @@ public class UserController {
   ) {
     var encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
     User user = commonRequestUserMapper.toDomain(userRequestDto, encodedPassword);
-    userService.save(user);
+    userService.create(user);
     return ResponseEntity.ok().build();
   }
 

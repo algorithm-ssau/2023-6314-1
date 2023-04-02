@@ -19,11 +19,13 @@ import static com.team.productservice.dto.ProductDto.*;
 @AllArgsConstructor
 @RequestMapping("/api/products/")
 public class ProductController {
+
   private final ProductService productService;
   private final ProductMapper.Request.Common reqCommonMapper;
   private final ProductMapper.Request.Create reqCreateMapper;
   private final ProductMapper.Response.Common respCommonMapper;
   private final ImageServiceClient imageServiceClient;
+
 
   @GetMapping
   public ResponseEntity<List<Response.Common>> getAll() {

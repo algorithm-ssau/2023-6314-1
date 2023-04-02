@@ -10,7 +10,7 @@ public enum OrderMapper {;
   public enum Request {;
     @Component
     @RequiredArgsConstructor
-    public static class Common {
+    public static final class Common {
       private final AddressMapper.Request.Common commonAddressMapper;
 
       public Order toDomain(OrderDto.Request.Common dto) {
@@ -27,7 +27,7 @@ public enum OrderMapper {;
   public enum Response {;
     @Component
     @RequiredArgsConstructor
-    public static class Common {
+    public static final class Common {
       private final AddressMapper.Response.Common commonAddressMapper;
 
       public OrderDto.Response.Common toDto(Order order) {
@@ -44,7 +44,7 @@ public enum OrderMapper {;
 
   public enum Startup {;
     @Component
-    public static class Common {
+    public static final class Common {
       public Order toDomain(SetupOrder setupOrder) {
         return new Order(
           setupOrder.getArrivalAddress(),
