@@ -1,4 +1,5 @@
 import {useState,useEffect} from "react" ;
+import {Link} from 'react-router-dom'
 import axios from "axios";
 import data from '../data';
 
@@ -32,13 +33,13 @@ const HomeScreen=()=>{
    <div className="products">
           {products.map((product) => (
             <div className="product" key={product.id}>
-              <a href={`/product/${product.id}`}>
+              <Link to={`/product/${product.id}`}>
                 <img src={data.products[product.id-1].image} alt={product.name} />
-              </a>
+              </Link>
               <div className="product-info">
-                <a href={`/product/${product.id}`}>
+                <Link to={`/product/${product.id}`}>
                   <p>{product.name}</p>
-                </a>
+                </Link>
                 <p>
                   <strong>${product.cost}</strong>
                 </p>
