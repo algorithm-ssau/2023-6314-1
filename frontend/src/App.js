@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 
 import HomeScreen from './screens/HomeScreen';
-
+import ProductScreen from './screens/ProductScreen';
 
 
 function App() {
@@ -17,9 +17,10 @@ function App() {
       </header>
       <main>
         <Routes>
+          <Route path='/product/:id'element={<ProductScreen/>}/>
           <Route path='/'element={<HomeScreen/>}/>
         </Routes>
-      <h1>Featured Products</h1>
+      
         
       </main>
     </div>

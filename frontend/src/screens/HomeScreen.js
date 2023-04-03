@@ -28,6 +28,7 @@ const HomeScreen=()=>{
    },[])  
    return(
    <>
+   <h1>Featured Products</h1>
    <div className="products">
           {products.map((product) => (
             <div className="product" key={product.id}>
