@@ -1,5 +1,6 @@
 import './App.css';
 import {useState,useEffect} from "react" ;
+import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import axios from "axios";
 import data from './data';
 
@@ -13,6 +14,7 @@ function _imageEncode (string) {
 function App() {
   const [products,setProducts]=useState([]);
   const [images,setImages]=useState([]);
+  
   useEffect(()=>{
     const fetchData=async()=>{
       const result = await axios.get('http://localhost:8001/api/products/')
@@ -26,6 +28,7 @@ function App() {
     fetchData();
     fetchImage();
   },[])  
+
   return (
     <div >
       <header>
