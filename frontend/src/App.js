@@ -3,6 +3,13 @@ import {useState,useEffect} from "react" ;
 import axios from "axios";
 import data from './data';
 
+function _imageEncode (string) {
+  var uint8array = new TextEncoder().encode(string);
+  let b64encoded = btoa([].reduce.call(new Uint8Array(uint8array),function(p,c){return p+String.fromCharCode(c)},''))
+  let mimetype="image/jpeg"
+  return "data:"+mimetype+";base64,"+b64encoded
+}
+
 function App() {
   const [products,setProducts]=useState([]);
   const [images,setImages]=useState([]);
@@ -13,8 +20,8 @@ function App() {
       console.log(result.data);       
     };
     const fetchImage=async()=>{
-      const result = await axios.get('http://localhost:8005/api/images/1');       
-      console.log(result.data);    
+      const result = await axios.get('http://localhost:8005/api/images/1'); 
+      setImages(_imageEncode(result.data.content)); 
     };    
     fetchData();
     fetchImage();
@@ -30,7 +37,7 @@ function App() {
           {products.map((product) => (
             <div className="product" key={product.id}>
               <a href={`/product/${product.id}`}>
-                <img src={images[product.id]} alt={product.name} />
+                <img src={data.products[product.id-1].image} alt={product.name} />
               </a>
               <div className="product-info">
                 <a href={`/product/${product.id}`}>
