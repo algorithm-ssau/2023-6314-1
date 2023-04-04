@@ -22,12 +22,12 @@ public class ImageServiceClient {
     this.base64ViewService = base64ViewService;
   }
 
-  public Long save(byte[] imageBytes) {
-    RequestBodyUriSpec bodyUriSpec = client.post();
-    RequestHeadersSpec<?> headersSpec = bodyUriSpec.uri("/api/images")
-      .body(BodyInserters.fromValue(imageBytes));
-    Mono<Long> idMono = headersSpec.retrieve().bodyToMono(Long.class);
-    return Objects.requireNonNull(idMono.block());
+  public Long save(String content) {
+    Long idMono = client.post()
+      .uri("/api/images")
+      .body(BodyInserters.fromValue(content))
+      .retrieve().bodyToMono(Long.class).block();
+    return Objects.requireNonNull(idMono);
   }
 
   public List<Long> saveAll(byte[][] contents) {
