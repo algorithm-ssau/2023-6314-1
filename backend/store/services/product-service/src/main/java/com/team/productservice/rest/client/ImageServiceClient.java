@@ -1,29 +1,25 @@
 package com.team.productservice.rest.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team.productservice.rest.client.dto.ImageRequestDto;
-import com.team.productservice.rest.client.dto.ImageResponseDto;
-import jakarta.validation.Valid;
+import com.team.productservice.startup.image.Base64ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.springframework.web.reactive.function.client.WebClient.*;
-
 @Component
 public class ImageServiceClient {
   private final WebClient client;
+  private final Base64ViewService base64ViewService;
 
   @Autowired
-  public ImageServiceClient(WebClient imageServiceWebClient) {
-    this.client = imageServiceWebClient;
+  public ImageServiceClient(WebClient client,
+                            Base64ViewService base64ViewService) {
+    this.client = client;
+    this.base64ViewService = base64ViewService;
   }
 
   public Long save(byte[] imageBytes) {
@@ -34,10 +30,10 @@ public class ImageServiceClient {
     return Objects.requireNonNull(idMono.block());
   }
 
-  public List<Long> saveAll(byte[][] imagesBytes) {
+  public List<Long> saveAll(byte[][] contents) {
     List<Long> imagesId = new ArrayList<>();
-    for (byte[] imageBytes : imagesBytes) {
-      imagesId.add(save(imageBytes));
+    for (byte[] content : contents) {
+      imagesId.add(save(base64ViewService.view(content)));
     }
     return imagesId;
   }
