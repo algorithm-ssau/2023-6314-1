@@ -1,5 +1,6 @@
-package com.team.productservice.startup.image;
+package com.team.productservice.service.impl;
 
+import com.team.productservice.service.api.ViewService;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.team.productservice.startup.image;
+package com.team.productservice.service.api;
 
 public interface ViewService<T> {
   T view(byte[] content);
