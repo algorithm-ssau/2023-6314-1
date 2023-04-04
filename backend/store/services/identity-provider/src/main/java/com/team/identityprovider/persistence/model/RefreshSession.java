@@ -34,6 +34,7 @@ public class RefreshSession {
   private Date expired;
 
   @NotBlank
+  @Column(columnDefinition = "text")
   private String refreshToken;
 
   public RefreshSession(
