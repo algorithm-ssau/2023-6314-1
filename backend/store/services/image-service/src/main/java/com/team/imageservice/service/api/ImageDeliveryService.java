@@ -1,4 +1,4 @@
-package com.team.imageservice.service;
+package com.team.imageservice.service.api;
 
 import com.team.imageservice.data.Image;
 

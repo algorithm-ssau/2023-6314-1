@@ -1,4 +1,4 @@
-package com.team.imageservice.service;
+package com.team.imageservice.service.impl;
 
 import com.team.imageservice.data.Image;
 import com.team.imageservice.exception.ImageNotFoundException;
