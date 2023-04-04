@@ -1,7 +1,5 @@
 package com.team.productservice.rest.client;
 
-import com.team.productservice.startup.image.Base64ViewService;
-import com.team.productservice.rest.client.dto.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -15,13 +13,10 @@ import java.util.Objects;
 @Component
 public class ImageServiceClient {
   private final WebClient client;
-  private final Base64ViewService base64ViewService;
 
   @Autowired
-  public ImageServiceClient(WebClient.Builder clientBuilder,
-                            Base64ViewService base64ViewService) {
+  public ImageServiceClient(WebClient.Builder clientBuilder) {
     this.client = clientBuilder.build();
-    this.base64ViewService = base64ViewService;
   }
 
   public String get(Long id) {
