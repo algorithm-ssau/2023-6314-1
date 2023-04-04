@@ -11,13 +11,13 @@ public enum ProductMapper {;
   public enum Request {;
     @Component
     public static final class Common {
-      public Product toDomain(ProductDto.Request.Common dto) {
+      public Product toDomain(ProductDto.Request.Common dto, List<Long> imagesId) {
         return new Product(
           dto.getName(),
           dto.getDescription(),
           dto.getCost(),
           dto.getCountInStock(),
-          dto.getImagesId()
+          imagesId
         );
       }
     }
@@ -39,14 +39,14 @@ public enum ProductMapper {;
   public enum Response {;
     @Component
     public static final class Common {
-      public ProductDto.Response.Common toDto(Product product) {
+      public ProductDto.Response.Common toDto(Product product, byte[][] imagesBytes) {
         return new ProductDto.Response.Common(
           product.getId(),
           product.getName(),
           product.getDescription(),
           product.getCost(),
           product.getCountInStock(),
-          product.getImageIds()
+          imagesBytes
         );
       }
     }

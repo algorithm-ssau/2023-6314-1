@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public enum ProductDto {;
   private interface Id { @NotNull Long getId(); }
@@ -17,17 +15,16 @@ public enum ProductDto {;
   private interface Description { @NotBlank String getDescription(); }
   private interface Cost { @Positive BigDecimal getCost(); }
   private interface CountInStock { @Positive Long getCountInStock(); }
-  private interface ImagesId { @Size(min = 1, max = 20) List<Long> getImagesId(); }
   private interface ImagesContent { @NotNull byte[][] getImagesContent(); }
 
   public enum Request {;
     @Value
-    public static class Common implements Name, Description, Cost, CountInStock, ImagesId {
+    public static class Common implements Name, Description, Cost, CountInStock, ImagesContent {
       String name;
       String description;
       BigDecimal cost;
       Long countInStock;
-      List<Long> imagesId;
+      byte[][] imagesContent;
 
       @JsonCreator
       public Common(
@@ -35,13 +32,13 @@ public enum ProductDto {;
         @JsonProperty("description") String description,
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
-        @JsonProperty("imagesId") List<Long> imagesId
+        @JsonProperty("imagesContent") byte[][] imagesContent
       ) {
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.countInStock = countInStock;
-        this.imagesId = imagesId;
+        this.imagesContent = imagesContent;
       }
     }
 
@@ -72,13 +69,13 @@ public enum ProductDto {;
 
   public enum Response {;
     @Value
-    public static class Common implements Id, Name, Description, Cost, CountInStock, ImagesId {
+    public static class Common implements Id, Name, Description, Cost, CountInStock, ImagesContent {
       Long id;
       String name;
       String description;
       BigDecimal cost;
       Long countInStock;
-      List<Long> imagesId;
+      byte[][] imagesContent;
 
       @JsonCreator
       public Common(
@@ -87,14 +84,14 @@ public enum ProductDto {;
         @JsonProperty("description") String description,
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
-        @JsonProperty("imagesId") List<Long> imagesId
+        @JsonProperty("imagesContent") byte[][] imagesContent
       ) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.countInStock = countInStock;
-        this.imagesId = imagesId;
+        this.imagesContent = imagesContent;
       }
     }
   }
