@@ -47,10 +47,10 @@ public class ImageServiceClient {
     return imageContents;
   }
 
-  public List<Long> saveAll(byte[][] contents) {
+  public List<Long> saveAll(List<String> contents) {
     List<Long> imagesId = new ArrayList<>();
-    for (byte[] content : contents) {
-      imagesId.add(save(base64ViewService.view(content)));
+    for (String content : contents) {
+      imagesId.add(save(content));
     }
     return imagesId;
   }

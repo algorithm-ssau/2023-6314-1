@@ -1,7 +1,6 @@
 package com.team.imageservice.rest;
 
 import com.team.imageservice.data.Image;
-import com.team.imageservice.mapper.ImageMapper;
 import com.team.imageservice.service.api.ImageDeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,13 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ImageController {
   private final ImageDeliveryService imageDeliveryService;
-  private final ImageMapper.Response.Common commonImageResponseMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody String get(@PathVariable Long id) {
     Image presentImage = imageDeliveryService.getById(id);
-    var commonImageResponse = commonImageResponseMapper.toDto(presentImage);
-    return commonImageResponse.getContent();
+    return presentImage.getContent();
   }
 
   @PostMapping
