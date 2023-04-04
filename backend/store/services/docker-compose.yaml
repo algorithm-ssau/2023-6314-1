@@ -31,7 +31,6 @@ services:
       - product-service
       - user-service
       - order-service
-      - python-service
       - identity-provider
     restart: always
 
@@ -143,12 +142,12 @@ services:
       - product-database-volume:/var/lib/postgresql/data
     restart: always
 
-  python-service:
-    container_name: python-service
-    build: python-service/
-    ports:
-      - "8004:8004"
-    restart: always
+#  python-service:
+#    container_name: python-service
+#    build: python-service/
+#    ports:
+#      - "8004:8004"
+#    restart: always
 
 volumes:
   product-database-volume:
