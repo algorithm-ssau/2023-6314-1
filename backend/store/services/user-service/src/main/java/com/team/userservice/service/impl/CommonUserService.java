@@ -49,6 +49,6 @@ public class CommonUserService implements UserService {
     } else if (!userRepository.existsById(userId)) {
       throw new UserNotFoundException("Cannot find user with id: " + userId);
     }
-    create(user);
+    userRepository.save(user);
   }
 }
