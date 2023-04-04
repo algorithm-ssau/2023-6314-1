@@ -5,8 +5,9 @@ import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.rest.client.ImageServiceClient;
 import com.team.productservice.rest.client.dto.ImageDto;
 import com.team.productservice.service.api.ProductService;
+import com.team.productservice.service.impl.Base64ViewService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +18,29 @@ import static com.team.productservice.dto.ProductDto.Request;
 import static com.team.productservice.dto.ProductDto.Response;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/products")
 public class ProductController {
   private final ProductService productService;
-  private final ProductMapper.Request.Common reqCommonMapper;
   private final ProductMapper.Request.Create reqCreateMapper;
+  private final ProductMapper.Request.Update reqUpdateMapper;
   private final ProductMapper.Response.Common respCommonMapper;
   private final ImageServiceClient imageServiceClient;
+  private final Base64ViewService base64ViewService;
+
+  @Autowired
+  public ProductController(ProductService productService,
+                           ProductMapper.Request.Create reqCreateMapper,
+                           ProductMapper.Response.Common respCommonMapper,
+                           ProductMapper.Request.Update reqUpdateMapper,
+                           ImageServiceClient imageServiceClient,
+                           Base64ViewService base64ViewService) {
+    this.productService = productService;
+    this.reqCreateMapper = reqCreateMapper;
+    this.respCommonMapper = respCommonMapper;
+    this.reqUpdateMapper = reqUpdateMapper;
+    this.imageServiceClient = imageServiceClient;
+    this.base64ViewService = base64ViewService;
+  }
 
   @GetMapping
   public ResponseEntity<List<Response.Common>> getAll() {
