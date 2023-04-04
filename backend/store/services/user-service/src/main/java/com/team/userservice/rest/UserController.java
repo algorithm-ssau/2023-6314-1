@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users/")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
@@ -29,7 +29,7 @@ public class UserController {
     return ResponseEntity.ok().body(userResponseDtos);
   }
 
-  @GetMapping("{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<UserDto.Response.Common> get(@PathVariable Long id) {
     var userResponseDto = commonResponseUserMapper.toDto(userService.findById(id));
     return ResponseEntity.ok().body(userResponseDto);
@@ -45,7 +45,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<UserDto.Response.Common> update(
     @PathVariable Long id,
     @Valid @RequestBody UserDto.Request.Common userRequestDto
@@ -57,7 +57,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
-  @DeleteMapping("{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<UserDto.Response.Common> delete(@PathVariable Long id) {
     userService.deleteById(id);
     return ResponseEntity.ok().build();
