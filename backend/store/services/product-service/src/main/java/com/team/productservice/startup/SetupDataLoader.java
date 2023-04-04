@@ -4,6 +4,7 @@ import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.repository.ProductRepository;
 import com.team.productservice.rest.client.ImageServiceClient;
+import com.team.productservice.rest.client.dto.ImageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
