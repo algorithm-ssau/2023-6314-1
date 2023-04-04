@@ -20,4 +20,9 @@ public class CommonImageDeliveryService implements ImageDeliveryService {
     imageRepository.save(image);
     return image.getId();
   }
+
+  @Override
+  public void delete(Long id) {
+    imageRepository.deleteById(id);
+  }
 }

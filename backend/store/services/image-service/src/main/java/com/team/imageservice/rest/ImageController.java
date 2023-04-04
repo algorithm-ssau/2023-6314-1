@@ -38,4 +38,10 @@ public class ImageController {
     Long indexOfSavedImage = imageDeliveryService.save(image);
     return ResponseEntity.ok().body(indexOfSavedImage);
   }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable Long id) {
+    imageDeliveryService.delete(id);
+    return ResponseEntity.ok().build();
+  }
 }
