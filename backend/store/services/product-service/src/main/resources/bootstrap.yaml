@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: product-service
+
+  cloud:
+    config:
+      uri: http://config-service:8888
+      fail-fast: true
+      username: admin
+      password: admin
+
+jwt:
+  token:
+    access:
+      header: Authorization
+      secret: "2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w9z$C&F)J@NcRfUjXn2r5u8x!A%D*G-KaPd"
+      expired: 900000
