@@ -38,7 +38,7 @@ public class SetupDataLoader {
   }
 
   @EventListener(ContextRefreshedEvent.class)
-  public void onApplicationEvent(ContextRefreshedEvent event) {
+  public void onApplicationEvent() {
     if (!firstCall) {
       firstCall = true;
       setup();
