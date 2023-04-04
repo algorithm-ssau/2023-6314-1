@@ -4,19 +4,14 @@ import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.repository.ProductRepository;
 import com.team.productservice.rest.client.ImageServiceClient;
-import com.team.productservice.rest.client.dto.ImageRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
