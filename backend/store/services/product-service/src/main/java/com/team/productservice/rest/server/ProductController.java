@@ -17,7 +17,7 @@ import static com.team.productservice.dto.ProductDto.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/products/")
+@RequestMapping("/api/products")
 public class ProductController {
 
   private final ProductService productService;
@@ -35,7 +35,7 @@ public class ProductController {
     return ResponseEntity.ok().body(responses);
   }
 
-  @GetMapping("{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
     var common = respCommonMapper.toDto(product);
@@ -53,7 +53,7 @@ public class ProductController {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<Response.Common> update(
     @PathVariable Long id,
     @Valid @RequestBody Request.Common productRequestDto
@@ -64,7 +64,7 @@ public class ProductController {
     return ResponseEntity.ok().build();
   }
 
-  @DeleteMapping("{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Response.Common> delete(@PathVariable Long id) {
     productService.deleteById(id);
     return ResponseEntity.ok().build();

@@ -78,6 +78,8 @@ services:
     ports:
       - "8005:8005"
     depends_on:
+      - config-service
+      - discovery-service
       - image-database
     restart: always
 

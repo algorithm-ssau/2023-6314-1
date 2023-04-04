@@ -12,27 +12,6 @@ import org.springframework.web.cors.CorsConfiguration;
 @Configuration
 @ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class SecurityConfig {
-//  private final AccessTokenFilter accessTokenFilter;
-//
-//  public SecurityConfig(JwtSecurityProvider jwtSecurityProvider) {
-//    this.accessTokenFilter = new AccessTokenFilter(jwtSecurityProvider);
-//  }
-
-//  @Bean
-//  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//    return httpSecurity
-//      .csrf().disable()
-//      .cors().disable()
-//      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//      .and()
-//      .authorizeHttpRequests(matcherRegistry -> matcherRegistry
-//        .requestMatchers(HttpMethod.GET, "/api/images/{id}").permitAll()
-//        .requestMatchers(HttpMethod.POST, "/api/images/").hasRole("ADMIN")
-//        .anyRequest().authenticated())
-//      .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
-//      .build();
-//  }
-
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
