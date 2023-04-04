@@ -12,12 +12,10 @@ import java.util.List;
 @Component
 public class ImageServiceClient {
   private final WebClient client;
-  private final ObjectMapper objectMapper;
 
   @Autowired
-  public ImageServiceClient(WebClient imageServiceWebClient, ObjectMapper objectMapper) {
-    this.client = imageServiceWebClient;
-    this.objectMapper = objectMapper;
+  public ImageServiceClient(WebClient.Builder clientBuilder) {
+    this.client = clientBuilder.build();
   }
 
   public ImageDto.Response.Common get(Long id) {
@@ -51,11 +49,12 @@ public class ImageServiceClient {
     return imagesId;
   }
 
-  private ImageResponseDto parseImageResponseDto(String response) {
-    try {
-      return objectMapper.readValue(response.getBytes(), ImageResponseDto.class);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+  public void deletePack(List<Long> ids) {
+    for (Long id : ids) {
+      client.delete()
+        .uri("/api/images/" + id)
+        .retrieve().toBodilessEntity()
+        .block();
     }
   }
 }
