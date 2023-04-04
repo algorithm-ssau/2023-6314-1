@@ -76,6 +76,8 @@ services:
     build: image-service/
     image: image-service
     depends_on:
+      - config-service
+      - discovery-service
       - image-database
     restart: always
 
