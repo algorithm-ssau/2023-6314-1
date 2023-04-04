@@ -3,7 +3,6 @@ package com.team.productservice.rest.server;
 import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.rest.client.ImageServiceClient;
-import com.team.productservice.rest.client.dto.ImageDto;
 import com.team.productservice.service.api.ProductService;
 import com.team.productservice.service.impl.Base64ViewService;
 import jakarta.validation.Valid;
@@ -45,7 +44,7 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<List<Response.Common>> getAll() {
     var responses = productService.getAll().stream()
-      .map(product -> respCommonMapper.toDto(product, toBytesImagesDto(product)))
+      .map(product -> respCommonMapper.toDto(product, obtainContents(product)))
       .toList();
     return ResponseEntity.ok().body(responses);
   }
@@ -58,13 +57,15 @@ public class ProductController {
   }
 
   private List<String> obtainContents(Product product) {
-    List<String> contents = imageServiceClient.getAll(product.getImageIds());
-    return contents;
+    return imageServiceClient.getAll(product.getImageIds());
   }
 
   @PostMapping
   public ResponseEntity<Response.Common> create(@Valid @RequestBody Request.Create dto) {
-    List<Long> imagesId = imageServiceClient.saveAll(dto.getImagesContent());
+    List<String> imagesContent = Arrays.stream(dto.getImagesBytes())
+      .map(base64ViewService::view)
+      .toList();
+    List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
     Product product = reqCreateMapper.toDomain(dto, imagesId);
     productService.save(product);
     return ResponseEntity.ok().build();
@@ -72,12 +73,15 @@ public class ProductController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Response.Common> update(@PathVariable Long id,
-                                                @Valid @RequestBody Request.Common dto) {
+                                                @Valid @RequestBody Request.Update dto) {
     Product product = productService.getById(id);
     imageServiceClient.deletePack(product.getImageIds());
 
-    List<Long> imagesId = imageServiceClient.saveAll(dto.getImagesContent());
-    product = reqCommonMapper.toDomain(dto, imagesId);
+    List<String> imagesContent = Arrays.stream(dto.getImagesBytes())
+      .map(base64ViewService::view)
+      .toList();
+    List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
+    product = reqUpdateMapper.toDomain(dto, imagesId);
     product.setId(id);
 
     productService.update(product);
