@@ -1,7 +1,6 @@
 package com.team.jwtspringbootstarter.jwt.authentication;
 
 import com.team.jwtspringbootstarter.jwt.exception.JwtAuthenticationException;
-import com.team.jwtspringbootstarter.jwt.exception.TokenResolvingException;
 import com.team.jwtspringbootstarter.jwt.properties.TokenPropertiesExtractor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -19,7 +18,7 @@ import java.util.*;
 
 @Slf4j
 public class JwtSecurityProvider {
-  private static final String BEARER_PREFIX = "Bearer_";
+  private static final String BEARER_PREFIX = "Bearer ";
   private final TokenPropertiesExtractor.TokenData accessTokenData;
 
   @Autowired
@@ -68,5 +67,4 @@ public class JwtSecurityProvider {
       .parseClaimsJws(token)
       .getBody();
   }
-
 }
