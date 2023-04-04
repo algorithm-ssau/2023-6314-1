@@ -15,4 +15,9 @@
     <name>jwt-spring-boot-starter</name>
     <description>jwt-spring-boot-starter</description>
 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+    </properties>
 </project>
