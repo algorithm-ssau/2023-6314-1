@@ -1,61 +1,60 @@
 package com.team.productservice.rest.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team.productservice.rest.client.dto.ImageRequestDto;
-import com.team.productservice.rest.client.dto.ImageResponseDto;
-import jakarta.validation.Valid;
+import com.team.productservice.rest.client.dto.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static org.springframework.web.reactive.function.client.WebClient.*;
 
 @Component
 public class ImageServiceClient {
   private final WebClient client;
-  private final ObjectMapper objectMapper;
 
   @Autowired
-  public ImageServiceClient(WebClient imageServiceWebClient, ObjectMapper objectMapper) {
-    this.client = imageServiceWebClient;
-    this.objectMapper = objectMapper;
+  public ImageServiceClient(WebClient.Builder clientBuilder) {
+    this.client = clientBuilder.build();
   }
 
-  public ImageResponseDto get(Long id) {
-    RequestHeadersUriSpec<?> requestHeadersUriSpec = client.get();
-    RequestHeadersSpec<?> headersSpec = requestHeadersUriSpec.uri("/api/images/" + id);
-    String response = headersSpec.retrieve().bodyToMono(String.class).block();
-    return parseImageResponseDto(Objects.requireNonNull(response));
+  public ImageDto.Response.Common get(Long id) {
+    return client.get()
+      .uri("/api/images/" + id)
+      .retrieve().bodyToMono(ImageDto.Response.Common.class)
+      .block();
   }
 
-  public Long save(@Valid ImageRequestDto dto) {
-    RequestBodyUriSpec bodyUriSpec = client.post();
-    RequestHeadersSpec<?> headersSpec = bodyUriSpec.uri("/api/images")
-      .body(BodyInserters.fromValue(dto));
-    Mono<Long> idMono = headersSpec.retrieve().bodyToMono(Long.class);
-    return Objects.requireNonNull(idMono.block());
+  public List<ImageDto.Response.Common> getAll(List<Long> ids) {
+    List<ImageDto.Response.Common> commonDtoRequests = new ArrayList<>();
+    for (Long id : ids) {
+      commonDtoRequests.add(get(id));
+    }
+    return commonDtoRequests;
   }
 
-  public List<Long> saveAll(List<ImageRequestDto> imagesRequestDto) {
+  public Long save(ImageDto.Request.Common commonDtoRequest) {
+    return client.post()
+      .uri("/api/images")
+      .body(BodyInserters.fromValue(commonDtoRequest))
+      .retrieve().bodyToMono(Long.class)
+      .block();
+  }
+
+  public List<Long> saveAll(List<ImageDto.Request.Common> commonDtoRequests) {
     List<Long> imagesId = new ArrayList<>();
-    for (ImageRequestDto imageRequestDto : imagesRequestDto) {
-      imagesId.add(save(imageRequestDto));
+    for (ImageDto.Request.Common commonRequest : commonDtoRequests) {
+      imagesId.add(save(commonRequest));
     }
     return imagesId;
   }
 
-  private ImageResponseDto parseImageResponseDto(String response) {
-    try {
-      return objectMapper.readValue(response.getBytes(), ImageResponseDto.class);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+  public void deletePack(List<Long> ids) {
+    for (Long id : ids) {
+      client.delete()
+        .uri("/api/images/" + id)
+        .retrieve().toBodilessEntity()
+        .block();
     }
   }
 }

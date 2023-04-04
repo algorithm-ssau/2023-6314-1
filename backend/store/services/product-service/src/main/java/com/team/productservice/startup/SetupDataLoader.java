@@ -4,7 +4,7 @@ import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.repository.ProductRepository;
 import com.team.productservice.rest.client.ImageServiceClient;
-import com.team.productservice.rest.client.dto.ImageRequestDto;
+import com.team.productservice.rest.client.dto.ImageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -41,8 +41,8 @@ public class SetupDataLoader {
     if (productRepository.count() == 0) {
       for (SetupProduct setupProduct : SetupProduct.values()) {
         byte[][] allFilesBytes = readAllFilesBytes(setupProduct.getImagePaths());
-        List<ImageRequestDto> imageRequestDtos = Arrays.stream(allFilesBytes)
-          .map(ImageRequestDto::new)
+        List<ImageDto.Request.Common> imageRequestDtos = Arrays.stream(allFilesBytes)
+          .map(ImageDto.Request.Common::new)
           .toList();
         List<Long> imagesId = imageServiceClient.saveAll(imageRequestDtos);
         Product product = setupProductMapper.toDomain(setupProduct, imagesId);

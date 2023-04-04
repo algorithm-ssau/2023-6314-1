@@ -1,4 +1,4 @@
-package com.team.imageservice.dto;
+package com.team.productservice.rest.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,3 +38,4 @@ public enum ImageDto {;
     }
   }
 }
+
