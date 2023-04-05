@@ -1,40 +1,27 @@
 package com.team.imageservice.rest;
 
 import com.team.imageservice.data.Image;
-import com.team.imageservice.dto.ImageDto;
-import com.team.imageservice.mapper.ImageMapper;
-import com.team.imageservice.service.ImageDeliveryService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.team.imageservice.service.api.ImageDeliveryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/images")
+@RequiredArgsConstructor
 public class ImageController {
   private final ImageDeliveryService imageDeliveryService;
-  private final ImageMapper.Request.Common commonImageRequestMapper;
-  private final ImageMapper.Response.Common commonImageResponseMapper;
 
-  @Autowired
-  public ImageController(ImageDeliveryService imageDeliveryService,
-                         ImageMapper.Request.Common commonImageRequestMapper,
-                         ImageMapper.Response.Common commonImageResponseMapper) {
-    this.imageDeliveryService = imageDeliveryService;
-    this.commonImageRequestMapper = commonImageRequestMapper;
-    this.commonImageResponseMapper = commonImageResponseMapper;
-  }
-
-  @GetMapping("/{id}")
-  public ResponseEntity<ImageDto.Response.Common> get(@PathVariable Long id) {
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody String get(@PathVariable Long id) {
     Image presentImage = imageDeliveryService.getById(id);
-    var commonImageResponse = commonImageResponseMapper.toDto(presentImage);
-    return ResponseEntity.ok().body(commonImageResponse);
+    return presentImage.getContent();
   }
 
   @PostMapping
-  public ResponseEntity<Long> save(@Valid @RequestBody ImageDto.Request.Common imageRequestDto) {
-    var image = commonImageRequestMapper.toDomain(imageRequestDto);
+  public ResponseEntity<Long> save(@RequestBody String content) {
+    var image = new Image(content);
     Long indexOfSavedImage = imageDeliveryService.save(image);
     return ResponseEntity.ok().body(indexOfSavedImage);
   }
