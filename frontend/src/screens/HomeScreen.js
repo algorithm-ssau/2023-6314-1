@@ -19,13 +19,8 @@ const HomeScreen=()=>{
       const result = await axios.get('http://localhost:8001/api/products/')
       setProducts(result.data);  
       console.log(result.data);       
-    };
-    const fetchImage=async()=>{
-      const result = await axios.get('http://localhost:8005/api/images/1'); 
-      setImages(_imageEncode(result.data.content)); 
     };    
-    fetchData();
-    fetchImage();
+    fetchData();    
    },[])  
    return(
    <>
@@ -34,7 +29,7 @@ const HomeScreen=()=>{
           {products.map((product) => (
             <div className="product" key={product.id}>
               <Link to={`/product/${product.id}`}>
-                <img src={data.products[product.id-1].image} alt={product.name} />
+                <img src={product.imagesContent[0]} alt={product.name} />
               </Link>
               <div className="product-info">
                 <Link to={`/product/${product.id}`}>
