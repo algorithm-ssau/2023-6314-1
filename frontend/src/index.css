@@ -29,6 +29,11 @@ main {
 .product {
   border: 1px #404040 solid;
   margin: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 1),-23px 0 20px -23px rgba(0, 0, 0, .8),23px 0 20px -23px rgba(0, 0, 0, .8),
+   0 0 40px rgba(0, 0, 0, .1) inset;
+   border-radius:0 0 10px 10px;
+   background: rgb(55,110,172);
+   background: linear-gradient(90deg, rgba(55,110,172,1) 60%, rgba(0,212,255,1) 100%);
 }
 .product img {
   width: 100%;
