@@ -2,9 +2,9 @@ package com.team.identityprovider.rest.controller;
 
 import com.team.identityprovider.rest.dto.AuthenticationDto;
 import com.team.identityprovider.rest.dto.RequestMetadata;
-import com.team.identityprovider.service.api.AuthenticationService;
-import com.team.identityprovider.service.api.RefreshSessionService;
-import com.team.identityprovider.service.api.TokenService;
+import com.team.identityprovider.service.contract.AuthenticationService;
+import com.team.identityprovider.service.contract.RefreshSessionService;
+import com.team.identityprovider.service.contract.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

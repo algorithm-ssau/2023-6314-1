@@ -1,4 +1,4 @@
-package com.team.notificationservice.mapper;
+package com.team.notificationservice.message.mapper;
 
 import com.team.notificationservice.dto.ActivationDto;
 import org.springframework.beans.factory.annotation.Value;

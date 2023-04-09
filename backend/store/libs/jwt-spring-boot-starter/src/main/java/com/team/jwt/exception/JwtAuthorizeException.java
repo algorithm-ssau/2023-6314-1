@@ -1,4 +1,4 @@
-package com.team.jwtspringbootstarter.jwt.exception;
+package com.team.jwt.exception;
 
 public class JwtAuthorizeException extends RuntimeException {
   public JwtAuthorizeException() {

@@ -1,6 +1,6 @@
 package com.team.notificationservice.service.impl;
 
-import com.team.notificationservice.service.api.AbstractMailSendingService;
+import com.team.notificationservice.service.contract.AbstractMailSendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;

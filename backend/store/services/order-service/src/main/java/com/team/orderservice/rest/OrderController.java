@@ -4,7 +4,7 @@ import com.team.orderservice.data.Order;
 import com.team.orderservice.dto.OrderDto;
 import com.team.orderservice.dto.SummaryDto;
 import com.team.orderservice.mapper.OrderMapper;
-import com.team.orderservice.service.OrderService;
+import com.team.orderservice.service.contract.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

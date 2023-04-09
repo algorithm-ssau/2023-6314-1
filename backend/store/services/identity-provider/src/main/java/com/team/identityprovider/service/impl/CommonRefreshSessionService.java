@@ -2,7 +2,7 @@ package com.team.identityprovider.service.impl;
 
 import com.team.identityprovider.persistence.model.RefreshSession;
 import com.team.identityprovider.persistence.repository.RefreshSessionRepository;
-import com.team.identityprovider.service.api.RefreshSessionService;
+import com.team.identityprovider.service.contract.RefreshSessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.team.identityprovider.security.jwt.builder.api;
 
-import com.team.identityprovider.service.api.TokenService;
+import com.team.identityprovider.service.contract.TokenService;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.GrantedAuthority;
 

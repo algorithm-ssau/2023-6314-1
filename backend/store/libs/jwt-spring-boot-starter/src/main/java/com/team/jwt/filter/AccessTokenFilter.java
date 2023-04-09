@@ -1,6 +1,6 @@
-package com.team.jwtspringbootstarter.jwt.filter;
+package com.team.jwt.filter;
 
-import com.team.jwtspringbootstarter.jwt.authentication.JwtSecurityProvider;
+import com.team.jwt.authentication.JwtSecurityProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

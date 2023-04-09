@@ -1,7 +1,7 @@
 package com.team.identityprovider.service.impl;
 
 import com.team.identityprovider.security.details.ProjectionUserDetails;
-import com.team.identityprovider.service.api.AuthenticationService;
+import com.team.identityprovider.service.contract.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

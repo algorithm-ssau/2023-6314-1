@@ -3,11 +3,12 @@ package com.team.identityprovider.security.jwt.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.identityprovider.security.jwt.authentication.JwtSecurityProvider;
 import com.team.identityprovider.security.jwt.exception.JwtAuthenticationException;
-import com.team.identityprovider.service.api.RefreshSessionService;
+import com.team.identityprovider.service.contract.RefreshSessionService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
   }
 
   @Override
-  public void doFilterInternal(HttpServletRequest request,
-                               HttpServletResponse response,
-                               FilterChain chain) throws IOException, ServletException {
+  public void doFilterInternal(@NonNull HttpServletRequest request,
+                               @NonNull HttpServletResponse response,
+                               @NonNull FilterChain chain) throws IOException, ServletException {
     try {
       var resolvedToken = jwtSecurityProvider.resolveRefreshToken(request);
       var validToken = requiredValidToken(resolvedToken);

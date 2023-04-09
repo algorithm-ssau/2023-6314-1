@@ -1,7 +1,7 @@
 package com.team.userservice.security.config;
 
-import com.team.jwtspringbootstarter.jwt.authentication.JwtSecurityProvider;
-import com.team.jwtspringbootstarter.jwt.filter.AccessTokenFilter;
+import com.team.jwt.authentication.JwtSecurityProvider;
+import com.team.jwt.filter.AccessTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.team.jwtspringbootstarter.jwt.config")
+@ComponentScan("com.team.jwt.config")
 public class SecurityConfiguration {
   private final AccessTokenFilter accessTokenFilter;
 

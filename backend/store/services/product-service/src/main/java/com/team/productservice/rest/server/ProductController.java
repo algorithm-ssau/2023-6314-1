@@ -3,7 +3,7 @@ package com.team.productservice.rest.server;
 import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.rest.client.ImageServiceClient;
-import com.team.productservice.service.api.ProductService;
+import com.team.productservice.service.contract.ProductService;
 import com.team.productservice.service.impl.Base64ViewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

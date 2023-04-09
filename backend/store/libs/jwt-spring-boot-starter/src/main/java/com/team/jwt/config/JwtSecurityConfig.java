@@ -1,7 +1,7 @@
-package com.team.jwtspringbootstarter.jwt.config;
+package com.team.jwt.config;
 
-import com.team.jwtspringbootstarter.jwt.authentication.JwtSecurityProvider;
-import com.team.jwtspringbootstarter.jwt.properties.TokenPropertiesExtractor;
+import com.team.jwt.authentication.JwtSecurityProvider;
+import com.team.jwt.properties.TokenPropertiesExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

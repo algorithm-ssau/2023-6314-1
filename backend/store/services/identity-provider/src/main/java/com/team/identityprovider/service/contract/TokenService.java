@@ -1,4 +1,4 @@
-package com.team.identityprovider.service.api;
+package com.team.identityprovider.service.contract;
 
 import com.team.identityprovider.rest.dto.RequestMetadata;
 import com.team.identityprovider.security.details.ProjectionUserDetails;

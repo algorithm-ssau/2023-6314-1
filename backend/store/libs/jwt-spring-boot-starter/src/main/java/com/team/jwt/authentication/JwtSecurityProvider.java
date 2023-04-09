@@ -1,7 +1,7 @@
-package com.team.jwtspringbootstarter.jwt.authentication;
+package com.team.jwt.authentication;
 
-import com.team.jwtspringbootstarter.jwt.exception.JwtAuthenticationException;
-import com.team.jwtspringbootstarter.jwt.properties.TokenPropertiesExtractor;
+import com.team.jwt.exception.JwtAuthenticationException;
+import com.team.jwt.properties.TokenPropertiesExtractor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

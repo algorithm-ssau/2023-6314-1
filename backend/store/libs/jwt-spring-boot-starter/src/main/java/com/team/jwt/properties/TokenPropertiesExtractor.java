@@ -1,4 +1,4 @@
-package com.team.jwtspringbootstarter.jwt.properties;
+package com.team.jwt.properties;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;

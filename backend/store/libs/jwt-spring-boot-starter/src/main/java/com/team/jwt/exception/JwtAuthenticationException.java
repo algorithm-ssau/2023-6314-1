@@ -1,4 +1,4 @@
-package com.team.jwtspringbootstarter.jwt.exception;
+package com.team.jwt.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
