@@ -5,12 +5,14 @@ LRed='\033[1;31m'
 
 #Docker clean-------------------------------------------------------------------------
 echo -e "\n-------- ${BIGreen}DOCKER: force killing all containers exclude databases${NC} --------\n"
-# shellcheck disable=SC2046
-docker rm -f $(docker container ls -a | grep -v "image-database" | grep -v "order-database" | grep -v "product-database" | grep -v "user-database" | awk 'NR>1 {print $1}')
+#docker rm -f $(docker container ls -a | grep -v "image-database" | grep -v "order-database" | grep -v "product-database" | grep -v "user-database" | awk 'NR>1 {print $1}')
+docker rm -f $(docker container ls -a | grep -v "kafka" | grep -v "kafdrop" | grep -v "zookeeper" | awk 'NR>1 {print $1}')
 
 echo -e "\n-------- ${BIGreen}DOCKER: removing all images exclude postgres${NC} --------\n"
-# shellcheck disable=SC2046
-docker rmi $(docker images | grep -v "postgres" | awk 'NR>1 {print $1}')
+docker rmi -f $(docker images | grep -v "postgres" | awk 'NR>1 {print $1}')
+
+echo -e "\n-------- ${BIGreen}DOCKER: removing all volumes${NC} --------\n"
+docker volume rm $(docker volume ls -qf dangling=true)
 
 #Maven offline build------------------------------------------------------------------
 echo -e "\n-------- ${BIGreen}MAVEN: start offline clean package${NC} --------\n"
@@ -29,6 +31,5 @@ fi
 
 #Docker compose up
 echo -e "\n-------- ${BIGreen}DOCKER: docker-compose up${NC} --------\n"
-# shellcheck disable=SC2164
 cd ./services/
-docker-compose up -d --build
+docker-compose up
