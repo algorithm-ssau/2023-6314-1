@@ -4,14 +4,16 @@ import com.team.userservice.data.User;
 import com.team.userservice.exception.UserAlreadyExistsException;
 import com.team.userservice.exception.UserNotFoundException;
 import com.team.userservice.repository.UserRepository;
-import com.team.userservice.service.UserService;
+import com.team.userservice.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommonUserService implements UserService {
   private final UserRepository userRepository;
 
@@ -24,6 +26,12 @@ public class CommonUserService implements UserService {
   public User findById(Long id) {
     return userRepository.findById(id)
       .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
+  }
+
+  @Override
+  public User findByEmail(String email) {
+    return userRepository.findByEmail(email).orElseThrow(
+      () -> new UserNotFoundException("User with email" + email + "not found"));
   }
 
   @Override
@@ -50,5 +58,12 @@ public class CommonUserService implements UserService {
       throw new UserNotFoundException("Cannot find user with id: " + userId);
     }
     userRepository.save(user);
+  }
+
+  @Override
+  public void activate(String email) {
+    User user = findByEmail(email);
+    user.setActive(true);
+    update(user);
   }
 }
