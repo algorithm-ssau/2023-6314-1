@@ -7,7 +7,6 @@ import lombok.Value;
 
 import java.time.OffsetDateTime;
 
-
 public enum UserDto {;
   private interface Id { @NotNull Long getId(); }
   private interface Name { @NotBlank String getName(); }
@@ -17,12 +16,11 @@ public enum UserDto {;
   private interface Role { @NotNull RoleDto getRole(); }
   private interface CreatedDateTime { @PastOrPresent OffsetDateTime getCreatedDateTime(); }
   private interface UpdatedDateTime { @PastOrPresent OffsetDateTime getUpdatedDateTime(); }
+  private interface ActivationLink { @NotBlank String getActivationLink(); }
 
   public enum Request {;
     @Value
-    public static class Common implements
-      Name, EmailAddress, Password, Active, Role
-    {
+    public static class Common implements Name, EmailAddress, Password, Active, Role {
       String name;
       String email;
       String password;
@@ -39,7 +37,7 @@ public enum UserDto {;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.active = true;
+        this.active = false;
         this.role = role;
       }
     }
@@ -47,9 +45,7 @@ public enum UserDto {;
 
   public enum Response {;
     @Value
-    public static class Common implements
-      Id, Name, EmailAddress, Active, Role, CreatedDateTime, UpdatedDateTime
-    {
+    public static class Common implements Id, Name, EmailAddress, Active, Role, CreatedDateTime, UpdatedDateTime {
       Long id;
       String name;
       String email;
@@ -79,23 +75,23 @@ public enum UserDto {;
     }
 
     @Value
-    public static class Activation implements Id, Active, EmailAddress, CreatedDateTime {
-      Long id;
-      Boolean active;
+    public static class Activation implements Name, EmailAddress, CreatedDateTime, ActivationLink {
+      String name;
       String email;
       OffsetDateTime createdDateTime;
+      String activationLink;
 
       @JsonCreator
       public Activation(
-        @JsonProperty("id") Long id,
+        @JsonProperty("name") String name,
         @JsonProperty("email") String email,
-        @JsonProperty("active") Boolean active,
-        @JsonProperty("createdDateTime") OffsetDateTime createdDateTime
+        @JsonProperty("createdDateTime") OffsetDateTime createdDateTime,
+        @JsonProperty("activationLink") String activationLink
       ) {
-        this.id = id;
-        this.active = active;
-        this.email = email;
+        this.name = name;
         this.createdDateTime = createdDateTime;
+        this.activationLink = activationLink;
+        this.email = email;
       }
     }
   }
