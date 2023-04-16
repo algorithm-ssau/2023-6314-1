@@ -48,7 +48,7 @@
         </dependency>
         <dependency>
             <groupId>com.team</groupId>
-            <artifactId>jwt-spring-boot-starter</artifactId>
+            <artifactId>jwt-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
