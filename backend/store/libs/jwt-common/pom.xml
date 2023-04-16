@@ -10,14 +10,22 @@
     </parent>
 
     <groupId>com.team</groupId>
-    <artifactId>jwt-spring-boot-starter</artifactId>
+    <artifactId>jwt-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jwt-spring-boot-starter</name>
-    <description>jwt-spring-boot-starter</description>
+    <name>jwt-common</name>
+    <description>jwt-common</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.team</groupId>
+            <artifactId>base-jwt</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
