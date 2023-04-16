@@ -31,4 +31,4 @@ fi
 echo -e "\n-------- ${BIGreen}DOCKER: docker-compose up${NC} --------\n"
 # shellcheck disable=SC2164
 cd ./services/
-docker-compose up -d --build
+docker-compose up --build
