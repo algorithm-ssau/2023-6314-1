@@ -1,13 +1,13 @@
-package com.team.userservice.security.config;
+package com.team.userservice.config;
 
-import com.team.jwtspringbootstarter.jwt.authentication.JwtSecurityProvider;
-import com.team.jwtspringbootstarter.jwt.filter.AccessTokenFilter;
+import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwtcommon.filter.AccessTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -20,13 +20,13 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.team.jwtspringbootstarter.jwt.config")
-public class SecurityConfiguration {
+public class SecurityConfig {
   private final AccessTokenFilter accessTokenFilter;
 
   @Autowired
-  public SecurityConfiguration(JwtSecurityProvider provider) {
-    this.accessTokenFilter = new AccessTokenFilter(provider);
+  public SecurityConfig(AuthenticationManager authenticationManager,
+                        TokenMetadata accessTokenMetadata) {
+    this.accessTokenFilter = new AccessTokenFilter(authenticationManager, accessTokenMetadata);
   }
 
   @Bean
@@ -40,7 +40,6 @@ public class SecurityConfiguration {
       .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
-
   private CorsConfiguration corsConfigurationSource(HttpServletRequest request) {
     CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
     corsConfiguration.addAllowedMethod(HttpMethod.PUT);

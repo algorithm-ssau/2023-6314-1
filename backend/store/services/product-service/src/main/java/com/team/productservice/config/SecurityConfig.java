@@ -1,13 +1,13 @@
-package com.team.productservice.security.config;
+package com.team.productservice.config;
 
-import com.team.jwtspringbootstarter.jwt.authentication.JwtSecurityProvider;
-import com.team.jwtspringbootstarter.jwt.filter.AccessTokenFilter;
+import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwtcommon.filter.AccessTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,13 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
-@ComponentScan("com.team.jwtspringbootstarter.jwt.config")
 public class SecurityConfig {
   private final AccessTokenFilter accessTokenFilter;
 
   @Autowired
-  public SecurityConfig(JwtSecurityProvider provider) {
-    this.accessTokenFilter = new AccessTokenFilter(provider);
+  public SecurityConfig(AuthenticationManager authenticationManager, TokenMetadata tokenMetadata) {
+    this.accessTokenFilter = new AccessTokenFilter(authenticationManager, tokenMetadata);
   }
 
   @Bean
