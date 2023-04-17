@@ -2,9 +2,9 @@ package com.team.productservice.service.impl;
 
 import com.team.productservice.service.api.ViewService;
 import org.bouncycastle.util.encoders.Base64;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class Base64ViewService implements ViewService<String> {
   @Override
   public String view(byte[] content) {
