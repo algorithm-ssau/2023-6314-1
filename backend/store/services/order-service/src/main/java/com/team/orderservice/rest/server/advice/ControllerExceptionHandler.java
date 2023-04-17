@@ -1,4 +1,4 @@
-package com.team.orderservice.rest.advice;
+package com.team.orderservice.rest.server.advice;
 
 import com.team.orderservice.exception.OrderNotFoundException;
 import jakarta.validation.ConstraintViolationException;
