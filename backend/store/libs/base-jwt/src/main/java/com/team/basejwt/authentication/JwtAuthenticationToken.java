@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 
 public class JwtAuthenticationToken implements Authentication {
   private final String token;
@@ -16,6 +17,12 @@ public class JwtAuthenticationToken implements Authentication {
     this.token = token;
     this.tokenMetadata = tokenMetadata;
     this.authorities = authorities;
+  }
+
+  public JwtAuthenticationToken(String token, TokenMetadata tokenMetadata) {
+    this.token = token;
+    this.tokenMetadata = tokenMetadata;
+    this.authorities = List.of();
   }
 
   @Override
