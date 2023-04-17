@@ -58,10 +58,5 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.5</version>
         </dependency>
-        <dependency>
-            <groupId>com.team</groupId>
-            <artifactId>logger</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>
