@@ -1,23 +1,27 @@
 package com.team.identityprovider.security.jwt.properties;
 
+import com.team.basejwt.properties.TokenMetadata;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import java.security.Key;
+@Configuration
+public class TokenProperties {
+  @Value("${jwt.token.access.header}")
+  private String accessHeader;
 
-@Component
-@Slf4j
-public class TokenPropertiesExtractor {
   @Value("${jwt.token.access.secret}")
   private String accessSecret;
 
   @Value("${jwt.token.access.expired}")
   private long accessValidityInMilliseconds;
+
+  @Value("${jwt.token.refresh.header}")
+  private String refreshHeader;
 
   @Value("${jwt.token.refresh.secret}")
   private String refreshSecret;
@@ -29,27 +33,23 @@ public class TokenPropertiesExtractor {
   private void init() {
     refreshSecret = Encoders.BASE64.encode(refreshSecret.getBytes());
     accessSecret = Encoders.BASE64.encode(accessSecret.getBytes());
-    log.debug("Encoded access and refresh secret key");
   }
 
-  @lombok.Value
-  public static class TokenData {
-    Key secretKey;
-    long validityDateInMilliseconds;
+  @Bean
+  public TokenMetadata accessTokenMetadata() {
+    return new TokenMetadata(
+      accessHeader,
+      Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecret)),
+      accessValidityInMilliseconds
+    );
   }
 
-  public TokenData pullAccessTokenData() {
-    return generateTokenData(accessSecret, accessValidityInMilliseconds);
-  }
-
-  public TokenData pullRefreshTokenData() {
-    return generateTokenData(refreshSecret, refreshValidityInMilliseconds);
-  }
-
-  private TokenData generateTokenData(String secret, long validityInMilliseconds) {
-    return new TokenData(
-      Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)),
-      validityInMilliseconds
+  @Bean
+  public TokenMetadata refreshTokenMetadata() {
+    return new TokenMetadata(
+      refreshHeader,
+      Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecret)),
+      refreshValidityInMilliseconds
     );
   }
 }
