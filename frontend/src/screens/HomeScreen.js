@@ -1,24 +1,40 @@
-import {useState,useEffect} from "react" ;
+import {useState,useEffect,useReducer} from "react" ;
 import {Link} from 'react-router-dom'
 import axios from "axios";
 import data from '../data';
 
-function _imageEncode (string) {
-   var uint8array = new TextEncoder().encode(string);
-   let b64encoded = btoa([].reduce.call(new Uint8Array(uint8array),function(p,c){return p+String.fromCharCode(c)},''))
-   let mimetype="image/jpeg"
-   return "data:"+mimetype+";base64,"+b64encoded
- }
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, products: action.payload, loading: false };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
  
 const HomeScreen=()=>{
-  const [products,setProducts]=useState([]);
-  const [images,setImages]=useState([]);
+  /* const [products,setProducts]=useState([]);
+  const [images,setImages]=useState([]); */
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
+    products: [],
+    loading: true,
+    error: '',
+  });
   
   useEffect(()=>{
-    const fetchData=async()=>{
-      const result = await axios.get('http://localhost:8001/api/products')
-      setProducts(result.data);  
-      console.log(result.data);       
+    const fetchData=async()=>{      
+      //setProducts(result.data);  
+      dispatch({ type: 'FETCH_REQUEST' });
+      try {
+        const result = await axios.get('http://localhost:8001/api/products')  
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }            
     };    
     fetchData();    
    },[])  
@@ -26,7 +42,12 @@ const HomeScreen=()=>{
    <>
    <h1>Featured Products</h1>
    <div className="products">
-          {products.map((product) => (
+        {loading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div>{error}</div>
+        ) : (          
+          products.map((product) => (
             <div className="product" key={product.id}>
               <Link to={`/product/${product.id}`}>
                 <img src={product.imagesContent[0]} alt={product.name} />
@@ -41,7 +62,7 @@ const HomeScreen=()=>{
                 <button>Add to cart</button>
               </div>
             </div>
-          ))}
+          )))}
         </div>
 
    </>)
