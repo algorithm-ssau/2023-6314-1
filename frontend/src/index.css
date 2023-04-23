@@ -7,10 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-header {
-  background-color: #171717;
-  padding: 1rem;
+.site-container {
+  min-height: 100vh;
 }
+
 header a {
   color: #ffffff;
   font-weight: bold;
