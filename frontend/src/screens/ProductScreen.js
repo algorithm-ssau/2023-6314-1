@@ -7,6 +7,9 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+
 import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
@@ -33,7 +36,6 @@ const ProductScreen=()=>{
     
     useEffect(()=>{
       const fetchData=async()=>{      
-        //setProducts(result.data);  
         dispatch({ type: 'FETCH_REQUEST' });
         try {
           const result = await axios.get(`http://localhost:8001/api/products/${id}`)  
@@ -46,9 +48,9 @@ const ProductScreen=()=>{
      },[id])  
 
      return loading ? (
-      <div>Loading...</div>
+      <LoadingBox />
     ) : error ? (
-      <div>{error}</div>
+      <MessageBox variant="danger">{error}</MessageBox>
     ) : (
       <div className='wrapper'>
          <Row>
