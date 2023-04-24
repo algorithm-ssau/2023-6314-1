@@ -67,7 +67,7 @@ const ProductScreen=()=>{
                 </Helmet>
                 <h1>{product.name}</h1>
               </ListGroup.Item>              
-              <ListGroup.Item>Pirce : ${product.cost}</ListGroup.Item>
+              <ListGroup.Item>Price : ${product.cost}</ListGroup.Item>
               <ListGroup.Item>
                 Description:
                 <p>{product.description}</p>
