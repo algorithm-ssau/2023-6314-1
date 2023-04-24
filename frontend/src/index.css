@@ -11,7 +11,17 @@ body {
 .site-container {
   min-height: 100vh;
 }
-
+.img-thumbnail {
+  height: 80px;
+}
+.Link-style{
+  text-decoration: none;
+  color: #404040;
+}
+.Link-style:hover{
+  text-decoration: none;
+  color: #ae8b8b;
+}
 header a {
   color: #ffffff;
   font-weight: bold;

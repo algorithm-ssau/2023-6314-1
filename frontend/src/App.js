@@ -11,12 +11,11 @@ import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import { useContext } from 'react';
 import { Store } from './Store';
-
+import CartScreen from './screens/CartScreen';
 
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
-  console.log(cart);
 
   return (
     <BrowserRouter>
@@ -44,6 +43,7 @@ function App() {
         <Container  className="mt-3">
           <Routes>
             <Route path='/product/:id'element={<ProductScreen/>}/>
+            <Route path="/cart" element={<CartScreen />} />
             <Route path='/'element={<HomeScreen/>}/>
           </Routes> 
         </Container>                  
