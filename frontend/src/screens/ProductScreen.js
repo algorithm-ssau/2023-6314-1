@@ -54,8 +54,7 @@ const ProductScreen=()=>{
           type: 'CART_ADD_ITEM',
           payload: { ...product, quantity: 1 },
         });
-      };
-      console.log(state)
+      };      
 
      return loading ? (
       <LoadingBox />
