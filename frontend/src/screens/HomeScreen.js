@@ -8,7 +8,6 @@ import Product from '../components/Product';
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { Helmet } from 'react-helmet-async';
-import data from '../data';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -23,9 +22,7 @@ const reducer = (state, action) => {
   }
 };
  
-const HomeScreen=()=>{
-  /* const [products,setProducts]=useState([]);
-  const [images,setImages]=useState([]); */
+const HomeScreen=()=>{ 
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
@@ -33,8 +30,7 @@ const HomeScreen=()=>{
   });
   
   useEffect(()=>{
-    const fetchData=async()=>{      
-      //setProducts(result.data);  
+    const fetchData=async()=>{             
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         const result = await axios.get('http://localhost:8001/api/products')  

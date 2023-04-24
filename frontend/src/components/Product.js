@@ -2,8 +2,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
-const Product=({product})=>{
-   console.log(product);
+const Product=({product})=>{   
    return <div className="product" key={product.id}>
    <Link to={`/product/${product.id}`}>
      <img src={product.imagesContent[0]} alt={product.name} />
