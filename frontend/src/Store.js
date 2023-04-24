@@ -10,7 +10,7 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'CART_ADD_ITEM':
-      // add to cart
+      // add to cart      
       return {
         ...state,
         cart: {
