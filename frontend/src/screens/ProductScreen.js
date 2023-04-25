@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,6 +7,10 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { Store } from '../Store';
+
 import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
@@ -33,7 +37,6 @@ const ProductScreen=()=>{
     
     useEffect(()=>{
       const fetchData=async()=>{      
-        //setProducts(result.data);  
         dispatch({ type: 'FETCH_REQUEST' });
         try {
           const result = await axios.get(`http://localhost:8001/api/products/${id}`)  
@@ -45,10 +48,27 @@ const ProductScreen=()=>{
       fetchData();    
      },[id])  
 
+     const { state, dispatch: ctxDispatch } = useContext(Store);
+     const { cart } = state;
+     const addToCartHandler = async () => {
+       const existItem = cart.cartItems.find((x) => x.id === product.id);
+       const quantity = existItem ? existItem.quantity + 1 : 1;
+       const { data } = await axios.get(`http://localhost:8001/api/products/${product.id}`);
+       if (data.countInStock < quantity) {
+         window.alert('Sorry. Product is out of stock');
+         return;
+       }
+        
+        ctxDispatch({
+          type: 'CART_ADD_ITEM',
+          payload: { ...product, quantity },
+        });
+      };      
+
      return loading ? (
-      <div>Loading...</div>
+      <LoadingBox />
     ) : error ? (
-      <div>{error}</div>
+      <MessageBox variant="danger">{error}</MessageBox>
     ) : (
       <div className='wrapper'>
          <Row>
@@ -67,7 +87,7 @@ const ProductScreen=()=>{
                 </Helmet>
                 <h1>{product.name}</h1>
               </ListGroup.Item>              
-              <ListGroup.Item>Pirce : ${product.cost}</ListGroup.Item>
+              <ListGroup.Item>Price : ${product.cost}</ListGroup.Item>
               <ListGroup.Item>
                 Description:
                 <p>{product.description}</p>
@@ -100,7 +120,9 @@ const ProductScreen=()=>{
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <div className="d-grid">
-                        <Button variant="primary">Add to Cart</Button>
+                        <Button onClick={addToCartHandler} variant="primary">
+                          Add to Cart
+                        </Button>
                       </div>
                     </ListGroup.Item>
                   )}
