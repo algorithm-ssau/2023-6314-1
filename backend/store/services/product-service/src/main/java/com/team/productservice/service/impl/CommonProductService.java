@@ -18,7 +18,9 @@ public class CommonProductService implements ProductService {
 
   @Override
   public List<Product> getAll() {
-    return productRepository.findAll();
+    return productRepository.findAll().stream()
+      .peek(product -> product.setImageIds(List.of(product.getImageIds().get(0))))
+      .toList();
   }
 
   @Override

@@ -24,7 +24,6 @@ public class PersistenceConfig {
   @Value("${spring.datasource.password}")
   private String password;
 
-
   @Bean
   public DataSource dataSource() {
     DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();

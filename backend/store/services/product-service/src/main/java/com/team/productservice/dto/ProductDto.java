@@ -42,6 +42,17 @@ public enum ProductDto {;
         this.countInStock = countInStock;
         this.imagesContent = imagesContent;
       }
+
+      @Override
+      public String toString() {
+        return "Common{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesContentSize=" + imagesContent.size() +
+          '}';
+      }
     }
 
     @Value
@@ -66,6 +77,17 @@ public enum ProductDto {;
         this.countInStock = countInStock;
         this.imagesBytes = imagesBytes;
       }
+
+      @Override
+      public String toString() {
+        return "Create{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesBytesSize=" + imagesBytes.length +
+          '}';
+      }
     }
 
     @Value
@@ -89,6 +111,17 @@ public enum ProductDto {;
         this.cost = cost;
         this.countInStock = countInStock;
         this.imagesBytes = imagesBytes;
+      }
+
+      @Override
+      public String toString() {
+        return "Update{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesBytesSize=" + imagesBytes.length +
+          '}';
       }
     }
   }
@@ -118,6 +151,18 @@ public enum ProductDto {;
         this.cost = cost;
         this.countInStock = countInStock;
         this.imagesContent = imagesContent;
+      }
+
+      @Override
+      public String toString() {
+        return "Common{" +
+          "id=" + id +
+          ", name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesContentSize=" + imagesContent.size() +
+          '}';
       }
     }
   }

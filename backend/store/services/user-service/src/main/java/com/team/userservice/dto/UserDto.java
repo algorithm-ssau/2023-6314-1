@@ -15,8 +15,8 @@ public enum UserDto {;
   private interface Password { @Size(min = 5, max = 80) String getPassword(); }
   private interface Active { Boolean getActive(); }
   private interface Role { @NotNull RoleDto getRole(); }
-  private interface CreatedDateTime { @PastOrPresent OffsetDateTime getCreatedDateTime(); }
-  private interface UpdatedDateTime { @PastOrPresent OffsetDateTime getUpdatedDateTime(); }
+  private interface CreatedDateTime { @PastOrPresent OffsetDateTime getCreated(); }
+  private interface UpdatedDateTime { @PastOrPresent OffsetDateTime getUpdated(); }
 
   public enum Request {;
     @Value
@@ -55,8 +55,8 @@ public enum UserDto {;
       String email;
       Boolean active;
       RoleDto role;
-      OffsetDateTime createdDateTime;
-      OffsetDateTime updatedDateTime;
+      OffsetDateTime created;
+      OffsetDateTime updated;
 
       @JsonCreator
       public Common(
@@ -65,16 +65,16 @@ public enum UserDto {;
         @JsonProperty("email") String email,
         @JsonProperty("active") Boolean active,
         @JsonProperty("role") RoleDto role,
-        @JsonProperty("createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty("updatedDateTime") OffsetDateTime updatedDateTime
+        @JsonProperty("created") OffsetDateTime created,
+        @JsonProperty("updated") OffsetDateTime updated
       ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.active = active;
         this.role = role;
-        this.createdDateTime = createdDateTime;
-        this.updatedDateTime = updatedDateTime;
+        this.created = created;
+        this.updated = updated;
       }
     }
 
@@ -83,19 +83,19 @@ public enum UserDto {;
       Long id;
       Boolean active;
       String email;
-      OffsetDateTime createdDateTime;
+      OffsetDateTime created;
 
       @JsonCreator
       public Activation(
         @JsonProperty("id") Long id,
         @JsonProperty("email") String email,
         @JsonProperty("active") Boolean active,
-        @JsonProperty("createdDateTime") OffsetDateTime createdDateTime
+        @JsonProperty("created") OffsetDateTime created
       ) {
         this.id = id;
         this.active = active;
         this.email = email;
-        this.createdDateTime = createdDateTime;
+        this.created = created;
       }
     }
   }

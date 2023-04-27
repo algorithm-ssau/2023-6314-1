@@ -1,19 +1,15 @@
 package com.team.identityprovider.security.details;
 
 import com.team.identityprovider.persistence.repository.UserRepositoryAuthenticateProjection;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
-@Service
-@Slf4j
 public class ProjectionUserDetailsService implements UserDetailsService {
   private final UserRepositoryAuthenticateProjection projectionService;
 
@@ -24,17 +20,16 @@ public class ProjectionUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String usernameAsEmail) throws UsernameNotFoundException {
-    var maybeNullUserAuth = projectionService.findByEmail(usernameAsEmail);
-    var userAuth = Objects.requireNonNull(maybeNullUserAuth, "User not present");
-    log.info("User with username: {} successfully loaded from database", usernameAsEmail);
+    var userCandidate = projectionService.findByEmail(usernameAsEmail);
+    var user = Objects.requireNonNull(userCandidate, "User not present");
 
     return new ProjectionUserDetails(
-      userAuth.getId(),
-      userAuth.getName(),
-      userAuth.getEmail(),
-      userAuth.getPassword(),
-      userAuth.isActive(),
-      List.of(new SimpleGrantedAuthority(userAuth.getRole()))
+      user.getId(),
+      user.getName(),
+      user.getEmail(),
+      user.getPassword(),
+      user.isActive(),
+      List.of(new SimpleGrantedAuthority(user.getRole()))
     );
   }
 }
