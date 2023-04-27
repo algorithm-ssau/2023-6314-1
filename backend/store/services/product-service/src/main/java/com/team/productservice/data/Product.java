@@ -23,6 +23,7 @@ public class Product {
   private String name;
 
   @NotBlank
+  @Column(columnDefinition = "text")
   private String description;
 
   @Positive
