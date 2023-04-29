@@ -48,10 +48,10 @@ public class SetupDataLoader {
   private void setup() {
     if (productRepository.count() == 0) {
       for (SetupProduct setupProduct : SetupProduct.values()) {
-        List<String> allFilesContents = Arrays.stream(readAllFilesBytes(setupProduct.getImagePaths()))
+        List<String> imagesContent = Arrays.stream(readAllFilesBytes(setupProduct.getImagePaths()))
           .map(base64ViewService::view)
           .toList();
-        List<Long> imagesId = imageServiceClient.saveAll(allFilesContents);
+        List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
         Product product = setupProductMapper.toDomain(setupProduct, imagesId);
         productRepository.save(product);
       }
