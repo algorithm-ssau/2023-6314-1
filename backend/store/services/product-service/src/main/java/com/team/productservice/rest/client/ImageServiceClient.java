@@ -1,7 +1,8 @@
 package com.team.productservice.rest.client;
 
+import com.team.logger.stereotype.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -10,12 +11,12 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Component
+@Client
 public class ImageServiceClient {
   private final WebClient client;
 
   @Autowired
-  public ImageServiceClient(WebClient.Builder clientBuilder) {
+  public ImageServiceClient(@Qualifier("imageServiceWebClientBuilder") WebClient.Builder clientBuilder) {
     this.client = clientBuilder.build();
   }
 

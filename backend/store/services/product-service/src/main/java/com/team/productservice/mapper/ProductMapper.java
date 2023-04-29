@@ -95,6 +95,17 @@ public enum ProductMapper {;
           mapper.toDto(product.getCategory())
         );
       }
+
+      public ProductDto.Response.Common toDto(Product product, String... contents) {
+        return new ProductDto.Response.Common(
+          product.getId(),
+          product.getName(),
+          product.getDescription(),
+          product.getCost(),
+          product.getCountInStock(),
+          List.of(contents)
+        );
+      }
     }
   }
 
