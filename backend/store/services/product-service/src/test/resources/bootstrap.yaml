@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+
+  test:
+    database:
+      replace: none
+  cloud:
+    config:
+      enabled: false
+
+logging:
+  level:
+    org.springframework.security: trace
+    root: info
+    com.team.logger: debug
+
