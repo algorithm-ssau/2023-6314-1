@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
+import java.util.Arrays;
+
 @Aspect
 @Slf4j
 public class LoggingAspect {
@@ -42,39 +44,33 @@ public class LoggingAspect {
   @Around("springBeanPointcut()")
   public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
     if (log.isDebugEnabled()) {
-      log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
-        joinPoint.getSignature().getName(), toStringArgs(joinPoint.getArgs()));
+      log.debug("Enter: {}.{}() with argument[s] = {}",
+        joinPoint.getSignature().getDeclaringTypeName(),
+        joinPoint.getSignature().getName(),
+        cutLarge(Arrays.toString(joinPoint.getArgs()))
+      );
     }
     try {
       Object result = joinPoint.proceed();
       if (log.isDebugEnabled()) {
-        log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
-          joinPoint.getSignature().getName(), toStringArgs(result));
+        log.debug("Exit: {}.{}() with result = {}",
+          joinPoint.getSignature().getDeclaringTypeName(),
+          joinPoint.getSignature().getName(),
+          cutLarge(result.toString())
+        );
       }
       return result;
     } catch (IllegalArgumentException e) {
-      log.error("Illegal argument: {} in {}.{}()", toStringArgs(joinPoint.getArgs()),
-        joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+      log.error("Illegal argument: {} in {}.{}()",
+        cutLarge(Arrays.toString(joinPoint.getArgs())),
+        joinPoint.getSignature().getDeclaringTypeName(),
+        joinPoint.getSignature().getName()
+      );
       throw e;
     }
   }
 
-  private String toStringArgs(Object... args) {
-    if (args.length == 0) return "[]";
-
-    StringBuilder sb = new StringBuilder("[");
-    for (int i = 0; i < args.length - 1; i++) {
-      sb.append(cutIfImage(args[i].toString())).append(", ");
-    }
-    sb.append(cutIfImage(String.valueOf(args[args.length - 1]))).append("]");
-    return sb.toString();
-  }
-
-  private String cutIfImage(String arg) {
-    String IMAGE_PREFIX = "data:image/png;base64,";
-    if (arg.startsWith(IMAGE_PREFIX)) {
-      arg = "image with length: " + arg.length();
-    }
-    return arg;
+  private String cutLarge(String toString) {
+    return toString.length() >= 400 ? toString.substring(0, 400) + "..." : toString;
   }
 }
