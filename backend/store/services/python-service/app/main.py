@@ -16,4 +16,4 @@ posts = [
 
 @app.get("/")
 def index():
-    return {"title": "Hello"}
+    return posts
