@@ -51,7 +51,11 @@ public enum SetupProduct {
   private final Long countInStock;
   private final List<String> imagePaths;
 
-  SetupProduct(String name, String description, BigDecimal cost, Long countInStock, List<String> imagePaths) {
+  SetupProduct(String name,
+               String description,
+               BigDecimal cost,
+               Long countInStock,
+               List<String> imagePaths) {
     this.name = name;
     this.description = description;
     this.cost = cost;
