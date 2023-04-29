@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,35 +15,37 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(nullable = false)
   private Long id;
 
   @NotBlank
+  @Column(nullable = false)
   private String name;
 
   @NotBlank
+  @Column(columnDefinition = "text")
   private String description;
 
   @Positive
+  @Column(nullable = false)
   private BigDecimal cost;
 
   @PositiveOrZero
+  @Column(nullable = false)
   private Long countInStock;
 
   @NotNull
-  @JoinColumn(name = "product_id")
   @ElementCollection
+  @JoinColumn(name = "product", nullable = false)
   private List<Long> imageIds;
 
-  public Product(String name, String description, BigDecimal cost,
-                 Long countInStock, List<Long> imageIds) {
-    this.name = name;
-    this.description = description;
-    this.cost = cost;
-    this.countInStock = countInStock;
-    this.imageIds = imageIds;
-  }
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(nullable = false, name = "category")
+  private Category category;
 }
