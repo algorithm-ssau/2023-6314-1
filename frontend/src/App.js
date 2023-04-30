@@ -6,7 +6,8 @@ import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import { useContext } from 'react';
@@ -21,6 +22,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="d-flex flex-column site-container">
+    <ToastContainer position="bottom-center" limit={1} />
       <header>
          <Navbar bg="dark" variant="dark">
             <Container>

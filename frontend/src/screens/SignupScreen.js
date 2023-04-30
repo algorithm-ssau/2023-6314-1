@@ -24,7 +24,7 @@ export default function SignupScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error("asas");      
+      toast.error("Пароли не совпадают");      
       return;
     }
     try {
