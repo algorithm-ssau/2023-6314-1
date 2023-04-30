@@ -103,7 +103,7 @@ export default function CartScreen() {
                 <ListGroup.Item>
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
+                    items) : ₽
                     {Math.round(parseFloat(cartItems.reduce((a, c) => a + c.cost * c.quantity, 0)) * 100) / 100}
                   </h3>
                 </ListGroup.Item>

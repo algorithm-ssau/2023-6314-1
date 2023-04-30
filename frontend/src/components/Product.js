@@ -32,7 +32,7 @@ const Product=({product})=>{
        <p className='description'>{product.name}</p>
      </Link>
      <p>
-       <strong>${product.cost}</strong>
+       <strong>₽{product.cost}</strong>
      </p>
      {product.countInStock === 0 ? (
           <Button variant="light" disabled>
