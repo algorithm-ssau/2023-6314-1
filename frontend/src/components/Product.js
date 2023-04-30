@@ -15,7 +15,7 @@ const Product=({product})=>{
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`http://localhost:8001/api/products/${item.id}`);
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      window.alert('Простите, продуктов не осталось на складе');
       return;
     }
     ctxDispatch({
@@ -32,14 +32,14 @@ const Product=({product})=>{
        <p className='description'>{product.name}</p>
      </Link>
      <p>
-       <strong>${product.cost}</strong>
+       <strong>₽{product.cost}</strong>
      </p>
      {product.countInStock === 0 ? (
           <Button variant="light" disabled>
-            Out of stock
+            Нет на складе
           </Button>
         ) : (
-          <Button onClick={() => addToCartHandler(product)}>Add to cart</Button>
+          <Button onClick={() => addToCartHandler(product)}>Добавить в корзину</Button>
         )}
    </div>
  </div>

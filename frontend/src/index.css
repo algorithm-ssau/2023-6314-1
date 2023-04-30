@@ -22,6 +22,9 @@ body {
   text-decoration: none;
   color: #ae8b8b;
 }
+.small-container {
+  max-width: 600px;
+}
 header a {
   color: #ffffff;
   font-weight: bold;

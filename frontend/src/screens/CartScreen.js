@@ -20,7 +20,7 @@ export default function CartScreen() {
   const updateCartHandler = async (item, quantity) => {
       const { data } = await axios.get(`http://localhost:8001/api/products/${item.id}`);     
       if (data.countInStock < quantity) {
-         window.alert('Sorry. Product is out of stock');
+         window.alert('Простите, продуктов не осталось на складе');
          return;
       } 
       ctxDispatch({
@@ -41,12 +41,12 @@ export default function CartScreen() {
       <Helmet>
         <title>Shopping Cart</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <h1>Корзина</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              Cart is empty. <Link to="/">Go Shopping</Link>
+              Карзина пуста.  <Link to="/">Перейти к покупкам</Link>
             </MessageBox>
           ) : (
             <ListGroup>
@@ -81,7 +81,7 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>${item.cost}</Col>
+                    <Col md={3}>₽{item.cost}</Col>
                     <Col md={2}>
                       <Button
                         onClick={() => removeItemHandler(item)}
@@ -102,8 +102,8 @@ export default function CartScreen() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
+                    Сумма ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
+                    товара) : ₽
                     {Math.round(parseFloat(cartItems.reduce((a, c) => a + c.cost * c.quantity, 0)) * 100) / 100}
                   </h3>
                 </ListGroup.Item>
@@ -115,7 +115,7 @@ export default function CartScreen() {
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
-                      Proceed to Checkout
+                      Перейти к оформлению заказа
                     </Button>
                   </div>
                 </ListGroup.Item>
