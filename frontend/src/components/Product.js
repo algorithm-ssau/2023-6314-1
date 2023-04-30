@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import { toast } from 'react-toastify';
 
 const Product=({product})=>{ 
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -22,6 +23,7 @@ const Product=({product})=>{
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
+    toast("Товар добавлен в корзину");
   };  
   return <div className="product" key={product.id}>
    <Link to={`/product/${product.id}`}>

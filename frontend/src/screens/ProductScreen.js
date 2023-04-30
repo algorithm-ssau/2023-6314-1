@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
+import {toast} from "react-toastify"
 
 import { Helmet } from 'react-helmet-async';
 
@@ -63,6 +64,7 @@ const ProductScreen=()=>{
           type: 'CART_ADD_ITEM',
           payload: { ...product, quantity },
         });
+        toast("Товар добавлен в коризну");
       };      
 
      return loading ? (
