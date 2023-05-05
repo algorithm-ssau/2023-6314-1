@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Slf4j
 public abstract class JwtSecurityProvider implements AuthenticationProvider {
+
   protected final Claims extractTokenClaims(String token, TokenMetadata tokenMetadata) {
     return Jwts.parserBuilder()
       .setSigningKey(tokenMetadata.getSecretKey())
@@ -51,13 +52,11 @@ public abstract class JwtSecurityProvider implements AuthenticationProvider {
   @Override
   public Authentication authenticate(Authentication authentication) {
     JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
-
     var token = (String) jwtAuthentication.getPrincipal();
     var tokenMetadata = (TokenMetadata) jwtAuthentication.getDetails();
     if (!valid(token, tokenMetadata)) {
-      throw new JwtException("JWT token not valid or not present");
+      throw new JwtException("Token: {" + token + "} - invalid");
     }
-
     return loadAuthenticationByToken(token, tokenMetadata);
   }
 
