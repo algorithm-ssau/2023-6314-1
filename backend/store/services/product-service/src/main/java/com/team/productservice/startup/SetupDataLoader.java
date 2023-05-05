@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Transactional
 @Profile("dev")
 public class SetupDataLoader {
   private boolean firstCall = false;

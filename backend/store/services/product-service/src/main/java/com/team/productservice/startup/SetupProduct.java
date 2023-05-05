@@ -1,5 +1,6 @@
 package com.team.productservice.startup;
 
+import com.team.productservice.data.Category;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -15,7 +16,8 @@ public enum SetupProduct {
     List.of(
       "demix-magus-3.0-B/0.jpg",
       "demix-magus-3.0-B/1.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Children.Shoes")
   ),
   BUTTON_DOWN_DENIM_SHIRT_JACKET(
     "Джинсовая куртка-рубашка на кнопках",
@@ -30,7 +32,8 @@ public enum SetupProduct {
       "button-down-denim-shirt-jacket/4.jpg",
       "button-down-denim-shirt-jacket/5.jpg",
       "button-down-denim-shirt-jacket/6.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Adult.Outerwear")
   ),
   BASIC_5_POCKET_TWILL_TROUSERS(
     "Базовые брюки «5 карманов» из твила",
@@ -45,7 +48,8 @@ public enum SetupProduct {
       "basic-5-pocket-twill-trousers/4.jpg",
       "basic-5-pocket-twill-trousers/5.jpg",
       "basic-5-pocket-twill-trousers/6.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Adult.Trousers")
   ),
   PADDED_BASIC_JACKET_WITH_HOOD(
     "Утеплённая базовая куртка с капюшоном",
@@ -61,7 +65,8 @@ public enum SetupProduct {
       "padded-basic-jacket-with-hood/5.jpg",
       "padded-basic-jacket-with-hood/6.jpg",
       "padded-basic-jacket-with-hood/7.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Adult.Outerwear")
   ),
   COTTON_DRESS_WITH_VOLUMINOUS_SLEEVES(
     "Хлопковое платье с объёмными рукавами",
@@ -76,7 +81,8 @@ public enum SetupProduct {
       "cotton-dress-with-voluminous-sleeves/4.jpg",
       "cotton-dress-with-voluminous-sleeves/5.jpg",
       "cotton-dress-with-voluminous-sleeves/6.jpg"
-    )
+    ),
+    SetupCategory.by("All.Female.Adult.Dresses")
   ),
   COTTON_DRESS_WITH_CUTOUT_BACK(
     "Хлопковое платье с вырезом на спине",
@@ -91,7 +97,8 @@ public enum SetupProduct {
       "cotton-dress-with-cutout-back/4.jpg",
       "cotton-dress-with-cutout-back/5.jpg",
       "cotton-dress-with-cutout-back/6.jpg"
-    )
+    ),
+    SetupCategory.by("All.Female.Adult.Dresses")
   ),
   T_SHIRT_WITH_RHINESTONE(
     "Футболка со стразами",
@@ -106,7 +113,8 @@ public enum SetupProduct {
       "t-shirt-with-rhinestones/4.jpg",
       "t-shirt-with-rhinestones/5.jpg",
       "t-shirt-with-rhinestones/6.jpg"
-    )
+    ),
+    SetupCategory.by("All.Female.Adult.T-shirts")
   ),
   BASEBALL_CAP_WITH_EMBROIDERY(
     "Бейсболка с вышивкой",
@@ -118,7 +126,8 @@ public enum SetupProduct {
       "baseball-cap-with-embroidery/1.jpg",
       "baseball-cap-with-embroidery/2.jpg",
       "baseball-cap-with-embroidery/3.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Adult.Accessories")
   ),
   ELASTIC_STRAP(
     "Эластичный ремень",
@@ -131,7 +140,8 @@ public enum SetupProduct {
       "elastic-strap/2.jpg",
       "elastic-strap/3.jpg",
       "elastic-strap/4.jpg"
-    )
+    ),
+    SetupCategory.by("All.Male.Adult.Accessories")
   );
 
   private final String imageDir = "/images";
@@ -140,18 +150,19 @@ public enum SetupProduct {
   private final BigDecimal cost;
   private final Long countInStock;
   private final List<String> imagePaths;
+  private final Category category;
 
   SetupProduct(String name,
                String description,
                BigDecimal cost,
                Long countInStock,
-               List<String> imagePaths) {
+               List<String> imagePaths,
+               Category category) {
     this.name = name;
     this.description = description;
     this.cost = cost;
     this.countInStock = countInStock;
-    this.imagePaths = imagePaths.stream()
-      .map(path -> imageDir + "/" + path)
-      .toList();
+    this.imagePaths = imagePaths.stream().map(path -> imageDir + "/" + path).toList();
+    this.category = category;
   }
 }
