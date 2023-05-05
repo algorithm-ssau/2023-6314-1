@@ -3,18 +3,21 @@ package com.team.productservice.service.impl;
 import com.team.productservice.data.Product;
 import com.team.productservice.exception.ProductNotFoundException;
 import com.team.productservice.repository.ProductRepository;
+import com.team.productservice.service.api.CategoryService;
 import com.team.productservice.service.api.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class CommonProductService implements ProductService {
   private final ProductRepository productRepository;
+  private final CategoryService categoryService;
 
   @Override
   public List<Product> getAll() {
@@ -48,5 +51,11 @@ public class CommonProductService implements ProductService {
       throw new ProductNotFoundException("Cannot update product with id: " + productId + ", product not found");
     }
     save(product);
+  }
+
+  @Override
+  public List<Product> findAllByCategoryId(Long categoryId) {
+    Set<Long> allSubsIdsToEnd = categoryService.findAllSubsToEnd(categoryId);
+    return productRepository.findAllByCategories(allSubsIdsToEnd);
   }
 }

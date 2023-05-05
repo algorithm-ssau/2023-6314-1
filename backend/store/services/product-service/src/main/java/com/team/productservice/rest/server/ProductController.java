@@ -104,4 +104,14 @@ public class ProductController {
     productService.deleteById(id);
     return ResponseEntity.ok().build();
   }
+
+  @GetMapping("/filter/{category-id}")
+  public ResponseEntity<List<Response.Common>> findByCategory(@PathVariable("category-id") Long id) {
+    List<Product> products = productService.findAllByCategoryId(id);
+    List<Response.Common> dtos = products.stream().map(p -> {
+      String mainImage = obtainMainImage(p);
+      return respCommonMapper.toDto(p, mainImage);
+    }).toList();
+    return ResponseEntity.ok(dtos);
+  }
 }
