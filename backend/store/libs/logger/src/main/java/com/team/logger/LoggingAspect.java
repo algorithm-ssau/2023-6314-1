@@ -56,7 +56,7 @@ public class LoggingAspect {
         log.debug("Exit: {}.{}() with result = {}",
           joinPoint.getSignature().getDeclaringTypeName(),
           joinPoint.getSignature().getName(),
-          cutLarge(result.toString())
+          cutLarge(String.valueOf(result))
         );
       }
       return result;
