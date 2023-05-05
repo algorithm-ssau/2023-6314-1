@@ -28,9 +28,10 @@ public class Category {
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+  @JoinColumn(name = "parent")
   private Category parentCategory;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentCategory")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentCategory")
   private Set<Category> subCategories = new HashSet<>();
 
   public Category(String name) {
