@@ -48,6 +48,7 @@ public enum OrderMapper {;
     @RequiredArgsConstructor
     public static final class Common {
       private final AddressMapper.Response.Common commonAddressMapper;
+      private final StatusMapper.Response.Common commonStatusMapper;
 
       public OrderDto.Response.Common toDto(Order order,
                                             UserDto.Response.Common user,
@@ -55,6 +56,7 @@ public enum OrderMapper {;
         return new OrderDto.Response.Common(
           order.getId(),
           commonAddressMapper.toDto(order.getArrivalAddress()),
+          commonStatusMapper.toDto(order.getStatus()),
           products,
           order.getPayloadDateTime(),
           order.getArrivalDateTime(),

@@ -21,13 +21,16 @@ public enum OrderDto {;
   private interface UserId { @NotNull Long getUserId(); }
   private interface PayloadDateTime { @PastOrPresent OffsetDateTime getPayloadDateTime(); }
   private interface ArrivalDateTime { @FutureOrPresent OffsetDateTime getArrivalDateTime(); }
+  private interface StatusRequest { @NotNull StatusDto.Request.Common getStatus(); }
+  private interface StatusResponse { @NotNull StatusDto.Response.Common getStatus(); }
 
   public enum Request {;
     @Value
     public static class Common implements
-      AddressRequest, Products, PayloadDateTime, ArrivalDateTime, User
+      AddressRequest, Products, PayloadDateTime, ArrivalDateTime, User, StatusRequest
     {
       AddressDto.Request.Common address;
+      StatusDto.Request.Common status;
       List<ProductDto.Response.Common> products;
       OffsetDateTime payloadDateTime;
       OffsetDateTime arrivalDateTime;
@@ -36,12 +39,14 @@ public enum OrderDto {;
       @JsonCreator
       public Common(
         @JsonProperty("address") AddressDto.Request.Common address,
+        @JsonProperty("status") StatusDto.Request.Common status,
         @JsonProperty("products") List<ProductDto.Response.Common> products,
         @JsonProperty("payloadDateTime") OffsetDateTime payloadDateTime,
         @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
         @JsonProperty("user") UserDto.Response.Common user
       ) {
         this.address = address;
+        this.status = status;
         this.products = products;
         this.payloadDateTime = payloadDateTime;
         this.arrivalDateTime = arrivalDateTime;
@@ -79,10 +84,11 @@ public enum OrderDto {;
   public enum Response {;
     @Value
     public static class Common implements
-      Id, AddressResponse, User, Products, PayloadDateTime, ArrivalDateTime
+      Id, AddressResponse, User, Products, PayloadDateTime, ArrivalDateTime, StatusResponse
     {
       Long id;
       AddressDto.Response.Common address;
+      StatusDto.Response.Common status;
       List<ProductDto.Response.Common> products;
       OffsetDateTime payloadDateTime;
       OffsetDateTime arrivalDateTime;
@@ -92,6 +98,7 @@ public enum OrderDto {;
       public Common(
         @JsonProperty("id") Long id,
         @JsonProperty("address") AddressDto.Response.Common address,
+        @JsonProperty("status") StatusDto.Response.Common status,
         @JsonProperty("products") List<ProductDto.Response.Common> products,
         @JsonProperty("payloadDateTime") OffsetDateTime payloadDateTime,
         @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
@@ -99,6 +106,7 @@ public enum OrderDto {;
       ) {
         this.id = id;
         this.address = address;
+        this.status = status;
         this.products = products;
         this.payloadDateTime = payloadDateTime;
         this.arrivalDateTime = arrivalDateTime;
