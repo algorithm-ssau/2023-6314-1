@@ -50,6 +50,6 @@ public class SecurityConfig {
     registry.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
     registry.requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated();
     registry.requestMatchers(HttpMethod.POST, "/api/auth/refresh").authenticated();
-    registry.requestMatchers(HttpMethod.POST, "/error").permitAll();
+    registry.requestMatchers("/error").permitAll();
   }
 }
