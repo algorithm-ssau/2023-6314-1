@@ -12,11 +12,11 @@ public enum ProductMapper {;
   public enum Request {;
     @Component
     public static final class Common {
-      private final CategoryMapper.Request.Common mapper;
+      private final CategoryMapper.Request.Common requestMapper;
 
       @Autowired
-      public Common(CategoryMapper.Request.Common mapper) {
-        this.mapper = mapper;
+      public Common(CategoryMapper.Request.Common requestMapper) {
+        this.requestMapper = requestMapper;
       }
 
       public Product toDomain(ProductDto.Request.Common dto, List<Long> imagesId) {
@@ -26,7 +26,7 @@ public enum ProductMapper {;
           .cost(dto.getCost())
           .countInStock(dto.getCountInStock())
           .imageIds(imagesId)
-          .category(mapper.toDomain(dto.getCategory()))
+          .category(requestMapper.toDomain(dto.getCategory()))
           .build();
       }
     }
@@ -103,7 +103,8 @@ public enum ProductMapper {;
           product.getDescription(),
           product.getCost(),
           product.getCountInStock(),
-          List.of(contents)
+          List.of(contents),
+          mapper.toDto(product.getCategory())
         );
       }
     }
@@ -119,6 +120,7 @@ public enum ProductMapper {;
           .cost(setupProduct.getCost())
           .countInStock(setupProduct.getCountInStock())
           .imageIds(imagesId)
+          .category(setupProduct.getCategory())
           .build();
       }
     }
