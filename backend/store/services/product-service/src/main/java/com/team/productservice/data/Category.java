@@ -38,6 +38,18 @@ public class Category {
     this.name = name;
   }
 
+  public Category(String name, Category parent, Set<Category> subCategories) {
+    this.name = name;
+
+    this.parentCategory = parent;
+    if (parent != null) {
+      this.parentCategory.subCategories.add(this);
+    }
+
+    this.subCategories = subCategories;
+    this.subCategories.forEach(sc -> sc.parentCategory = this);
+  }
+
   public Category addSub(String name) {
     Category sub = new Category(name);
     subCategories.add(sub);
