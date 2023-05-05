@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Value;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public enum ProductDto {;
   private interface Id { @NotNull Long getId(); }
@@ -15,7 +16,8 @@ public enum ProductDto {;
   private interface Description { @NotBlank String getDescription(); }
   private interface Cost { @Positive BigDecimal getCost(); }
   private interface CountInStock { @Positive Long getCountInStock(); }
-  private interface ImagesContent { @NotNull byte[][] getImagesContent(); }
+  private interface ImagesContent { @NotNull List<String> getImagesContent(); }
+  private interface ImagesBytes { @NotNull byte[][] getImagesBytes(); }
 
   public enum Request {;
     @Value
@@ -24,7 +26,7 @@ public enum ProductDto {;
       String description;
       BigDecimal cost;
       Long countInStock;
-      byte[][] imagesContent;
+      List<String> imagesContent;
 
       @JsonCreator
       public Common(
@@ -32,7 +34,7 @@ public enum ProductDto {;
         @JsonProperty("description") String description,
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
-        @JsonProperty("imagesContent") byte[][] imagesContent
+        @JsonProperty("imagesContent") List<String> imagesContent
       ) {
         this.name = name;
         this.description = description;
@@ -40,15 +42,26 @@ public enum ProductDto {;
         this.countInStock = countInStock;
         this.imagesContent = imagesContent;
       }
+
+      @Override
+      public String toString() {
+        return "Common{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesContentSize=" + imagesContent.size() +
+          '}';
+      }
     }
 
     @Value
-    public static class Create implements Name, Description, Cost, CountInStock, ImagesContent {
+    public static class Create implements Name, Description, Cost, CountInStock, ImagesBytes {
       String name;
       String description;
       BigDecimal cost;
       Long countInStock;
-      byte[][] imagesContent;
+      byte[][] imagesBytes;
 
       @JsonCreator
       public Create(
@@ -56,13 +69,59 @@ public enum ProductDto {;
         @JsonProperty("description") String description,
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
-        @JsonProperty("imagesContent") byte[][] imagesContent
+        @JsonProperty("imagesBytes") byte[][] imagesBytes
       ) {
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.countInStock = countInStock;
-        this.imagesContent = imagesContent;
+        this.imagesBytes = imagesBytes;
+      }
+
+      @Override
+      public String toString() {
+        return "Create{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesBytesSize=" + imagesBytes.length +
+          '}';
+      }
+    }
+
+    @Value
+    public static class Update implements Name, Description, Cost, CountInStock, ImagesBytes {
+      String name;
+      String description;
+      BigDecimal cost;
+      Long countInStock;
+      byte[][] imagesBytes;
+
+      @JsonCreator
+      public Update(
+        @JsonProperty("name") String name,
+        @JsonProperty("description") String description,
+        @JsonProperty("cost") BigDecimal cost,
+        @JsonProperty("countInStock") Long countInStock,
+        @JsonProperty("imagesBytes") byte[][] imagesBytes
+      ) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+        this.countInStock = countInStock;
+        this.imagesBytes = imagesBytes;
+      }
+
+      @Override
+      public String toString() {
+        return "Update{" +
+          "name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesBytesSize=" + imagesBytes.length +
+          '}';
       }
     }
   }
@@ -75,7 +134,7 @@ public enum ProductDto {;
       String description;
       BigDecimal cost;
       Long countInStock;
-      byte[][] imagesContent;
+      List<String> imagesContent;
 
       @JsonCreator
       public Common(
@@ -84,7 +143,7 @@ public enum ProductDto {;
         @JsonProperty("description") String description,
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
-        @JsonProperty("imagesContent") byte[][] imagesContent
+        @JsonProperty("imagesContent") List<String> imagesContent
       ) {
         this.id = id;
         this.name = name;
@@ -92,6 +151,18 @@ public enum ProductDto {;
         this.cost = cost;
         this.countInStock = countInStock;
         this.imagesContent = imagesContent;
+      }
+
+      @Override
+      public String toString() {
+        return "Common{" +
+          "id=" + id +
+          ", name='" + name + '\'' +
+          ", description='" + description + '\'' +
+          ", cost=" + cost +
+          ", countInStock=" + countInStock +
+          ", imagesContentSize=" + imagesContent.size() +
+          '}';
       }
     }
   }

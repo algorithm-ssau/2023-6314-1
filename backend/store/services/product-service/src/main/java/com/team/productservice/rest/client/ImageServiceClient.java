@@ -1,50 +1,52 @@
 package com.team.productservice.rest.client;
 
-import com.team.productservice.rest.client.dto.ImageDto;
+import com.team.logger.stereotype.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Component
+
+@Client
 public class ImageServiceClient {
   private final WebClient client;
 
   @Autowired
-  public ImageServiceClient(WebClient.Builder clientBuilder) {
+  public ImageServiceClient(@Qualifier("imageServiceWebClientBuilder") WebClient.Builder clientBuilder) {
     this.client = clientBuilder.build();
   }
 
-  public ImageDto.Response.Common get(Long id) {
+  public String get(Long id) {
     return client.get()
       .uri("/api/images/" + id)
-      .retrieve().bodyToMono(ImageDto.Response.Common.class)
+      .retrieve().bodyToMono(String.class)
       .block();
   }
 
-  public List<ImageDto.Response.Common> getAll(List<Long> ids) {
-    List<ImageDto.Response.Common> commonDtoRequests = new ArrayList<>();
-    for (Long id : ids) {
-      commonDtoRequests.add(get(id));
-    }
-    return commonDtoRequests;
-  }
-
-  public Long save(ImageDto.Request.Common commonDtoRequest) {
-    return client.post()
+  public Long save(String content) {
+    Long idMono = client.post()
       .uri("/api/images")
-      .body(BodyInserters.fromValue(commonDtoRequest))
-      .retrieve().bodyToMono(Long.class)
-      .block();
+      .body(BodyInserters.fromValue(content))
+      .retrieve().bodyToMono(Long.class).block();
+    return Objects.requireNonNull(idMono);
   }
 
-  public List<Long> saveAll(List<ImageDto.Request.Common> commonDtoRequests) {
+  public List<String> getAll(List<Long> ids) {
+    List<String> imageContents = new ArrayList<>();
+    for (Long id : ids) {
+      imageContents.add(get(id));
+    }
+    return imageContents;
+  }
+
+  public List<Long> saveAll(List<String> contents) {
     List<Long> imagesId = new ArrayList<>();
-    for (ImageDto.Request.Common commonRequest : commonDtoRequests) {
-      imagesId.add(save(commonRequest));
+    for (String content : contents) {
+      imagesId.add(save(content));
     }
     return imagesId;
   }

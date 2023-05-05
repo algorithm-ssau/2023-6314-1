@@ -34,19 +34,43 @@ public enum ProductMapper {;
         );
       }
     }
+
+    @Component
+    public static final class Update {
+      public Product toDomain(ProductDto.Request.Update dto, List<Long> imagesId) {
+        return new Product(
+          dto.getName(),
+          dto.getDescription(),
+          dto.getCost(),
+          dto.getCountInStock(),
+          imagesId
+        );
+      }
+    }
   }
 
   public enum Response {;
     @Component
     public static final class Common {
-      public ProductDto.Response.Common toDto(Product product, byte[][] imagesBytes) {
+      public ProductDto.Response.Common toDto(Product product, List<String> contents) {
         return new ProductDto.Response.Common(
           product.getId(),
           product.getName(),
           product.getDescription(),
           product.getCost(),
           product.getCountInStock(),
-          imagesBytes
+          contents
+        );
+      }
+
+      public ProductDto.Response.Common toDto(Product product, String... contents) {
+        return new ProductDto.Response.Common(
+          product.getId(),
+          product.getName(),
+          product.getDescription(),
+          product.getCost(),
+          product.getCountInStock(),
+          List.of(contents)
         );
       }
     }

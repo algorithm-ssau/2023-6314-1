@@ -1,7 +1,7 @@
 package com.team.imageservice.data;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,10 +14,11 @@ public class Image {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  @NotNull
-  private byte[] content;
+  @NotBlank
+  @Column(columnDefinition = "text")
+  private String content;
 
-  public Image(@NotNull byte[] content) {
+  public Image(@NotBlank String content) {
     this.content = content;
   }
 }

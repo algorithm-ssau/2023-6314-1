@@ -1,16 +1,14 @@
 package com.team.identityprovider.persistence.repository;
 
 import com.team.identityprovider.persistence.model.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
 
-@Component
-@Slf4j
+@Repository
 public class UserRepositoryAuthenticateProjection {
   private final JdbcTemplate jdbcTemplate;
   private final RowMapper<User> userAuthRowMapper;
@@ -23,15 +21,12 @@ public class UserRepositoryAuthenticateProjection {
   }
 
   public User findByEmail(String email) {
-    var user = jdbcTemplate.query(
+    return jdbcTemplate.query(
       "select id, name, email, password, active, role from users where email = ? limit 1",
       new String[]{email},
       new int[]{Types.VARCHAR},
       userAuthRowMapper
     ).get(0);
-    log.debug("Selected user: {} from users database", user);
-
-    return user;
   }
 }
 
