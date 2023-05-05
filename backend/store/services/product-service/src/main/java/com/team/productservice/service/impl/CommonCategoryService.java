@@ -6,7 +6,9 @@ import com.team.productservice.service.api.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CommonCategoryService implements CategoryService {
@@ -41,5 +43,25 @@ public class CommonCategoryService implements CategoryService {
       () -> new IllegalArgumentException("Category with id " + id + " not found!"));
     repository.deleteById(id);
     return deleted;
+  }
+
+  @Override
+  public Set<Category> findRootSubs() {
+    Category root = repository.findRoot();
+    return root.getSubCategories();
+  }
+
+  @Override
+  public Set<Long> findAllSubsToEnd(Long id) {
+    Category category = findById(id);
+    Set<Long> allSubsIds = new HashSet<>();
+    fillSubs(allSubsIds, category);
+    return allSubsIds;
+  }
+
+  private void fillSubs(Set<Long> ids, Category root) {
+    Set<Category> subs = root.getSubCategories();
+    ids.addAll(subs.stream().map(Category::getId).collect(Collectors.toSet()));
+    subs.forEach(c -> fillSubs(ids, c));
   }
 }

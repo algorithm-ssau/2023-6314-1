@@ -9,4 +9,6 @@ public interface CategoryService {
   Category findById(Long id);
   Set<Category> findByProjection(Set<Long> ids);
   Category deleteById(Long id);
+  Set<Category> findRootSubs();
+  Set<Long> findAllSubsToEnd(Long id);
 }
