@@ -44,7 +44,7 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<List<Response.Common>> getAll() {
     var responses = productService.getAll().stream()
-      .map(product -> respCommonMapper.toDto(product, obtainContents(product)))
+      .map(product -> respCommonMapper.toDto(product, obtainImages(product)))
       .toList();
     return ResponseEntity.ok().body(responses);
   }
@@ -52,12 +52,23 @@ public class ProductController {
   @GetMapping("/{id}")
   public ResponseEntity<Response.Common> get(@PathVariable Long id) {
     Product product = productService.getById(id);
-    var common = respCommonMapper.toDto(product, obtainContents(product));
+    var common = respCommonMapper.toDto(product, obtainMainImage(product));
     return ResponseEntity.ok().body(common);
   }
 
-  private List<String> obtainContents(Product product) {
+  @GetMapping("/with-all-images/{id}")
+  public ResponseEntity<Response.Common> getWithAllImages(@PathVariable Long id) {
+    Product product = productService.getById(id);
+    var common = respCommonMapper.toDto(product, obtainImages(product));
+    return ResponseEntity.ok().body(common);
+  }
+
+  private List<String> obtainImages(Product product) {
     return imageServiceClient.getAll(product.getImageIds());
+  }
+
+  private String obtainMainImage(Product product) {
+    return imageServiceClient.get(product.getImageIds().get(0));
   }
 
   @PostMapping

@@ -3,7 +3,6 @@ package com.team.identityprovider.service.impl;
 import com.team.identityprovider.persistence.model.RefreshSession;
 import com.team.identityprovider.persistence.repository.RefreshSessionRepository;
 import com.team.identityprovider.service.contract.RefreshSessionService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Slf4j
 @Transactional
 public class CommonRefreshSessionService implements RefreshSessionService {
-  private static final Long MAX_COUNT_OF_SESSIONS_BY_USER = 5L;
+  private static final Long MAX_COUNT_OF_SESSIONS_BY_USER = 2L;
   private final RefreshSessionRepository repository;
 
   @Autowired
@@ -31,14 +29,11 @@ public class CommonRefreshSessionService implements RefreshSessionService {
     updateIfExists(savedRefreshSessions, newRefreshSession);
 
     repository.save(newRefreshSession);
-    log.debug("Saved refresh session: {}", newRefreshSession);
   }
 
   private void deleteAllByUserIfExceeded(Long userId, long currentCountOfSessionByUser) {
     if (currentCountOfSessionByUser > MAX_COUNT_OF_SESSIONS_BY_USER) {
       repository.deleteAllByUserId(userId);
-      log.debug("Refresh session by user with id: {} > {}, deleted him all sessions",
-        userId, MAX_COUNT_OF_SESSIONS_BY_USER);
     }
   }
 
@@ -49,7 +44,6 @@ public class CommonRefreshSessionService implements RefreshSessionService {
     for (RefreshSession savedRefreshSession : savedRefreshSessions) {
       if (isEqualsUserForSessions(savedRefreshSession, newRefreshSession)) {
         newRefreshSession.setId(savedRefreshSession.getId());
-        log.debug("Updated refresh session: {} to {}", savedRefreshSession, newRefreshSession);
         break;
       }
     }
@@ -62,15 +56,17 @@ public class CommonRefreshSessionService implements RefreshSessionService {
   }
 
   @Override
+  public void deleteByUserId(long userId) {
+    repository.deleteByUserId(userId);
+  }
+
+  @Override
   public void deleteByToken(String refreshToken) {
     repository.deleteByRefreshToken(refreshToken);
-    log.debug("Deleted refresh session by token: {}", refreshToken);
   }
 
   @Override
   public boolean existsByToken(String refreshToken) {
-    var existsByRefreshToken = repository.existsByRefreshToken(refreshToken);
-    log.debug("Checked refresh session token match requested token");
-    return existsByRefreshToken;
+    return repository.existsByRefreshToken(refreshToken);
   }
 }

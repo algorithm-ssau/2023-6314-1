@@ -3,23 +3,22 @@ BIGreen='\033[1;92m'
 NC='\033[0m'
 LRed='\033[1;31m'
 
-#Docker clean-------------------------------------------------------------------------
-echo -e "\n-------- ${BIGreen}DOCKER: force killing all containers exclude databases${NC} --------\n"
-#docker rm -f $(docker container ls -a | grep -v "image-database" | grep -v "order-database" | grep -v "product-database" | grep -v "user-database" | awk 'NR>1 {print $1}')
-docker rm -f $(docker container ls -a | grep -v "kafka" | grep -v "kafdrop" | grep -v "zookeeper" | awk 'NR>1 {print $1}')
+#Docker clean------------------------------------------------------------------------------------
+echo -e "\n-------- ${BIGreen}DOCKER: force killing all containers${NC} --------\n"
+docker rm -f $(docker container ls -a | awk 'NR>1 {print $1}')
 
 echo -e "\n-------- ${BIGreen}DOCKER: removing all images exclude postgres${NC} --------\n"
-docker rmi -f $(docker images | grep -v "postgres" | awk 'NR>1 {print $1}')
+docker rmi $(docker images | grep -v "postgres" | awk 'NR>1 {print $1}')
 
 echo -e "\n-------- ${BIGreen}DOCKER: removing all volumes${NC} --------\n"
 docker volume rm $(docker volume ls -qf dangling=true)
 
-#Maven offline build------------------------------------------------------------------
+#Maven offline build-----------------------------------------------------------------------------
 echo -e "\n-------- ${BIGreen}MAVEN: start offline clean package${NC} --------\n"
 cd ../
 ./mvnw -am -o -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -T 2C clean package
 
-#Caching offline build, else build online---------------------------------------------
+#Caching offline build, else build online--------------------------------------------------------
 if [ $? -eq 0 ]; then
     echo -e "${BIGreen}MAVEN: success offline build${NC}"
 else
@@ -29,7 +28,7 @@ else
     ./mvnw -am clean -Dmaven.test.skip -Dmaven.javadoc.skip=true -T 2C clean package
 fi
 
-#Docker compose up
+#Docker compose up-------------------------------------------------------------------------------
 echo -e "\n-------- ${BIGreen}DOCKER: docker-compose up${NC} --------\n"
 cd ./services/
-docker-compose up
+docker-compose up --build

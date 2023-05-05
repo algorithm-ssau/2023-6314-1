@@ -1,21 +1,15 @@
 package com.team.identityprovider.service.contract;
 
-import com.team.identityprovider.rest.dto.RequestMetadata;
-import com.team.identityprovider.security.details.ProjectionUserDetails;
+import com.team.basejwt.properties.TokenMetadata;
+import io.jsonwebtoken.Claims;
 
 import java.util.Date;
 
 public interface TokenService {
-  TokenGroup generateTokenGroup(ProjectionUserDetails user, RequestMetadata requestMetadata);
-  TokenGroup refreshByToken(String refreshToken, RequestMetadata requestMetadata);
+  String generateToken(Claims claims, TokenMetadata tokenMetadata);
 
-  interface DateGroup {
+  interface Interval {
     Date getCreated();
     Date getExpired();
-  }
-
-  interface TokenGroup {
-    String getAccessToken();
-    String getRefreshToken();
   }
 }
