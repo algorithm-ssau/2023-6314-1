@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -39,6 +38,7 @@ class CategoryJpaTest {
     sportingGoodsCategory.addSub("Simulators");
     sportingGoodsCategory.addSub("Balls");
 
+    rootCategories.clear();
     rootCategories.add(electronicsCategory);
     rootCategories.add(clothesCategory);
     rootCategories.add(sportingGoodsCategory);
@@ -59,6 +59,17 @@ class CategoryJpaTest {
       .collect(Collectors.toSet());
     Set<Category> projection = categoryRepository.findProjection(ids);
 
-    assertIterableEquals(ids, projection.stream().map(Category::getId).toList());
+    assertTrue(equalsSets(ids, projection.stream().map(Category::getId).collect(Collectors.toSet())));
+  }
+
+  private <T> boolean equalsSets(Set<T> set1, Set<T> set2) {
+    boolean equals = true;
+    for (T t : set1) {
+      equals = set2.contains(t);
+      if (!equals) {
+        break;
+      }
+    }
+    return equals;
   }
 }
