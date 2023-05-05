@@ -18,6 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "products")
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -45,7 +46,7 @@ public class Product {
   @JoinColumn(name = "product", nullable = false)
   private List<Long> imageIds;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(nullable = false, name = "category")
   private Category category;
 }
