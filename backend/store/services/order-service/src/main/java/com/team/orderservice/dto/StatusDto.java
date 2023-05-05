@@ -21,11 +21,11 @@ public enum StatusDto {;
       public Common(@JsonProperty("name") String name) {
         boolean existStatus = Arrays.stream(Status.values())
           .anyMatch(status -> status.getName().equals(name));
-
-        if (existStatus) {
-          this.name = name;
+        if (!existStatus) {
+          throw new StatusNotFoundException("Status type: " + name + " is not supported");
         }
-        throw new StatusNotFoundException("Status type: " + name + " is not supported");
+
+        this.name = name;
       }
     }
   }
@@ -39,11 +39,11 @@ public enum StatusDto {;
       public Common(@JsonProperty("name") String name) {
         boolean existStatus = Arrays.stream(Status.values())
           .anyMatch(status -> status.getName().equals(name));
-
-        if (existStatus) {
-          this.name = name;
+        if (!existStatus) {
+          throw new StatusNotFoundException("Status type: " + name + " is not supported");
         }
-        throw new StatusNotFoundException("Status type: " + name + " is not supported");
+
+        this.name = name;
       }
     }
   }
