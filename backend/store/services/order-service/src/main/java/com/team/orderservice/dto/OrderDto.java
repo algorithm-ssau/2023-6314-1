@@ -31,7 +31,7 @@ public enum OrderDto {;
     {
       AddressDto.Request.Common address;
       StatusDto.Request.Common status;
-      List<ProductDto.Response.Common> products
+      List<ProductDto.Response.Common> products;
       OffsetDateTime payloadDateTime;
       OffsetDateTime arrivalDateTime;
       UserDto.Response.Common user;
