@@ -1,7 +1,7 @@
 package com.team.imageservice.rest;
 
 import com.team.imageservice.data.Image;
-import com.team.imageservice.service.api.ImageDeliveryService;
+import com.team.imageservice.service.contract.ImageDeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -3,7 +3,7 @@ package com.team.identityprovider.config;
 import com.team.identityprovider.persistence.repository.UserRepositoryAuthenticateProjection;
 import com.team.identityprovider.security.details.ProjectionUserDetailsService;
 import com.team.identityprovider.security.jwt.authentication.RefreshTokenSecurityProvider;
-import com.team.identityprovider.service.api.RefreshSessionService;
+import com.team.identityprovider.service.contract.RefreshSessionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

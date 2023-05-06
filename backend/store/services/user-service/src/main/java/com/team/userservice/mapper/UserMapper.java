@@ -40,6 +40,18 @@ public enum UserMapper {;
         );
       }
     }
+
+    @Component
+    public static final class Activation {
+      public UserDto.Response.Activation toDto(User user, String activationLink) {
+        return new UserDto.Response.Activation(
+          user.getName(),
+          user.getEmail(),
+          activationLink,
+          user.getCreated()
+        );
+      }
+    }
   }
 
   public enum Startup {;

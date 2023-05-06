@@ -8,7 +8,7 @@ echo -e "\n-------- ${BIGreen}DOCKER: force killing all containers${NC} --------
 docker rm -f $(docker container ls -a | awk 'NR>1 {print $1}')
 
 echo -e "\n-------- ${BIGreen}DOCKER: removing all images exclude postgres${NC} --------\n"
-docker rmi $(docker images | grep -v "postgres" | awk 'NR>1 {print $1}')
+docker rmi $(docker images | grep -v "postgres" | grep -v "confluentinc/cp-kafka" | grep -v "confluentinc/cp-kafka" | grep -v "confluentinc/cp-zookeper" | grep -v "obsidiandynamics/kafdrop" | grep -v "config-service"  | grep -v "discovery-service" | awk 'NR>1 {print $1}')
 
 echo -e "\n-------- ${BIGreen}DOCKER: removing all volumes${NC} --------\n"
 docker volume rm $(docker volume ls -qf dangling=true)

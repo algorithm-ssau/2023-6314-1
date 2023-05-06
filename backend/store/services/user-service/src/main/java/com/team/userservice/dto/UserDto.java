@@ -17,12 +17,11 @@ public enum UserDto {;
   private interface Role { @NotNull RoleDto getRole(); }
   private interface CreatedDateTime { @PastOrPresent OffsetDateTime getCreated(); }
   private interface UpdatedDateTime { @PastOrPresent OffsetDateTime getUpdated(); }
+  private interface ActivationLink { @NotBlank String getActivationLink(); }
 
   public enum Request {;
     @Value
-    public static class Common implements
-      Name, EmailAddress, Password, Active, Role
-    {
+    public static class Common implements Name, EmailAddress, Password, Active, Role {
       String name;
       String email;
       String password;
@@ -39,7 +38,7 @@ public enum UserDto {;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.active = true;
+        this.active = false;
         this.role = role;
       }
     }
@@ -47,9 +46,7 @@ public enum UserDto {;
 
   public enum Response {;
     @Value
-    public static class Common implements
-      Id, Name, EmailAddress, Active, Role, CreatedDateTime, UpdatedDateTime
-    {
+    public static class Common implements Id, Name, EmailAddress, Active, Role, CreatedDateTime, UpdatedDateTime {
       Long id;
       String name;
       String email;
@@ -79,21 +76,21 @@ public enum UserDto {;
     }
 
     @Value
-    public static class Activation implements Id, Active, EmailAddress, CreatedDateTime {
-      Long id;
-      Boolean active;
+    public static class Activation implements Name, EmailAddress, CreatedDateTime, ActivationLink {
+      String name;
       String email;
+      String activationLink;
       OffsetDateTime created;
 
       @JsonCreator
       public Activation(
-        @JsonProperty("id") Long id,
+        @JsonProperty("name") String name,
         @JsonProperty("email") String email,
-        @JsonProperty("active") Boolean active,
+        @JsonProperty("activationLink") String activationLink,
         @JsonProperty("created") OffsetDateTime created
       ) {
-        this.id = id;
-        this.active = active;
+        this.name = name;
+        this.activationLink = activationLink;
         this.email = email;
         this.created = created;
       }

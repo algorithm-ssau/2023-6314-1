@@ -9,7 +9,7 @@ import com.team.orderservice.dto.UserDto;
 import com.team.orderservice.mapper.OrderMapper;
 import com.team.orderservice.rest.client.product.ProductServiceClient;
 import com.team.orderservice.rest.client.user.UserServiceClient;
-import com.team.orderservice.service.OrderService;
+import com.team.orderservice.service.contract.OrderService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
