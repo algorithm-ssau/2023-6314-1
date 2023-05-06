@@ -2,7 +2,7 @@ package com.team.identityprovider.security.jwt.authentication;
 
 import com.team.basejwt.properties.TokenMetadata;
 import com.team.basejwt.service.JwtSecurityProvider;
-import com.team.identityprovider.service.api.RefreshSessionService;
+import com.team.identityprovider.service.contract.RefreshSessionService;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
