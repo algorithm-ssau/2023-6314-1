@@ -2,7 +2,7 @@ package com.team.productservice.service.impl;
 
 import com.team.productservice.data.Category;
 import com.team.productservice.repository.CategoryRepository;
-import com.team.productservice.service.api.CategoryService;
+import com.team.productservice.service.contract.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

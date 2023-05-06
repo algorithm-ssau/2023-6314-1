@@ -3,7 +3,7 @@ package com.team.productservice.rest.server;
 import com.team.productservice.data.Category;
 import com.team.productservice.dto.CategoryDto;
 import com.team.productservice.mapper.CategoryMapper;
-import com.team.productservice.service.api.CategoryService;
+import com.team.productservice.service.contract.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

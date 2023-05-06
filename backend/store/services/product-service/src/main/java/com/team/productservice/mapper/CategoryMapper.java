@@ -2,7 +2,7 @@ package com.team.productservice.mapper;
 
 import com.team.productservice.data.Category;
 import com.team.productservice.dto.CategoryDto;
-import com.team.productservice.service.api.CategoryService;
+import com.team.productservice.service.contract.CategoryService;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
