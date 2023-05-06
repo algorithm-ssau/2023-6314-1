@@ -14,6 +14,7 @@ import java.security.Key;
 @Configuration
 @PropertySource("classpath:activate-token.properties")
 public class TokenConfig {
+
   @Value("${jwt.token.activate.secret}")
   private String activateSecret;
 

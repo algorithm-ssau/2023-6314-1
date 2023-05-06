@@ -1,6 +1,5 @@
 package com.team.userservice.service.impl;
 
-import com.team.jwt.exception.JwtAuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,7 +22,7 @@ public class TokenProvider {
     try {
       return !extractTokenClaims(token).getExpiration().before(new Date());
     } catch (JwtException | IllegalArgumentException ex) {
-      throw new JwtAuthenticationException("JWT token is expired or invalid");
+      throw new JwtException("JWT token is expired or invalid");
     }
   }
 

@@ -36,7 +36,7 @@ public class ActivationSender {
       String message = objectMapper.writeValueAsString(dto);
       kafkaTemplate.send(activationTopic, message);
       log.info("SEND activation with name: {} email: {}, created date: {}",
-        dto.getName(), dto.getEmail(), dto.getCreatedDateTime());
+        dto.getName(), dto.getEmail(), dto.getCreated());
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
