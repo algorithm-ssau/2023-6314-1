@@ -18,18 +18,6 @@ public class MailConfig {
   @Value("${mail.password}")
   private String mailPassword;
 
-  @Value("${mail.transport.protocol}")
-  private String transportProtocol;
-
-  @Value("${mail.smtp.auth}")
-  private boolean auth;
-
-  @Value("${mail.smtp.starttls.enable}")
-  private boolean startTls;
-
-  @Value("${mail.debug}")
-  private boolean debugMode;
-
   @Bean
   public JavaMailSender mailRuSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -39,10 +27,8 @@ public class MailConfig {
     mailSender.setPassword(mailPassword);
 
     Properties properties = mailSender.getJavaMailProperties();
-    properties.put("mail.transport.protocol", transportProtocol);
-    properties.put("mail.smtp.auth", auth);
-    properties.put("mail.smtp.starttls.enable", startTls);
-    properties.put("mail.debug", debugMode);
+    properties.put("mail.smtp.auth", true);
+    properties.put("mail.smtp.starttls.enable", true);
     return mailSender;
   }
 }
