@@ -6,13 +6,15 @@ import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import { useContext } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
-
+import SigninScreen from './screens/SigninScreen';
+import SignupScreen from './screens/SignupScreen';
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
@@ -20,6 +22,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="d-flex flex-column site-container">
+    <ToastContainer position="bottom-center" limit={1} />
       <header>
          <Navbar bg="dark" variant="dark">
             <Container>
@@ -28,7 +31,7 @@ function App() {
               </LinkContainer>
               <Nav className="me-auto">
                 <Link to="/cart" className="nav-link">
-                  Cart
+                  Корзина
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg="danger">
                       {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
@@ -44,6 +47,8 @@ function App() {
           <Routes>
             <Route path='/product/:id'element={<ProductScreen/>}/>
             <Route path="/cart" element={<CartScreen />} />
+            <Route path="/signin" element={<SigninScreen />} />
+            <Route path="/signup" element={<SignupScreen />} />
             <Route path='/'element={<HomeScreen/>}/>
           </Routes> 
         </Container>                  

@@ -40,6 +40,9 @@ public class Order {
   @Column(name = "arrival_date_time", columnDefinition = "timestamp with time zone")
   private OffsetDateTime arrivalDateTime;
 
+  @Enumerated(EnumType.STRING)
+  private Status status = Status.CREATED;
+
   public Order(
     Address arrivalAddress,
     List<Long> products,
@@ -61,5 +64,9 @@ public class Order {
     this.products = products;
     this.userId = userId;
     this.arrivalDateTime = arrivalDateTime;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 }

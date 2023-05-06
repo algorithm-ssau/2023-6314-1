@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
+import {toast} from "react-toastify"
 
 import { Helmet } from 'react-helmet-async';
 
@@ -63,6 +64,7 @@ const ProductScreen=()=>{
           type: 'CART_ADD_ITEM',
           payload: { ...product, quantity },
         });
+        toast("Товар добавлен в коризну");
       };      
 
      return loading ? (
@@ -87,9 +89,9 @@ const ProductScreen=()=>{
                 </Helmet>
                 <h1>{product.name}</h1>
               </ListGroup.Item>              
-              <ListGroup.Item>Price : ${product.cost}</ListGroup.Item>
+              <ListGroup.Item>Цена : ₽{product.cost}</ListGroup.Item>
               <ListGroup.Item>
-                Description:
+                Описание:
                 <p>{product.description}</p>
               </ListGroup.Item>
             </ListGroup>
@@ -100,18 +102,18 @@ const ProductScreen=()=>{
                 <ListGroup variant="flush">
                   <ListGroup.Item>
                     <Row>
-                      <Col>Price:</Col>
-                      <Col>${product.cost}</Col>
+                      <Col>Цена:</Col>
+                      <Col>₽{product.cost}</Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
-                      <Col>Status:</Col>
+                      <Col>Статус:</Col>
                       <Col>
                         {product.countInStock > 0 ? (
-                          <Badge bg="success">In Stock</Badge>
+                          <Badge bg="success">В наличие</Badge>
                         ) : (
-                          <Badge bg="danger">Unavailable</Badge>
+                          <Badge bg="danger">Недоступно</Badge>
                         )}
                       </Col>
                     </Row>
@@ -121,7 +123,7 @@ const ProductScreen=()=>{
                     <ListGroup.Item>
                       <div className="d-grid">
                         <Button onClick={addToCartHandler} variant="primary">
-                          Add to Cart
+                          Добавить в корзину
                         </Button>
                       </div>
                     </ListGroup.Item>
