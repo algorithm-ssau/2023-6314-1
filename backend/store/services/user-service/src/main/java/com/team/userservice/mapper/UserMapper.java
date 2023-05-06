@@ -47,8 +47,8 @@ public enum UserMapper {;
         return new UserDto.Response.Activation(
           user.getName(),
           user.getEmail(),
-          user.getCreated(),
-          activationLink
+          activationLink,
+          user.getCreated()
         );
       }
     }
