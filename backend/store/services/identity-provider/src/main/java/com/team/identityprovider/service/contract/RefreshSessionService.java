@@ -1,4 +1,4 @@
-package com.team.identityprovider.service.api;
+package com.team.identityprovider.service.contract;
 
 import com.team.identityprovider.persistence.model.RefreshSession;
 

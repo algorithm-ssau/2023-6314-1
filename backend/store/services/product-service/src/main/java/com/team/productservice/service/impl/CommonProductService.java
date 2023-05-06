@@ -3,7 +3,7 @@ package com.team.productservice.service.impl;
 import com.team.productservice.data.Product;
 import com.team.productservice.exception.ProductNotFoundException;
 import com.team.productservice.repository.ProductRepository;
-import com.team.productservice.service.api.ProductService;
+import com.team.productservice.service.contract.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

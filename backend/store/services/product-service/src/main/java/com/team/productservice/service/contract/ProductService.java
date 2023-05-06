@@ -1,4 +1,4 @@
-package com.team.productservice.service.api;
+package com.team.productservice.service.contract;
 
 import com.team.productservice.data.Product;
 

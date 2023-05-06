@@ -5,6 +5,7 @@ import com.team.jwtcommon.filter.AccessTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
+@ComponentScan("com.team.jwtcommon")
 public class SecurityConfig {
   private final AccessTokenFilter accessTokenFilter;
 

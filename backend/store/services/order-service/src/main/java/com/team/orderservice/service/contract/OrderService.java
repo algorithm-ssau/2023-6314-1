@@ -1,4 +1,4 @@
-package com.team.orderservice.service;
+package com.team.orderservice.service.contract;
 
 import com.team.orderservice.data.Order;
 

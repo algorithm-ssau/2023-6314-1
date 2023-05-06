@@ -44,7 +44,7 @@ public class User {
   @Column(name = "updated")
   private OffsetDateTime updated = created;
 
-  private Boolean active = true;
+  private Boolean active;
 
   public User(String name, String email, String password, Role role, Boolean active) {
     this.name = name;

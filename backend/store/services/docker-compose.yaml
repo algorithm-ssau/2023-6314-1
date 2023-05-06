@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.9"
 
 services:
   config-service:
@@ -7,7 +7,7 @@ services:
     image: config-service
     ports:
       - "8888:8888"
-    restart: always
+    restart: "on-failure"
 
   discovery-service:
     container_name: discovery-service
@@ -17,7 +17,7 @@ services:
       - "8761:8761"
     depends_on:
       - config-service
-    restart: always
+    restart: "on-failure"
 
   gateway-service:
     container_name: gateway-service
@@ -32,7 +32,66 @@ services:
       - user-service
       - order-service
       - identity-provider
-    restart: always
+    restart: "on-failure"
+
+  notification-service:
+    container_name: notification-service
+    build: notification-service/
+    image: notification-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8005:8005"
+    depends_on:
+      - config-service
+      - discovery-service
+      - user-service
+      - kafka
+      - kafdrop
+    restart: "on-failure"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    restart: "on-failure"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    volumes:
+      - zookeeper-secrets:/etc/zookeeper/secrets
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    restart: "on-failure"
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_HOSTNAME: kafka
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    volumes:
+      - kafka-secrets:/etc/kafka/secrets
+      - kafka-data:/var/lib/kafka/data
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    restart: "on-failure"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
 
   product-service:
     container_name: product-service
@@ -45,19 +104,22 @@ services:
       - image-service
       - discovery-service
       - config-service
-    restart: always
+    restart: "on-failure"
 
   user-service:
     container_name: user-service
     build: user-service/
     image: user-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
     ports:
       - "8002:8002"
     depends_on:
+      - kafka
       - user-database
       - discovery-service
       - config-service
-    restart: always
+    restart: "on-failure"
 
   order-service:
     container_name: order-service
@@ -69,7 +131,7 @@ services:
       - order-database
       - discovery-service
       - config-service
-    restart: always
+    restart: "on-failure"
 
   image-service:
     container_name: image-service
@@ -79,7 +141,7 @@ services:
       - config-service
       - discovery-service
       - image-database
-    restart: always
+    restart: "on-failure"
 
   identity-provider:
     container_name: identity-provider
@@ -92,7 +154,7 @@ services:
       - user-service
       - discovery-service
       - config-service
-    restart: on-failure
+    restart: "on-failure"
 
   order-database:
     container_name: order-database
@@ -104,7 +166,7 @@ services:
     volumes:
       - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - order-database-volume:/var/lib/postgresql/data
-    restart: always
+    restart: "on-failure"
 
   user-database:
     container_name: user-database
@@ -116,7 +178,7 @@ services:
     volumes:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - user-database-volume:/var/lib/postgresql/data
-    restart: always
+    restart: "on-failure"
 
   image-database:
     container_name: image-database
@@ -128,7 +190,7 @@ services:
     volumes:
       - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - image-database-volume:/var/lib/postgresql/data
-    restart: always
+    restart: "on-failure"
 
   product-database:
     container_name: product-database
@@ -140,7 +202,7 @@ services:
     volumes:
       - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - product-database-volume:/var/lib/postgresql/data
-    restart: always
+    restart: "on-failure"
 
 #  python-service:
 #    container_name: python-service
@@ -154,3 +216,8 @@ volumes:
   user-database-volume:
   order-database-volume:
   image-database-volume:
+  kafka-secrets:
+  kafka-data:
+  zookeeper-secrets:
+  zookeeper-data:
+  zookeeper-logs:
