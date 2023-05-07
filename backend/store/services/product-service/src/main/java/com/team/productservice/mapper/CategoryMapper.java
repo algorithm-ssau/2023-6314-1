@@ -18,9 +18,14 @@ public enum CategoryMapper {;
       }
 
       public Category toDomain(CategoryDto.Request.Common dto) {
+        Long parentId = dto.getParentId();
+        Category parentCategory = null;
+        if (parentId != null) {
+          parentCategory = categoryService.findById(parentId);
+        }
         return Category.builder()
           .name(dto.getName())
-          .parentCategory(categoryService.findById(dto.getParentId()))
+          .parentCategory(parentCategory)
           .subCategories(categoryService.findByProjection(dto.getSubs()))
           .build();
       }
@@ -31,10 +36,15 @@ public enum CategoryMapper {;
     @Component
     public static final class Common {
       public CategoryDto.Response.Common toDto(Category category) {
+        Category parentCategory = category.getParentCategory();
+        Long parentId = null;
+        if (parentCategory != null) {
+          parentId = parentCategory.getId();
+        }
         return new CategoryDto.Response.Common(
           category.getId(),
           category.getName(),
-          category.getParentCategory().getId(),
+          parentId,
           category.getSubCategories().stream().map(Category::getId).collect(Collectors.toSet())
         );
       }
