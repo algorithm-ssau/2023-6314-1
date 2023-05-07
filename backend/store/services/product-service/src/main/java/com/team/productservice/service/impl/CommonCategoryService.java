@@ -55,6 +55,7 @@ public class CommonCategoryService implements CategoryService {
   public Set<Long> findAllSubsToEnd(Long id) {
     Category category = findById(id);
     Set<Long> allSubsIds = new HashSet<>();
+    allSubsIds.add(category.getId());
     fillSubs(allSubsIds, category);
     return allSubsIds;
   }
