@@ -113,6 +113,14 @@ class CommonCategoryServiceTest {
     assertEquals(expectedSize, actualSize);
   }
 
+  @Test
+  void shouldFindAllSubsToEnd() {
+    findByIdMockModifier();
+
+    Set<Long> allSubsToEnd = service.findAllSubsToEnd(0L);
+    assertNotEquals(0, allSubsToEnd.size());
+  }
+
   private void saveMockModifier() {
     doAnswer(invocation -> savepointDatabaseWrapper.add(invocation.getArgument(0)))
       .when(categoryRepository)
@@ -137,4 +145,6 @@ class CommonCategoryServiceTest {
       .when(categoryRepository)
       .deleteById(anyLong());
   }
+
+
 }
