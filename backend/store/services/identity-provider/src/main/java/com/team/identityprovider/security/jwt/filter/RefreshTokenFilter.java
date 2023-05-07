@@ -17,7 +17,7 @@ public class RefreshTokenFilter extends AbstractTokenFilter {
 
   @Override
   protected Optional<String> resolveToken(HttpServletRequest request) {
-    var cookies = request.getCookies();
+    Cookie[] cookies = request.getCookies();
     if (cookies == null) return Optional.empty();
 
     for (Cookie cookie : cookies) {

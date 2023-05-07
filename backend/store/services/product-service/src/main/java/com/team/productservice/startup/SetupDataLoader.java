@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Transactional
 @Profile("dev")
 public class SetupDataLoader {
   private boolean firstCall = false;
@@ -48,10 +50,10 @@ public class SetupDataLoader {
   private void setup() {
     if (productRepository.count() == 0) {
       for (SetupProduct setupProduct : SetupProduct.values()) {
-        List<String> allFilesContents = Arrays.stream(readAllFilesBytes(setupProduct.getImagePaths()))
+        List<String> imagesContent = Arrays.stream(readAllFilesBytes(setupProduct.getImagePaths()))
           .map(base64ViewService::view)
           .toList();
-        List<Long> imagesId = imageServiceClient.saveAll(allFilesContents);
+        List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
         Product product = setupProductMapper.toDomain(setupProduct, imagesId);
         productRepository.save(product);
       }

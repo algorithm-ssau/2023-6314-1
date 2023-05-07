@@ -2,6 +2,7 @@ package com.team.basejwt.filter;
 
 import com.team.basejwt.authentication.JwtAuthenticationToken;
 import com.team.basejwt.properties.TokenMetadata;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,12 +33,15 @@ public abstract class AbstractTokenFilter extends OncePerRequestFilter {
   public final void doFilterInternal(@NonNull HttpServletRequest request,
                                      @NonNull HttpServletResponse response,
                                      @NonNull FilterChain filterChain) throws ServletException, IOException {
-
-    Optional<String> tokenCandidate = resolveToken(request);
-    if (tokenCandidate.isPresent()) {
-      var authenticationToken = new JwtAuthenticationToken(tokenCandidate.get(), tokenMetadata);
-      var authentication = authenticationManager.authenticate(authenticationToken);
-      securityContextHolderStrategy.getContext().setAuthentication(authentication);
+    try {
+      Optional<String> tokenCandidate = resolveToken(request);
+      if (tokenCandidate.isPresent()) {
+        var authenticationToken = new JwtAuthenticationToken(tokenCandidate.get(), tokenMetadata);
+        var authentication = authenticationManager.authenticate(authenticationToken);
+        securityContextHolderStrategy.getContext().setAuthentication(authentication);
+      }
+    } catch (JwtException ex) {
+      log.error(ex.getMessage());
     }
     filterChain.doFilter(request, response);
   }

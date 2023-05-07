@@ -1,4 +1,4 @@
-package com.team.identityprovider.rest.dto;
+package com.team.identityprovider.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

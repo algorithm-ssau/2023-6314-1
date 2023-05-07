@@ -48,7 +48,7 @@ public class SecurityConfig {
   private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
     registry.requestMatchers("/v3/api-docs/**").permitAll();
     registry.requestMatchers("/swagger-ui/**").permitAll();
-    registry.requestMatchers(HttpMethod.POST, "/error").permitAll();
+    registry.requestMatchers("/error").permitAll();
     registry.requestMatchers(HttpMethod.GET, "/api/orders").hasRole("ADMIN");
     registry.requestMatchers(HttpMethod.POST, "/api/orders").hasRole("ADMIN");
     registry.requestMatchers(HttpMethod.GET, "/api/orders/mine").hasAnyRole("USER", "ADMIN");

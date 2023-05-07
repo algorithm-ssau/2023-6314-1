@@ -1,8 +1,10 @@
 package com.team.productservice.rest.server;
 
+import com.team.productservice.data.Category;
 import com.team.productservice.data.Product;
 import com.team.productservice.mapper.ProductMapper;
 import com.team.productservice.rest.client.ImageServiceClient;
+import com.team.productservice.service.contract.CategoryService;
 import com.team.productservice.service.contract.ProductService;
 import com.team.productservice.service.impl.Base64ViewService;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ import static com.team.productservice.dto.ProductDto.Response;
 @RequestMapping("/api/products")
 public class ProductController {
   private final ProductService productService;
+  private final CategoryService categoryService;
   private final ProductMapper.Request.Create reqCreateMapper;
   private final ProductMapper.Request.Update reqUpdateMapper;
   private final ProductMapper.Response.Common respCommonMapper;
@@ -28,12 +31,14 @@ public class ProductController {
 
   @Autowired
   public ProductController(ProductService productService,
+                           CategoryService categoryService,
                            ProductMapper.Request.Create reqCreateMapper,
                            ProductMapper.Response.Common respCommonMapper,
                            ProductMapper.Request.Update reqUpdateMapper,
                            ImageServiceClient imageServiceClient,
                            Base64ViewService base64ViewService) {
     this.productService = productService;
+    this.categoryService = categoryService;
     this.reqCreateMapper = reqCreateMapper;
     this.respCommonMapper = respCommonMapper;
     this.reqUpdateMapper = reqUpdateMapper;
@@ -73,12 +78,10 @@ public class ProductController {
 
   @PostMapping
   public ResponseEntity<Response.Common> create(@Valid @RequestBody Request.Create dto) {
-    List<String> imagesContent = Arrays.stream(dto.getImagesBytes())
-      .map(base64ViewService::view)
-      .toList();
-    List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
-    Product product = reqCreateMapper.toDomain(dto, imagesId);
-    productService.save(product);
+    List<String> base64Images = base64ViewService.viewList(dto.getImagesBytes());
+    List<Long> savedImagesIds = imageServiceClient.saveAll(base64Images);
+    Category category = categoryService.findById(dto.getCategoryId());
+    productService.save(reqCreateMapper.toDomain(dto, savedImagesIds, category));
     return ResponseEntity.ok().build();
   }
 
@@ -103,5 +106,15 @@ public class ProductController {
   public ResponseEntity<?> delete(@PathVariable Long id) {
     productService.deleteById(id);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/filter/{category-id}")
+  public ResponseEntity<List<Response.Common>> findByCategory(@PathVariable("category-id") Long id) {
+    List<Product> products = productService.findAllByCategoryId(id);
+    List<Response.Common> dtos = products.stream().map(p -> {
+      String mainImage = obtainMainImage(p);
+      return respCommonMapper.toDto(p, mainImage);
+    }).toList();
+    return ResponseEntity.ok(dtos);
   }
 }

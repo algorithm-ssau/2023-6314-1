@@ -1,4 +1,4 @@
-package com.team.identityprovider.rest.dto;
+package com.team.identityprovider.dto;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Value;

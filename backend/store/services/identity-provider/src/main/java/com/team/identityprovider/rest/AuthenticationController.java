@@ -1,9 +1,9 @@
-package com.team.identityprovider.rest.controller;
+package com.team.identityprovider.rest;
 
 import com.team.basejwt.properties.TokenMetadata;
 import com.team.identityprovider.persistence.model.RefreshSession;
-import com.team.identityprovider.rest.dto.AuthenticationDto;
-import com.team.identityprovider.rest.dto.RequestMetadata;
+import com.team.identityprovider.dto.AuthenticationDto;
+import com.team.identityprovider.dto.RequestMetadata;
 import com.team.identityprovider.security.details.ProjectionUserDetails;
 import com.team.identityprovider.service.impl.UsernamePasswordAuthenticationService;
 import io.jsonwebtoken.Claims;
@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -67,9 +69,12 @@ public class AuthenticationController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<?> logout() {
-    Claims claims = authenticationService.obtainClaimsFromAuthentication();
-    var refreshToken = tokenService.generateToken(claims, refreshTokenMetadata);
+  public ResponseEntity<?> logout(HttpServletRequest request) {
+    String refreshToken = Arrays.stream(request.getCookies())
+      .filter(cookie -> cookie.getName().equals(refreshTokenMetadata.getHeader()))
+      .findAny().orElseThrow(IllegalAccessError::new)
+      .getValue();
+
     refreshSessionService.deleteByToken(refreshToken);
     return ResponseEntity.ok().build();
   }
