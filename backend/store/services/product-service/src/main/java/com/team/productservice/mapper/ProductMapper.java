@@ -1,5 +1,6 @@
 package com.team.productservice.mapper;
 
+import com.team.productservice.data.Category;
 import com.team.productservice.data.Product;
 import com.team.productservice.dto.ProductDto;
 import com.team.productservice.startup.SetupProduct;
@@ -33,21 +34,14 @@ public enum ProductMapper {;
 
     @Component
     public static final class Create {
-      private final CategoryMapper.Request.Common mapper;
-
-      @Autowired
-      public Create(CategoryMapper.Request.Common mapper) {
-        this.mapper = mapper;
-      }
-
-      public Product toDomain(ProductDto.Request.Create dto, List<Long> imagesId) {
+      public Product toDomain(ProductDto.Request.Create dto, List<Long> imagesId, Category category) {
         return Product.builder()
           .name(dto.getName())
           .description(dto.getDescription())
           .cost(dto.getCost())
           .countInStock(dto.getCountInStock())
           .imageIds(imagesId)
-          .category(mapper.toDomain(dto.getCategory()))
+          .category(category)
           .build();
       }
     }

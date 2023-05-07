@@ -18,6 +18,7 @@ public enum ProductDto {;
   private interface CountInStock { @Positive Long getCountInStock(); }
   private interface ImagesContent { @NotNull List<String> getImagesContent(); }
   private interface ImagesBytes { @NotNull byte[][] getImagesBytes(); }
+  private interface CategoryId { @NotNull Long getCategoryId(); }
   private interface CategoryRequest { @NotNull CategoryDto.Request.Common getCategory(); }
   private interface CategoryResponse { @NotNull CategoryDto.Response.Common getCategory(); }
 
@@ -63,13 +64,13 @@ public enum ProductDto {;
     }
 
     @Value
-    public static class Create implements Name, Description, Cost, CountInStock, ImagesBytes, CategoryRequest {
+    public static class Create implements Name, Description, Cost, CountInStock, ImagesBytes, CategoryId {
       String name;
       String description;
       BigDecimal cost;
       Long countInStock;
       byte[][] imagesBytes;
-      CategoryDto.Request.Common category;
+      Long categoryId;
 
       @JsonCreator
       public Create(
@@ -78,14 +79,14 @@ public enum ProductDto {;
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
         @JsonProperty("imagesBytes") byte[][] imagesBytes,
-        @JsonProperty("category") CategoryDto.Request.Common category
+        @JsonProperty("categoryId") Long categoryId
       ) {
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.countInStock = countInStock;
         this.imagesBytes = imagesBytes;
-        this.category = category;
+        this.categoryId = categoryId;
       }
 
       @Override
