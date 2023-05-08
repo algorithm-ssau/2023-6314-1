@@ -1,6 +1,6 @@
 package com.team.userservice.service.contract;
 
-import com.team.userservice.data.User;
+import com.team.userservice.model.User;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.team.orderservice.mapper;
 
-import com.team.orderservice.data.Status;
+import com.team.orderservice.model.Status;
 import com.team.orderservice.dto.StatusDto;
 import org.springframework.stereotype.Component;
 

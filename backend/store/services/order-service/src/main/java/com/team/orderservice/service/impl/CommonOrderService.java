@@ -1,8 +1,8 @@
 package com.team.orderservice.service.impl;
 
-import com.team.orderservice.data.Order;
-import com.team.orderservice.exception.OrderNotFoundException;
-import com.team.orderservice.repository.OrderRepository;
+import com.team.orderservice.model.Order;
+import com.team.orderservice.model.exception.OrderNotFoundException;
+import com.team.orderservice.infrastructure.repository.OrderRepository;
 import com.team.orderservice.service.contract.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

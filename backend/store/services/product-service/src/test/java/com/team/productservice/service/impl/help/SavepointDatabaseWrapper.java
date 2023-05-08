@@ -1,6 +1,6 @@
 package com.team.productservice.service.impl.help;
 
-import com.team.productservice.data.Category;
+import com.team.productservice.model.Category;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,8 +1,8 @@
 package com.team.userservice.startup;
 
-import com.team.userservice.data.User;
+import com.team.userservice.model.User;
 import com.team.userservice.mapper.UserMapper;
-import com.team.userservice.repository.UserRepository;
+import com.team.userservice.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

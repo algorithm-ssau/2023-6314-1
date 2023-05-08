@@ -1,6 +1,6 @@
 package com.team.orderservice.mapper;
 
-import com.team.orderservice.data.Order;
+import com.team.orderservice.model.Order;
 import com.team.orderservice.dto.OrderDto;
 import com.team.orderservice.dto.ProductDto;
 import com.team.orderservice.dto.UserDto;

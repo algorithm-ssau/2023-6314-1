@@ -1,6 +1,6 @@
 package com.team.userservice.service.impl;
 
-import com.team.userservice.data.User;
+import com.team.userservice.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;

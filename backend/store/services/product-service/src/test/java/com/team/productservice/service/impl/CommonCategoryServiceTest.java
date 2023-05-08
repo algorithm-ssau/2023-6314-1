@@ -1,7 +1,7 @@
 package com.team.productservice.service.impl;
 
-import com.team.productservice.data.Category;
-import com.team.productservice.repository.CategoryRepository;
+import com.team.productservice.model.Category;
+import com.team.productservice.infrastructure.repository.CategoryRepository;
 import com.team.productservice.service.impl.help.SavepointDatabaseWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

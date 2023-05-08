@@ -3,7 +3,7 @@ package com.team.notificationservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.notificationservice.dto.ActivationDto;
-import com.team.notificationservice.message.mapper.SimpleMailMessageMapper;
+import com.team.notificationservice.infrastructure.mail.message.mapper.SimpleMailMessageMapper;
 import com.team.notificationservice.service.contract.MailSendingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

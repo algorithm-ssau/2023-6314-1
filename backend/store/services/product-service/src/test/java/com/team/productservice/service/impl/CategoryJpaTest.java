@@ -1,7 +1,7 @@
 package com.team.productservice.service.impl;
 
-import com.team.productservice.data.Category;
-import com.team.productservice.repository.CategoryRepository;
+import com.team.productservice.model.Category;
+import com.team.productservice.infrastructure.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

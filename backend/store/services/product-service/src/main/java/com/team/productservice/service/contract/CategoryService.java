@@ -1,6 +1,6 @@
 package com.team.productservice.service.contract;
 
-import com.team.productservice.data.Category;
+import com.team.productservice.model.Category;
 
 import java.util.Set;
 

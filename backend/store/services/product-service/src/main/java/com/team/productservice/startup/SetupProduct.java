@@ -1,6 +1,6 @@
 package com.team.productservice.startup;
 
-import com.team.productservice.data.Category;
+import com.team.productservice.model.Category;
 import lombok.Getter;
 
 import java.math.BigDecimal;

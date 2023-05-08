@@ -1,9 +1,9 @@
 package com.team.productservice.startup;
 
-import com.team.productservice.data.Product;
-import com.team.productservice.mapper.ProductMapper;
-import com.team.productservice.repository.ProductRepository;
-import com.team.productservice.rest.client.ImageServiceClient;
+import com.team.productservice.model.Product;
+import com.team.productservice.infrastructure.mapper.ProductMapper;
+import com.team.productservice.infrastructure.repository.ProductRepository;
+import com.team.productservice.infrastructure.external.ImageServiceClient;
 import com.team.productservice.service.impl.Base64ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;

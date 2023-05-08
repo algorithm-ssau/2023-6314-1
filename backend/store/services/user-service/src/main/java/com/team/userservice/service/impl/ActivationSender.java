@@ -2,7 +2,7 @@ package com.team.userservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team.userservice.data.User;
+import com.team.userservice.model.User;
 import com.team.userservice.dto.UserDto;
 import com.team.userservice.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;

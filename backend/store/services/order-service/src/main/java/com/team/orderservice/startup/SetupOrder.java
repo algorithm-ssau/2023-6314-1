@@ -1,7 +1,7 @@
 package com.team.orderservice.startup;
 
-import com.team.orderservice.data.Address;
-import com.team.orderservice.data.Coordinate;
+import com.team.orderservice.model.Address;
+import com.team.orderservice.model.Coordinate;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;

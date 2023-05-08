@@ -1,6 +1,6 @@
 package com.team.productservice.mapper;
 
-import com.team.productservice.data.Category;
+import com.team.productservice.model.Category;
 import org.junit.jupiter.api.Test;
 
 import static com.team.productservice.startup.SetupCategory.SHOES;

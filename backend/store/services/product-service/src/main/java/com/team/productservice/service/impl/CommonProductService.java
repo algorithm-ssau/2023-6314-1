@@ -1,8 +1,8 @@
 package com.team.productservice.service.impl;
 
-import com.team.productservice.data.Product;
-import com.team.productservice.exception.ProductNotFoundException;
-import com.team.productservice.repository.ProductRepository;
+import com.team.productservice.model.Product;
+import com.team.productservice.model.exception.ProductNotFoundException;
+import com.team.productservice.infrastructure.repository.ProductRepository;
 import com.team.productservice.service.contract.CategoryService;
 import com.team.productservice.service.contract.ProductService;
 import lombok.AllArgsConstructor;
