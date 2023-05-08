@@ -1,8 +1,8 @@
 package com.team.orderservice.startup;
 
-import com.team.orderservice.data.Order;
+import com.team.orderservice.model.Order;
 import com.team.orderservice.mapper.OrderMapper;
-import com.team.orderservice.repository.OrderRepository;
+import com.team.orderservice.infrastructure.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;

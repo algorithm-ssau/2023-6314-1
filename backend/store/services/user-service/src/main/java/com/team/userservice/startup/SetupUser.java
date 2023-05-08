@@ -1,6 +1,6 @@
 package com.team.userservice.startup;
 
-import com.team.userservice.data.Role;
+import com.team.userservice.model.Role;
 import lombok.Getter;
 
 @Getter

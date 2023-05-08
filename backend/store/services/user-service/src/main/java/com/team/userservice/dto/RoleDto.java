@@ -2,7 +2,7 @@ package com.team.userservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.team.userservice.exception.RoleNotFoundException;
+import com.team.userservice.model.exception.RoleNotFoundException;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package com.team.identityprovider.service.impl;
 
-import com.team.identityprovider.persistence.model.RefreshSession;
-import com.team.identityprovider.persistence.repository.RefreshSessionRepository;
+import com.team.identityprovider.model.RefreshSession;
+import com.team.identityprovider.infrastructure.repository.RefreshSessionRepository;
 import com.team.identityprovider.service.contract.RefreshSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

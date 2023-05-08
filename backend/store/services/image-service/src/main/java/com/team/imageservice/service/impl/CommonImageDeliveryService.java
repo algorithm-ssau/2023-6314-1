@@ -1,8 +1,8 @@
 package com.team.imageservice.service.impl;
 
-import com.team.imageservice.data.Image;
-import com.team.imageservice.exception.ImageNotFoundException;
-import com.team.imageservice.repository.ImageRepository;
+import com.team.imageservice.model.Image;
+import com.team.imageservice.model.exception.ImageNotFoundException;
+import com.team.imageservice.infrastructure.repository.ImageRepository;
 import com.team.imageservice.service.contract.ImageDeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.team.orderservice.mapper;
 
-import com.team.orderservice.data.Coordinate;
+import com.team.orderservice.model.Coordinate;
 import com.team.orderservice.dto.CoordinateDto;
 import org.springframework.stereotype.Component;
 

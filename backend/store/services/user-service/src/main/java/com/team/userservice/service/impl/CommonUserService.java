@@ -1,9 +1,9 @@
 package com.team.userservice.service.impl;
 
-import com.team.userservice.data.User;
-import com.team.userservice.exception.UserAlreadyExistsException;
-import com.team.userservice.exception.UserNotFoundException;
-import com.team.userservice.repository.UserRepository;
+import com.team.userservice.model.User;
+import com.team.userservice.model.exception.UserAlreadyExistsException;
+import com.team.userservice.model.exception.UserNotFoundException;
+import com.team.userservice.infrastructure.repository.UserRepository;
 import com.team.userservice.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

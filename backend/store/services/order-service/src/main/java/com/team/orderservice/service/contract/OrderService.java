@@ -1,6 +1,6 @@
 package com.team.orderservice.service.contract;
 
-import com.team.orderservice.data.Order;
+import com.team.orderservice.model.Order;
 
 import java.util.List;
 

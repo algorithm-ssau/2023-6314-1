@@ -1,6 +1,6 @@
 package com.team.imageservice.service.contract;
 
-import com.team.imageservice.data.Image;
+import com.team.imageservice.model.Image;
 
 public interface ImageDeliveryService {
   Image getById(Long id);

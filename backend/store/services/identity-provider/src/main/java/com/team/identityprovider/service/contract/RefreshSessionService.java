@@ -1,6 +1,6 @@
 package com.team.identityprovider.service.contract;
 
-import com.team.identityprovider.persistence.model.RefreshSession;
+import com.team.identityprovider.model.RefreshSession;
 
 public interface RefreshSessionService {
   void save(RefreshSession refreshSession);

@@ -2,8 +2,8 @@ package com.team.orderservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.team.orderservice.data.Status;
-import com.team.orderservice.exception.StatusNotFoundException;
+import com.team.orderservice.model.Status;
+import com.team.orderservice.model.exception.StatusNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 

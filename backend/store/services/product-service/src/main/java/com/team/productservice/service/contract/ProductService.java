@@ -1,6 +1,6 @@
 package com.team.productservice.service.contract;
 
-import com.team.productservice.data.Product;
+import com.team.productservice.model.Product;
 
 import java.util.List;
 

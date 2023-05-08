@@ -1,7 +1,7 @@
 package com.team.userservice.mapper;
 
-import com.team.userservice.data.Role;
-import com.team.userservice.data.User;
+import com.team.userservice.model.Role;
+import com.team.userservice.model.User;
 import com.team.userservice.dto.RoleDto;
 import com.team.userservice.dto.UserDto;
 import com.team.userservice.startup.SetupUser;

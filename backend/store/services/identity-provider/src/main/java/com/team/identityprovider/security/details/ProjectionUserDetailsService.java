@@ -1,6 +1,6 @@
 package com.team.identityprovider.security.details;
 
-import com.team.identityprovider.persistence.repository.UserRepositoryAuthenticateProjection;
+import com.team.identityprovider.infrastructure.repository.UserRepositoryAuthenticateProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

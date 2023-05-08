@@ -1,6 +1,6 @@
 package com.team.userservice.service.impl;
 
-import com.team.userservice.exception.UrlMatchingException;
+import com.team.userservice.service.exception.UrlMatchingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
