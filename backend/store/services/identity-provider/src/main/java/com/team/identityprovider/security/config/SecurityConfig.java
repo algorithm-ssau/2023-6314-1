@@ -46,6 +46,9 @@ public class SecurityConfig {
   }
 
   private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+    registry.requestMatchers("/v3/api-docs/**").permitAll();
+    registry.requestMatchers("/swagger-ui/**").permitAll();
+    registry.requestMatchers("/error").permitAll();
     registry.requestMatchers(HttpMethod.POST, "/api/auth/trust-service-login").permitAll();
     registry.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
     registry.requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated();
