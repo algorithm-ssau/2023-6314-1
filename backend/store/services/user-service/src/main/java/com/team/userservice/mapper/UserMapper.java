@@ -18,8 +18,7 @@ public enum UserMapper {;
           dto.getName(),
           dto.getEmail(),
           encodedPassword,
-          Role.forValue("ROLE_" + dto.getRole().toValue().toUpperCase(Locale.ROOT)),
-          dto.getActive()
+          Role.forValue("ROLE_" + dto.getRole().toValue().toUpperCase(Locale.ROOT))
         );
       }
     }
