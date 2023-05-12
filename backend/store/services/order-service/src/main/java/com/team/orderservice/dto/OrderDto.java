@@ -83,15 +83,9 @@ public enum OrderDto {;
 
   public enum Response {;
     @Value
-    public static class Common implements
-      Id, AddressResponse, User, Products, PayloadDateTime, ArrivalDateTime, StatusResponse
-    {
-      Long id;
-      AddressDto.Response.Common address;
-      StatusDto.Response.Common status;
+    public static class Common implements User, Products {
+      Base base;
       List<ProductDto.Response.Common> products;
-      OffsetDateTime payloadDateTime;
-      OffsetDateTime arrivalDateTime;
       UserDto.Response.Common user;
 
       @JsonCreator
@@ -104,13 +98,57 @@ public enum OrderDto {;
         @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
         @JsonProperty("user") UserDto.Response.Common user
       ) {
+        this.base = new Base(id, address, status, payloadDateTime, arrivalDateTime);
+        this.products = products;
+        this.user = user;
+      }
+    }
+
+    @Value
+    public static class Simple implements UserId, ProductsIds {
+      Base base;
+      List<Long> productsIds;
+      Long userId;
+
+      @JsonCreator
+      public Simple(
+        @JsonProperty("id") Long id,
+        @JsonProperty("address") AddressDto.Response.Common address,
+        @JsonProperty("status") StatusDto.Response.Common status,
+        @JsonProperty("productsIds") List<Long> productsIds,
+        @JsonProperty("payloadDateTime") OffsetDateTime payloadDateTime,
+        @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
+        @JsonProperty("userId") Long userId
+      ) {
+        this.base = new Base(id, address, status, payloadDateTime, arrivalDateTime);
+        this.productsIds = productsIds;
+        this.userId = userId;
+      }
+    }
+
+    @Value
+    public static class Base implements
+      Id, AddressResponse, PayloadDateTime, ArrivalDateTime, StatusResponse
+    {
+      Long id;
+      AddressDto.Response.Common address;
+      StatusDto.Response.Common status;
+      OffsetDateTime payloadDateTime;
+      OffsetDateTime arrivalDateTime;
+
+      @JsonCreator
+      public Base(
+        @JsonProperty("id") Long id,
+        @JsonProperty("address") AddressDto.Response.Common address,
+        @JsonProperty("status") StatusDto.Response.Common status,
+        @JsonProperty("payloadDateTime") OffsetDateTime payloadDateTime,
+        @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime
+      ) {
         this.id = id;
         this.address = address;
         this.status = status;
-        this.products = products;
         this.payloadDateTime = payloadDateTime;
         this.arrivalDateTime = arrivalDateTime;
-        this.user = user;
       }
     }
   }
