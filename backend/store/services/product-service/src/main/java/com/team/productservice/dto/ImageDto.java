@@ -3,11 +3,12 @@ package com.team.productservice.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 public enum ImageDto {;
   private interface Id { @NotNull Long getId(); }
-  private interface Content { @NotNull byte[] getContent(); }
+  private interface Content { @Size(max = 100 * 1024 * 1024) byte[] getContent(); }
 
   public enum Request {;
     @Value
