@@ -64,6 +64,25 @@ public enum OrderMapper {;
         );
       }
     }
+
+    @Component
+    @RequiredArgsConstructor
+    public static final class Simple {
+      private final AddressMapper.Response.Common commonAddressMapper;
+      private final StatusMapper.Response.Common commonStatusMapper;
+
+      public OrderDto.Response.Simple toDto(Order order) {
+        return new OrderDto.Response.Simple(
+          order.getId(),
+          commonAddressMapper.toDto(order.getArrivalAddress()),
+          commonStatusMapper.toDto(order.getStatus()),
+          order.getProducts(),
+          order.getPayloadDateTime(),
+          order.getArrivalDateTime(),
+          order.getUserId()
+        );
+      }
+    }
   }
 
   public enum Startup {;
