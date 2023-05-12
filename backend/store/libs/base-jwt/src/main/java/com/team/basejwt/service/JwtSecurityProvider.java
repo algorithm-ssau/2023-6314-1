@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 public abstract class JwtSecurityProvider implements AuthenticationProvider {
@@ -63,5 +64,11 @@ public abstract class JwtSecurityProvider implements AuthenticationProvider {
   @Override
   public boolean supports(Class<?> authentication) {
     return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
+  }
+
+  public Long parseUserId(String token, TokenMetadata tokenMetadata) {
+    Claims claims = extractTokenClaims(token, tokenMetadata);
+    Long id = claims.get("id", Long.class);
+    return Objects.requireNonNull(id);
   }
 }
