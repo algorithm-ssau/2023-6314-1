@@ -95,7 +95,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value =  "/activate")
+  @GetMapping("/activate")
   public ResponseEntity<?> activate(@RequestParam String activateToken) {
     Objects.requireNonNull(activateToken, "Activation token is null");
     if (!tokenProvider.isValidToken(activateToken)) {

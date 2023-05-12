@@ -33,6 +33,7 @@ public class UsernamePasswordAuthenticationService {
     ProjectionUserDetails userDetails = obtainUserDetailsFromAuthentication();
     Claims claims = new DefaultClaims();
     claims.setSubject(userDetails.getEmail()).put("authorities", userDetails.getAuthorities());
+    claims.put("id", userDetails.getId());
     return claims;
   }
 }
