@@ -104,6 +104,7 @@ export default function PlaceOrderScreen() {
                             <Link to="/shipping">Редактировать</Link>
                         </Card.Body>
                     </Card>
+
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Оплата</Card.Title>
@@ -113,6 +114,7 @@ export default function PlaceOrderScreen() {
                             <Link to="/payment">Редактировать</Link>
                         </Card.Body>
                     </Card>
+
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Товар</Card.Title>
