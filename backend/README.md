@@ -12,6 +12,6 @@
 
 ## Мануальный запуск
 - открыть cmd по директории: projectFolder/backend/store
-- выполнить команду ./mvnw package -am
+- выполнить команду ./mvnw package -am -Dmaven.test.skip=true
 - перейти в директорию: projectFolder/backend/store/services
 - выполнить команду docker-compose up --build
