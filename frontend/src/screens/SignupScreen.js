@@ -36,7 +36,7 @@ export default function SignupScreen() {
         email,
         password,
         role: "user",
-        active: false
+        //active: false
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
