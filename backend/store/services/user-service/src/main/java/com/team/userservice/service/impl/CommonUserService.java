@@ -30,7 +30,8 @@ public class CommonUserService implements UserService {
 
   @Override
   public User findByEmail(String email) {
-    return userRepository.findByEmail(email).orElseThrow(
+    String lowerCaseEmail = email.toLowerCase();
+    return userRepository.findByEmail(lowerCaseEmail).orElseThrow(
       () -> new UserNotFoundException("User with email" + email + "not found"));
   }
 
@@ -41,11 +42,12 @@ public class CommonUserService implements UserService {
 
   @Override
   public void create(User user) {
-    var email = user.getEmail();
-    if (userRepository.findByEmail(email).isEmpty()) {
+    var lowerCaseEmail = user.getEmail().toLowerCase();
+    user.setEmail(lowerCaseEmail);
+    if (userRepository.findByEmail(lowerCaseEmail).isEmpty()) {
       userRepository.save(user);
     } else {
-      throw new UserAlreadyExistsException("User with email " + email + " already exists");
+      throw new UserAlreadyExistsException("User with email " + lowerCaseEmail + " already exists");
     }
   }
 
@@ -57,6 +59,8 @@ public class CommonUserService implements UserService {
     } else if (!userRepository.existsById(userId)) {
       throw new UserNotFoundException("Cannot find user with id: " + userId);
     }
+    String lowerCaseEmail = user.getEmail().toLowerCase();
+    user.setEmail(lowerCaseEmail);
     userRepository.save(user);
   }
 
