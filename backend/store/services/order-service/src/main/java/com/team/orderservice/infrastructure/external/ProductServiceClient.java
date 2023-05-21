@@ -2,7 +2,7 @@ package com.team.orderservice.infrastructure.external;
 
 import com.team.basejwt.properties.TokenMetadata;
 import com.team.logger.stereotype.Client;
-import com.team.orderservice.dto.ProductDto;
+import com.team.orderservice.view.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.reactive.function.client.WebClient;
