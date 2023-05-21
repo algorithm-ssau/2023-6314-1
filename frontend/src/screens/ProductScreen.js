@@ -74,22 +74,21 @@ const ProductScreen=()=>{
     ) : (
       <div className='wrapper'>
          <Row>
-          <Col md={6}>
+          <Col md={5}>
             <img
               className="img-large"
               src={product.imagesContent[0]} 
               alt={product.name}
             ></img>
           </Col>
-          <Col md={3}>
+          <Col md={4}>
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <Helmet>
                   <title>{product.name}</title>
                 </Helmet>
-                <h1>{product.name}</h1>
+                <h2>{product.name}</h2>
               </ListGroup.Item>              
-              <ListGroup.Item>Цена : ₽{product.cost}</ListGroup.Item>
               <ListGroup.Item>
                 Описание:
                 <p>{product.description}</p>
@@ -111,7 +110,7 @@ const ProductScreen=()=>{
                       <Col>Статус:</Col>
                       <Col>
                         {product.countInStock > 0 ? (
-                          <Badge bg="success">В наличие</Badge>
+                          <Badge bg="success">В наличии</Badge>
                         ) : (
                           <Badge bg="danger">Недоступно</Badge>
                         )}

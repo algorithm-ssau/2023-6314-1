@@ -48,7 +48,7 @@ function App() {
             <Container style={{display: 'flex', justifyContent: 'space-between'}}>
 
               <LinkContainer to="/">
-                <Navbar.Brand>Online Shop</Navbar.Brand>
+                <Navbar.Brand>Mango</Navbar.Brand>
               </LinkContainer>
               <Nav>
                 <Link to="/cart" className="nav-link">
