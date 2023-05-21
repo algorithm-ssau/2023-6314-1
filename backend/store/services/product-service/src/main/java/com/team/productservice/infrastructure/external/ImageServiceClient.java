@@ -28,11 +28,29 @@ public class ImageServiceClient {
   }
 
   public Long save(String content) {
-    Long idMono = client.post()
+    Long id = client.post()
       .uri("/api/images")
       .body(BodyInserters.fromValue(content))
       .retrieve().bodyToMono(Long.class).block();
-    return Objects.requireNonNull(idMono);
+    return Objects.requireNonNull(id);
+  }
+
+  public void deletePack(List<Long> ids) {
+    for (Long id : ids) {
+      client.delete()
+        .uri("/api/images/" + id)
+        .retrieve().toBodilessEntity()
+        .block();
+    }
+  }
+
+  public String update(Long id, String content) {
+    String updated = client.put()
+      .uri("/api/images/" + id)
+      .body(BodyInserters.fromValue(content))
+      .retrieve().bodyToMono(String.class)
+      .block();
+    return Objects.requireNonNull(updated);
   }
 
   public List<String> getAll(List<Long> ids) {
@@ -49,14 +67,5 @@ public class ImageServiceClient {
       imagesId.add(save(content));
     }
     return imagesId;
-  }
-
-  public void deletePack(List<Long> ids) {
-    for (Long id : ids) {
-      client.delete()
-        .uri("/api/images/" + id)
-        .retrieve().toBodilessEntity()
-        .block();
-    }
   }
 }
