@@ -1,4 +1,4 @@
-package com.team.orderservice.controller.advice;
+package com.team.orderservice.view.controller.advice;
 
 import com.team.orderservice.model.exception.OrderNotFoundException;
 import jakarta.validation.ConstraintViolationException;

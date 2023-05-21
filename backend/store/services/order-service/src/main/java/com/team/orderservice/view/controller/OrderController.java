@@ -1,16 +1,12 @@
-package com.team.orderservice.controller;
+package com.team.orderservice.view.controller;
 
 import com.team.basejwt.authentication.JwtAuthenticationToken;
 import com.team.basejwt.properties.TokenMetadata;
 import com.team.basejwt.service.JwtSecurityProvider;
-import com.team.orderservice.dto.OrderDto;
-import com.team.orderservice.dto.ProductDto;
-import com.team.orderservice.dto.UserDto;
-import com.team.orderservice.infrastructure.external.ProductServiceClient;
-import com.team.orderservice.infrastructure.external.UserServiceClient;
-import com.team.orderservice.mapper.OrderMapper;
 import com.team.orderservice.model.Order;
 import com.team.orderservice.service.contract.OrderService;
+import com.team.orderservice.view.MapperFacade;
+import com.team.orderservice.view.dto.OrderDto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,29 +21,17 @@ import java.util.Objects;
 @RequestMapping("/api/orders")
 public class OrderController {
   private final OrderService orderService;
-  private final OrderMapper.Request.Create createRequestOrderMapper;
-  private final OrderMapper.Response.Common commonResponseOrderMapper;
-  private final OrderMapper.Response.Simple simpleResponseOrderMapper;
-  private final UserServiceClient userServiceClient;
-  private final ProductServiceClient productServiceClient;
+  private final MapperFacade mapperFacade;
   private final JwtSecurityProvider jwtSecurityProvider;
   private final TokenMetadata tokenMetadata;
 
   @Autowired
   public OrderController(OrderService orderService,
-                         OrderMapper.Request.Create createRequestOrderMapper,
-                         OrderMapper.Response.Common commonResponseOrderMapper,
-                         OrderMapper.Response.Simple simpleResponseOrderMapper,
-                         UserServiceClient userServiceClient,
-                         ProductServiceClient productServiceClient,
+                         MapperFacade mapperFacade,
                          JwtSecurityProvider jwtSecurityProvider,
                          TokenMetadata tokenMetadata) {
     this.orderService = orderService;
-    this.createRequestOrderMapper = createRequestOrderMapper;
-    this.commonResponseOrderMapper = commonResponseOrderMapper;
-    this.simpleResponseOrderMapper = simpleResponseOrderMapper;
-    this.userServiceClient = userServiceClient;
-    this.productServiceClient = productServiceClient;
+    this.mapperFacade = mapperFacade;
     this.jwtSecurityProvider = jwtSecurityProvider;
     this.tokenMetadata = tokenMetadata;
   }
@@ -56,20 +40,14 @@ public class OrderController {
   public ResponseEntity<List<OrderDto.Response.Common>> getAll(JwtAuthenticationToken authenticationToken) {
     String token = authenticationToken.getPrincipal();
     var orderResponseDtos = orderService.getAll().stream()
-      .map((Order order) -> {
-        UserDto.Response.Common user = userServiceClient.get(order.getUserId(), token);
-        List<ProductDto.Response.Common> products = productServiceClient.getAll(order.getProducts(), token);
-        return commonResponseOrderMapper.toDto(order, user, products);
-      })
+      .map((Order order) -> mapperFacade.toCommonResponseOrderDto(order, order.getUserId(), token))
       .toList();
     return ResponseEntity.ok().body(orderResponseDtos);
   }
 
   @PostMapping
-  public ResponseEntity<OrderDto.Response.Common> create(
-    @Valid @RequestBody OrderDto.Request.Create orderRequestDto
-  ) {
-    Order order = createRequestOrderMapper.toDomain(orderRequestDto);
+  public ResponseEntity<OrderDto.Response.Common> create(@Valid @RequestBody OrderDto.Request.Create orderRequestDto) {
+    Order order = mapperFacade.createRequestOrderToDomain(orderRequestDto);
     orderService.create(order);
     return ResponseEntity.ok().build();
   }
@@ -79,7 +57,7 @@ public class OrderController {
     String token = authenticationToken.getPrincipal();
     Long userId = jwtSecurityProvider.parseUserId(token, tokenMetadata);
     List<Order> userOrders = orderService.getAllByUserId(userId);
-    List<OrderDto.Response.Simple> dtos = userOrders.stream().map(simpleResponseOrderMapper::toDto).toList();
+    List<OrderDto.Response.Simple> dtos = userOrders.stream().map(mapperFacade::toSimpleResponseOrderDto).toList();
     return ResponseEntity.ok(dtos);
   }
 
@@ -87,9 +65,7 @@ public class OrderController {
   public ResponseEntity<OrderDto.Response.Common> getById(@PathVariable Long id, JwtAuthenticationToken authentication) {
     String token = authentication.getPrincipal();
     Order order = orderService.getById(id);
-    UserDto.Response.Common user = userServiceClient.get(order.getUserId(), token);
-    List<ProductDto.Response.Common> products = productServiceClient.getAll(order.getProducts(), token);
-    OrderDto.Response.Common orderResponseDto = commonResponseOrderMapper.toDto(order, user, products);
+    OrderDto.Response.Common orderResponseDto = mapperFacade.toCommonResponseOrderDto(order, order.getUserId(), token);
     return ResponseEntity.ok().body(orderResponseDto);
   }
 
