@@ -1,4 +1,4 @@
-package com.team.userservice.dto;
+package com.team.userservice.view.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +38,36 @@ public enum UserDto {;
         this.email = email;
         this.password = password;
         this.role = role;
+      }
+    }
+
+    @Value
+    public static class Update implements Name, Password, Role {
+      String name;
+      String password;
+      RoleDto role;
+
+      @JsonCreator
+      public Update(
+        @JsonProperty("name") String name,
+        @JsonProperty("password") String password,
+        @JsonProperty("role") RoleDto role
+      ) {
+        this.name = name;
+        this.password = password;
+        this.role = role;
+      }
+    }
+
+    @Value
+    public static class UpdateEmail implements EmailAddress {
+      String email;
+
+      @JsonCreator
+      public UpdateEmail(
+        @JsonProperty("email") String email
+      ) {
+        this.email = email;
       }
     }
   }
