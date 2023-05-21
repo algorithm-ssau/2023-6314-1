@@ -23,6 +23,7 @@ public class UserRepositoryAuthenticateProjection {
   }
 
   public User findByEmail(String email) {
+    email = email.toLowerCase();
     List<User> result = jdbcTemplate.query(
       "select id, name, email, password, active, role from users where email = ? limit 1",
       new String[]{email},
