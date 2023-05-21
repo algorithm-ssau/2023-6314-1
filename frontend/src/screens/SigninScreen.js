@@ -61,6 +61,7 @@ export default function SigninScreen() {
               onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
+        <Form.Label>Пароль</Form.Label>
         <Form.Group className="mb-3" controlId="password">
           <Form.Control
               type="password"
@@ -72,7 +73,7 @@ export default function SigninScreen() {
           <Button type="submit">Войти</Button>
         </div>
         <div className="mb-3">
-          Новый польщователь?{' '}
+          Новый пользователь?{' '}
           <Link to={`/signup?redirect=${redirect}`}>Создать аккаунт</Link>
         </div>
       </Form>

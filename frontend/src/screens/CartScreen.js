@@ -46,7 +46,7 @@ export default function CartScreen() {
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              Карзина пуста.  <Link to="/">Перейти к покупкам</Link>
+              Корзина пуста.  <Link to="/">Перейти к покупкам</Link>
             </MessageBox>
           ) : (
             <ListGroup>
@@ -59,7 +59,9 @@ export default function CartScreen() {
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{' '}
-                      <Link className='Link-style' to={`/product/${item.id}`}>{item.name}</Link>
+                      <div>
+                        <Link className='Link-style' to={`/product/${item.id}`}>{item.name}</Link>
+                      </div>                      
                     </Col>
                     <Col md={3}>
                      <Button
@@ -103,7 +105,7 @@ export default function CartScreen() {
                 <ListGroup.Item>
                   <h3>
                     Сумма ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    товара) : ₽
+                    вещей) : ₽
                     {Math.round(parseFloat(cartItems.reduce((a, c) => a + c.cost * c.quantity, 0)) * 100) / 100}
                   </h3>
                 </ListGroup.Item>

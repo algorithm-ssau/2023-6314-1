@@ -23,7 +23,16 @@ const Product=({product})=>{
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
-    toast("Товар добавлен в корзину");
+    toast.success('Товар добавлен в корзину!', {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
   };  
   return <div className="product" key={product.id}>
    <Link to={`/product/${product.id}`}>
@@ -43,7 +52,7 @@ const Product=({product})=>{
         ) : (
           <Button onClick={() => addToCartHandler(product)}>Добавить в корзину</Button>
         )}
-   </div>
+   </div>   
  </div>
           
 }
