@@ -1,7 +1,7 @@
-package com.team.orderservice.mapper;
+package com.team.orderservice.view.mapper;
 
 import com.team.orderservice.model.Coordinate;
-import com.team.orderservice.dto.CoordinateDto;
+import com.team.orderservice.view.dto.CoordinateDto;
 import org.springframework.stereotype.Component;
 
 public enum CoordinateMapper {;

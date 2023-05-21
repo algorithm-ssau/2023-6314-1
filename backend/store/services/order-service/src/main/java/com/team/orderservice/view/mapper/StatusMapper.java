@@ -1,7 +1,7 @@
-package com.team.orderservice.mapper;
+package com.team.orderservice.view.mapper;
 
 import com.team.orderservice.model.Status;
-import com.team.orderservice.dto.StatusDto;
+import com.team.orderservice.view.dto.StatusDto;
 import org.springframework.stereotype.Component;
 
 public enum StatusMapper {;

@@ -1,10 +1,10 @@
-package com.team.orderservice.mapper;
+package com.team.orderservice.view.mapper;
 
 import com.team.orderservice.model.Order;
-import com.team.orderservice.dto.OrderDto;
-import com.team.orderservice.dto.ProductDto;
-import com.team.orderservice.dto.UserDto;
-import com.team.orderservice.startup.SetupOrder;
+import com.team.orderservice.view.dto.OrderDto;
+import com.team.orderservice.view.dto.ProductDto;
+import com.team.orderservice.view.dto.UserDto;
+import com.team.orderservice.infrastructure.seed.SetupOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

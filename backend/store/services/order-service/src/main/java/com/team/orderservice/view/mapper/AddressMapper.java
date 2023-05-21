@@ -1,7 +1,7 @@
-package com.team.orderservice.mapper;
+package com.team.orderservice.view.mapper;
 
 import com.team.orderservice.model.Address;
-import com.team.orderservice.dto.AddressDto;
+import com.team.orderservice.view.dto.AddressDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
