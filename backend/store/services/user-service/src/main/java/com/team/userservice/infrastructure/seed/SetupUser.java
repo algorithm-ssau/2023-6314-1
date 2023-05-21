@@ -1,4 +1,4 @@
-package com.team.userservice.startup;
+package com.team.userservice.infrastructure.seed;
 
 import com.team.userservice.model.Role;
 import lombok.Getter;
