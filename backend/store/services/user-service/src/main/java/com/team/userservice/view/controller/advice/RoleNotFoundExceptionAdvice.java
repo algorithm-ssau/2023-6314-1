@@ -1,4 +1,4 @@
-package com.team.userservice.controller.advice;
+package com.team.userservice.view.controller.advice;
 
 import com.team.userservice.model.exception.RoleNotFoundException;
 import org.springframework.http.ResponseEntity;

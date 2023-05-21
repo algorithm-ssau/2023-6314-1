@@ -1,4 +1,4 @@
-package com.team.userservice.controller.advice;
+package com.team.userservice.view.controller.advice;
 
 import com.team.userservice.model.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
