@@ -10,6 +10,6 @@ public interface UserService {
   User findByEmail(String email);
   void deleteById(Long id);
   void create(User user);
-  void update(User user);
+  void update(Long id, User userWithEmptyFields);
   void activate(String email);
 }

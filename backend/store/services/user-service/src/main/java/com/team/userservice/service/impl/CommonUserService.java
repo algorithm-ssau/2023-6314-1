@@ -1,14 +1,16 @@
 package com.team.userservice.service.impl;
 
+import com.team.userservice.infrastructure.repository.UserRepository;
 import com.team.userservice.model.User;
 import com.team.userservice.model.exception.UserAlreadyExistsException;
 import com.team.userservice.model.exception.UserNotFoundException;
-import com.team.userservice.infrastructure.repository.UserRepository;
 import com.team.userservice.service.contract.UserService;
+import com.team.userservice.validation.ValidUpdateUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -50,20 +52,25 @@ public class CommonUserService implements UserService {
   }
 
   @Override
-  public void update(User user) {
-    Long userId = user.getId();
-    if (userId == null) {
-      throw new UserNotFoundException("Cannot update user without id");
-    } else if (!userRepository.existsById(userId)) {
-      throw new UserNotFoundException("Cannot find user with id: " + userId);
-    }
+  public void update(Long id, @ValidUpdateUser User userWithEmptyFields) {
+    User user = findById(id);
+    user.setName(insuranceIfNull(user.getName(), userWithEmptyFields.getName()));
+    user.setEmail(insuranceIfNull(user.getEmail(), userWithEmptyFields.getEmail()));
+    user.setPassword(insuranceIfNull(user.getPassword(), userWithEmptyFields.getPassword()));
+    user.setRole(insuranceIfNull(user.getRole(), userWithEmptyFields.getRole()));
+    user.setActive(insuranceIfNull(user.getActive(), userWithEmptyFields.getActive()));
+    user.setUpdated(OffsetDateTime.now());
     userRepository.save(user);
+  }
+
+  private <T> T insuranceIfNull(T reserve, T target) {
+    return target == null ? reserve : target;
   }
 
   @Override
   public void activate(String email) {
     User user = findByEmail(email);
     user.setActive(true);
-    update(user);
+    update(user.getId(), user);
   }
 }
