@@ -1,7 +1,7 @@
-package com.team.orderservice.startup;
+package com.team.orderservice.infrastructure.seed;
 
 import com.team.orderservice.model.Order;
-import com.team.orderservice.mapper.OrderMapper;
+import com.team.orderservice.view.mapper.OrderMapper;
 import com.team.orderservice.infrastructure.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

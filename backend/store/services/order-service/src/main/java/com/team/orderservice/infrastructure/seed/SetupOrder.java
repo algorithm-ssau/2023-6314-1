@@ -1,4 +1,4 @@
-package com.team.orderservice.startup;
+package com.team.orderservice.infrastructure.seed;
 
 import com.team.orderservice.model.Address;
 import com.team.orderservice.model.Coordinate;
