@@ -11,6 +11,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
+import { ToastContainer } from 'react-toastify';
 
 function reducer(state, action) {
     switch (action.type) {
@@ -68,6 +69,18 @@ export default function OrderScreen() {
             <Helmet>
                 <title>Order {orderId}</title>
             </Helmet>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
             <h1 className="my-3">Order {orderId}</h1>
             <Row>
                 <Col md={8}>

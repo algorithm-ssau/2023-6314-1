@@ -42,7 +42,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastContainer position="bottom-center" limit={1} />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
       <header>
          <Navbar bg="dark" variant="dark">
             <Container style={{display: 'flex', justifyContent: 'space-between'}}>

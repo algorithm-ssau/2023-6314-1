@@ -64,7 +64,16 @@ const ProductScreen=()=>{
           type: 'CART_ADD_ITEM',
           payload: { ...product, quantity },
         });
-        toast("Товар добавлен в коризну");
+        toast.success('Товар добавлен в корзину!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       };      
 
      return loading ? (
