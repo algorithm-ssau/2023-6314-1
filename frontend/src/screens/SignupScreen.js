@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import { useContext, useEffect, useState } from 'react';
 import { Store } from '../Store';
-import {toast} from "react-toastify"
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
 
 export default function SignupScreen() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function SignupScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [registrationMessage, setRegistrationMessage] =  useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -27,10 +29,21 @@ export default function SignupScreen() {
       toast.error("Пароли не совпадают");      
       return;
     }
+
     try {
-      
+      const { data } = await Axios.post('http://localhost:8002/api/users', {
+        name,
+        email,
+        password,
+        role: "user",
+      });
+      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate(redirect || '/');
+
+      setRegistrationMessage(() => 'Подтвердите почту по ссылке в письме');
     } catch (err) {
-      toast.error(err);
+      toast.error(getError(err));
     }
   };
 
@@ -41,16 +54,16 @@ export default function SignupScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
-      <Helmet>
-        <title>Sign Up</title>
-      </Helmet>
-      <h1 className="my-3">Регистрация</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Имя</Form.Label>
-          <Form.Control onChange={(e) => setName(e.target.value)} required />
-        </Form.Group>
+      <Container className="small-container">
+        <Helmet>
+          <title>Sign Up</title>
+        </Helmet>
+        <h1 className="my-3">Регистрация</h1>
+        <Form onSubmit={submitHandler}>
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Label>Имя</Form.Label>
+            <Form.Control onChange={(e) => setName(e.target.value)} required />
+          </Form.Group>
 
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
@@ -82,6 +95,10 @@ export default function SignupScreen() {
         <div className="mb-3">
           Уже есть аккаунт?{' '}
           <Link to={`/signin?redirect=${redirect}`}>Вход</Link>
+        </div>
+
+          <div className="mb-3">
+            {registrationMessage}
         </div>
       </Form>
     </Container>
