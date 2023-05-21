@@ -1,4 +1,4 @@
-package com.team.productservice.dto;
+package com.team.productservice.view.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
