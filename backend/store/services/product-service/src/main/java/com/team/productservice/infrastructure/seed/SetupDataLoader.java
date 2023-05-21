@@ -1,10 +1,10 @@
-package com.team.productservice.startup;
+package com.team.productservice.infrastructure.seed;
 
 import com.team.productservice.model.Product;
-import com.team.productservice.infrastructure.mapper.ProductMapper;
+import com.team.productservice.view.mapper.ProductMapper;
 import com.team.productservice.infrastructure.repository.ProductRepository;
 import com.team.productservice.infrastructure.external.ImageServiceClient;
-import com.team.productservice.service.impl.Base64ViewService;
+import com.team.productservice.view.mapper.Base64Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -26,17 +26,17 @@ public class SetupDataLoader {
   private final ImageServiceClient imageServiceClient;
   private final ProductMapper.Startup.Common setupProductMapper;
   private final ProductRepository productRepository;
-  private final Base64ViewService base64ViewService;
+  private final Base64Mapper base64Mapper;
 
   @Autowired
   public SetupDataLoader(ImageServiceClient imageServiceClient,
                          ProductMapper.Startup.Common setupProductMapper,
                          ProductRepository productRepository,
-                         Base64ViewService base64ViewService) {
+                         Base64Mapper base64Mapper) {
     this.imageServiceClient = imageServiceClient;
     this.setupProductMapper = setupProductMapper;
     this.productRepository = productRepository;
-    this.base64ViewService = base64ViewService;
+    this.base64Mapper = base64Mapper;
   }
 
   @EventListener(ContextRefreshedEvent.class)
@@ -51,7 +51,7 @@ public class SetupDataLoader {
     if (productRepository.count() == 0) {
       for (SetupProduct setupProduct : SetupProduct.values()) {
         List<String> imagesContent = Arrays.stream(readAllFilesBytes(setupProduct.getImagePaths()))
-          .map(base64ViewService::view)
+          .map(base64Mapper::view)
           .toList();
         List<Long> imagesId = imageServiceClient.saveAll(imagesContent);
         Product product = setupProductMapper.toDomain(setupProduct, imagesId);

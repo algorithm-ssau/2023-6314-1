@@ -1,4 +1,4 @@
-package com.team.productservice.startup;
+package com.team.productservice.infrastructure.seed;
 
 import com.team.productservice.model.Category;
 import lombok.Getter;
