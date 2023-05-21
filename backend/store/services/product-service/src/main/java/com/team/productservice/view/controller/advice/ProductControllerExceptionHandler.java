@@ -1,4 +1,4 @@
-package com.team.productservice.controller.advice;
+package com.team.productservice.view.controller.advice;
 
 import com.team.productservice.model.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
