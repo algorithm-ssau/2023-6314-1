@@ -1,9 +1,9 @@
-package com.team.productservice.infrastructure.mapper;
+package com.team.productservice.view.mapper;
 
 import com.team.productservice.model.Category;
 import com.team.productservice.model.Product;
-import com.team.productservice.dto.ProductDto;
-import com.team.productservice.startup.SetupProduct;
+import com.team.productservice.view.dto.ProductDto;
+import com.team.productservice.infrastructure.seed.SetupProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,27 +11,6 @@ import java.util.List;
 
 public enum ProductMapper {;
   public enum Request {;
-    @Component
-    public static final class Common {
-      private final CategoryMapper.Request.Common requestMapper;
-
-      @Autowired
-      public Common(CategoryMapper.Request.Common requestMapper) {
-        this.requestMapper = requestMapper;
-      }
-
-      public Product toDomain(ProductDto.Request.Common dto, List<Long> imagesId) {
-        return Product.builder()
-          .name(dto.getName())
-          .description(dto.getDescription())
-          .cost(dto.getCost())
-          .countInStock(dto.getCountInStock())
-          .imageIds(imagesId)
-          .category(requestMapper.toDomain(dto.getCategory()))
-          .build();
-      }
-    }
-
     @Component
     public static final class Create {
       public Product toDomain(ProductDto.Request.Create dto, List<Long> imagesId, Category category) {

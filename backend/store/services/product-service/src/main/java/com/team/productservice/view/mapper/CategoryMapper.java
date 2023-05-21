@@ -1,7 +1,7 @@
-package com.team.productservice.infrastructure.mapper;
+package com.team.productservice.view.mapper;
 
 import com.team.productservice.model.Category;
-import com.team.productservice.dto.CategoryDto;
+import com.team.productservice.view.dto.CategoryDto;
 import com.team.productservice.service.contract.CategoryService;
 import org.springframework.stereotype.Component;
 
