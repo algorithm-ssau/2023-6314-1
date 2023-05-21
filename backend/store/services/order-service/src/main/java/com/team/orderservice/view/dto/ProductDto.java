@@ -1,4 +1,4 @@
-package com.team.orderservice.dto;
+package com.team.orderservice.view.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,4 +1,4 @@
-package com.team.orderservice.dto;
+package com.team.orderservice.view.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
