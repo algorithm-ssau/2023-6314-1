@@ -52,6 +52,7 @@ public class SecurityConfig {
     registry.requestMatchers("/swagger-ui/**").permitAll();
     registry.requestMatchers("/error").permitAll();
     registry.requestMatchers("/api/users/activate").permitAll();
+    registry.requestMatchers("/actuator/**").permitAll();
     registry.requestMatchers(HttpMethod.POST, "/api/users").permitAll();
     registry.requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN");
     registry.requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("ADMIN");

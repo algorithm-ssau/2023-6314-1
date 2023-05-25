@@ -18,6 +18,11 @@ services:
     depends_on:
       - config-service
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 && \ 
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar discovery-service-0.0.1-SNAPSHOT.jar"]
 
   gateway-service:
     container_name: gateway-service
@@ -33,6 +38,18 @@ services:
       - order-service
       - identity-provider
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh product-service 8001 & \
+      sh ./wait.sh user-service 8002 & \
+      sh ./wait.sh order-service 8003 & \
+      sh ./wait.sh identity-provider 8075 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar gateway-service-0.0.1-SNAPSHOT.jar"]
+
 
   notification-service:
     container_name: notification-service
@@ -49,6 +66,14 @@ services:
       - kafka
       - kafdrop
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh user-service 8002 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar notification-service-0.0.1-SNAPSHOT.jar"]
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -105,6 +130,14 @@ services:
       - discovery-service
       - config-service
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh image-service 8005 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar product-service-0.0.1-SNAPSHOT.jar"]
 
   user-service:
     container_name: user-service
@@ -120,6 +153,13 @@ services:
       - discovery-service
       - config-service
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar user-service-0.0.1-SNAPSHOT.jar"]
 
   order-service:
     container_name: order-service
@@ -132,6 +172,13 @@ services:
       - discovery-service
       - config-service
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar order-service-0.0.1-SNAPSHOT.jar"]
 
   image-service:
     container_name: image-service
@@ -142,6 +189,13 @@ services:
       - discovery-service
       - image-database
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar image-service-0.0.1-SNAPSHOT.jar"]
 
   identity-provider:
     container_name: identity-provider
@@ -155,6 +209,14 @@ services:
       - discovery-service
       - config-service
     restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh user-service 8002 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar identity-provider-0.0.1-SNAPSHOT.jar"]
 
   order-database:
     container_name: order-database
