@@ -1,7 +1,7 @@
-package com.team.basejwt.filter;
+package com.team.jwt.filter;
 
-import com.team.basejwt.authentication.JwtAuthenticationToken;
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.authentication.JwtAuthenticationToken;
+import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

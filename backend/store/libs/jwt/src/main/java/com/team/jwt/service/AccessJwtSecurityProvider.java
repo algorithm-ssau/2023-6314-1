@@ -1,7 +1,6 @@
-package com.team.jwtcommon.service;
+package com.team.jwt.service;
 
-import com.team.basejwt.properties.TokenMetadata;
-import com.team.basejwt.service.JwtSecurityProvider;
+import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 

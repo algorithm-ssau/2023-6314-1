@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>com.team</groupId>
-            <artifactId>jwt-common</artifactId>
+            <artifactId>jwt</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

@@ -1,4 +1,4 @@
-package com.team.basejwt.properties;
+package com.team.jwt.properties;
 
 import lombok.Value;
 

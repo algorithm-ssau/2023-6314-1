@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 
 @Configuration
-@ComponentScan("com.team.jwtcommon")
+@ComponentScan("com.team.jwt")
 public class AuthenticationConfig {
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationProvider... providers) {

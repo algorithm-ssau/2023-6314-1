@@ -1,6 +1,6 @@
 package com.team.orderservice.infrastructure.external;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import com.team.logger.stereotype.Client;
 import com.team.orderservice.view.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.team.jwtcommon;
+package com.team.jwt.config;
 
-import com.team.jwtcommon.service.AccessJwtSecurityProvider;
+import com.team.jwt.service.AccessJwtSecurityProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

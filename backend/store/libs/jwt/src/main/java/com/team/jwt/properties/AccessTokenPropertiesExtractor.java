@@ -1,6 +1,5 @@
-package com.team.jwtcommon.properties;
+package com.team.jwt.properties;
 
-import com.team.basejwt.properties.TokenMetadata;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;

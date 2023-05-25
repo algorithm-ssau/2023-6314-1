@@ -1,8 +1,8 @@
 package com.team.orderservice.view.controller;
 
-import com.team.basejwt.authentication.JwtAuthenticationToken;
-import com.team.basejwt.properties.TokenMetadata;
-import com.team.basejwt.service.JwtSecurityProvider;
+import com.team.jwt.authentication.JwtAuthenticationToken;
+import com.team.jwt.properties.TokenMetadata;
+import com.team.jwt.service.JwtSecurityProvider;
 import com.team.orderservice.model.Order;
 import com.team.orderservice.service.contract.OrderService;
 import com.team.orderservice.view.MapperFacade;

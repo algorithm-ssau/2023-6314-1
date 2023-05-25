@@ -1,6 +1,6 @@
-package com.team.basejwt.authentication;
+package com.team.jwt.authentication;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 

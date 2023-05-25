@@ -1,7 +1,7 @@
-package com.team.basejwt.service;
+package com.team.jwt.service;
 
-import com.team.basejwt.authentication.JwtAuthenticationToken;
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.authentication.JwtAuthenticationToken;
+import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
