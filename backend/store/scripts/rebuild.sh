@@ -16,7 +16,8 @@ docker volume rm $(docker volume ls -qf dangling=true)
 #Maven offline build-----------------------------------------------------------------------------
 echo -e "\n-------- ${BIGreen}MAVEN: start offline clean package${NC} --------\n"
 cd ../
-./mvnw -am -o -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -T 2C clean package
+./mvnw -am -o -T 2C clean
+./mvnw -am -o -T 2C package
 
 #Caching offline build, else build online--------------------------------------------------------
 if [ $? -eq 0 ]; then
@@ -25,7 +26,8 @@ else
     echo -e "${LRed}MAVEN: error offline build${NC}"
 
     echo -e "\n-------- ${BIGreen}MAVEN: start online clean package${NC} --------\n"
-    ./mvnw -am clean -Dmaven.test.skip -Dmaven.javadoc.skip=true -T 2C clean package
+    ./mvnw -am clean -T 2C clean
+    ./mvnw -am clean -T 2C package
 fi
 
 #Docker compose up-------------------------------------------------------------------------------
