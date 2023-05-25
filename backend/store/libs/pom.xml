@@ -10,9 +10,9 @@
     </parent>
 
     <modules>
-        <module>jwt-common</module>
-        <module>base-jwt</module>
+        <module>jwt</module>
         <module>logger</module>
+        <module>security</module>
     </modules>
 
     <properties>
