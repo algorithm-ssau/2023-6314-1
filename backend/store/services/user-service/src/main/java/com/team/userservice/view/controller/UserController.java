@@ -3,7 +3,7 @@ package com.team.userservice.view.controller;
 import com.team.userservice.view.dto.UserDto;
 import com.team.userservice.model.User;
 import com.team.userservice.service.contract.UserService;
-import com.team.userservice.service.impl.ActivationSender;
+import com.team.userservice.infrastructure.kafka.ActivationSender;
 import com.team.userservice.service.impl.TokenProvider;
 import com.team.userservice.service.impl.UrlMatcher;
 import com.team.userservice.view.MapperFacade;

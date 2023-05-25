@@ -1,4 +1,4 @@
-package com.team.userservice.service.impl;
+package com.team.userservice.infrastructure.kafka;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
