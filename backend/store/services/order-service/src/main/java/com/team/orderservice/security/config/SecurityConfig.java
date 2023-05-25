@@ -1,60 +1,46 @@
 package com.team.orderservice.security.config;
 
-import com.team.basejwt.properties.TokenMetadata;
-import com.team.jwtcommon.filter.AccessTokenFilter;
-import jakarta.servlet.http.HttpServletRequest;
+import com.team.jwt.filter.AccessTokenFilter;
+import com.team.jwt.properties.TokenMetadata;
+import com.team.security.config.Role;
+import com.team.security.config.SecurityConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
+
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
-@ComponentScan("com.team.jwtcommon")
+@ComponentScan("com.team.security")
 public class SecurityConfig {
   private final AccessTokenFilter accessTokenFilter;
+  private final SecurityConfigurer securityConfigurer;
 
   @Autowired
-  public SecurityConfig(AuthenticationManager authenticationManager, TokenMetadata tokenMetadata) {
+  public SecurityConfig(AuthenticationManager authenticationManager,
+                        TokenMetadata tokenMetadata,
+                        SecurityConfigurer securityConfigurer) {
     this.accessTokenFilter = new AccessTokenFilter(authenticationManager, tokenMetadata);
+    this.securityConfigurer = securityConfigurer;
   }
 
   @Bean
   public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
-    return http
-      .cors().configurationSource(this::corsConfigurationSource).and()
-      .csrf().disable()
-      .httpBasic().disable()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeHttpRequests(this::authorizeHttpRequestsCustomizer)
-      .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
-      .build();
+    return securityConfigurer.createChain(http, accessTokenFilter, this::authorizeCustomizer);
   }
 
-  private CorsConfiguration corsConfigurationSource(HttpServletRequest request) {
-    CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-    corsConfiguration.addAllowedMethod(HttpMethod.PUT);
-    corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
-    return corsConfiguration;
-  }
-
-  private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-    registry.requestMatchers("/v3/api-docs/**").permitAll();
-    registry.requestMatchers("/swagger-ui/**").permitAll();
-    registry.requestMatchers("/error").permitAll();
-    registry.requestMatchers(HttpMethod.GET, "/api/orders").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.POST, "/api/orders").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.GET, "/api/orders/mine").hasAnyRole("USER", "ADMIN");
-    registry.requestMatchers(HttpMethod.DELETE, "/api/orders/mine").hasAnyRole("USER", "ADMIN");
-    registry.requestMatchers(HttpMethod.GET, "/api/orders/summary").hasAnyRole("USER", "ADMIN");
-    registry.requestMatchers(HttpMethod.GET, "/api/orders/{id}").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.DELETE, "/api/orders/{id}").hasRole("ADMIN");
+  private void authorizeCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+    registry.requestMatchers(GET, "/api/orders").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(POST, "/api/orders").authenticated();
+    registry.requestMatchers(GET, "/api/orders/mine").authenticated();
+    registry.requestMatchers(DELETE, "/api/orders/mine").authenticated();
+    registry.requestMatchers(GET, "/api/orders/summary").authenticated();
+    registry.requestMatchers(GET, "/api/orders/{id}").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(DELETE, "/api/orders/{id}").hasRole(Role.ADMIN.getName());
   }
 }
