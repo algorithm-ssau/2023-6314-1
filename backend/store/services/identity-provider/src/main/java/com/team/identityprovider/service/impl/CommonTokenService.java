@@ -1,6 +1,6 @@
 package com.team.identityprovider.service.impl;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import com.team.identityprovider.service.contract.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -35,5 +35,4 @@ public class CommonTokenService implements TokenService {
       .signWith(tokenMetadata.getSecretKey())
       .compact();
   }
-
 }

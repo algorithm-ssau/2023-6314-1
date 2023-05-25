@@ -1,8 +1,8 @@
 package com.team.orderservice.view.controller;
 
-import com.team.basejwt.authentication.JwtAuthenticationToken;
-import com.team.basejwt.properties.TokenMetadata;
-import com.team.basejwt.service.JwtSecurityProvider;
+import com.team.jwt.authentication.JwtAuthenticationToken;
+import com.team.jwt.properties.TokenMetadata;
+import com.team.jwt.service.JwtSecurityProvider;
 import com.team.orderservice.model.Order;
 import com.team.orderservice.service.contract.OrderService;
 import com.team.orderservice.view.MapperFacade;
@@ -71,7 +71,7 @@ public class OrderController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<OrderDto.Response.Common> deleteById(@PathVariable Long id) {
-    orderService.deleteById(id);
+    orderService.cancelById(id);
     return ResponseEntity.ok().build();
   }
 
@@ -79,7 +79,7 @@ public class OrderController {
   public ResponseEntity<OrderDto.Response.Common> deleteMineOrders(JwtAuthenticationToken authenticationToken) {
     ResponseEntity<List<OrderDto.Response.Common>> all = getAll(authenticationToken);
     List<OrderDto.Response.Common> body = Objects.requireNonNull(all.getBody());
-    body.forEach(dto -> orderService.deleteById(dto.getBase().getId()));
+    body.forEach(dto -> orderService.cancelById(dto.getBase().getId()));
     return ResponseEntity.ok().build();
   }
 }

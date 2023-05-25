@@ -1,7 +1,7 @@
 package com.team.identityprovider.security.jwt.filter;
 
-import com.team.basejwt.filter.AbstractTokenFilter;
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.filter.AbstractTokenFilter;
+import com.team.jwt.properties.TokenMetadata;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;

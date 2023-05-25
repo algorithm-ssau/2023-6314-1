@@ -1,6 +1,6 @@
 package com.team.identityprovider.service.contract;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.Claims;
 
 import java.util.Date;

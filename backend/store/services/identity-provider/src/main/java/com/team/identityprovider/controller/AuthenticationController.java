@@ -1,6 +1,6 @@
 package com.team.identityprovider.controller;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import com.team.identityprovider.model.RefreshSession;
 import com.team.identityprovider.dto.AuthenticationDto;
 import com.team.identityprovider.dto.RequestMetadata;

@@ -83,7 +83,7 @@ public class MapperFacade {
 
   public OrderDto.Response.Common toCommonResponseOrderDto(Order order, Long userId, String token) {
     UserDto.Response.Common userDto = userServiceClient.get(userId, token);
-    List<ProductDto.Response.Common> productDtoList = productServiceClient.getAll(order.getProducts(), token);
+    List<ProductDto.Response.Common> productDtoList = productServiceClient.getAll(order.getProducts());
     return commonResponseOrderMapper.toDto(order, userDto, productDtoList);
   }
 

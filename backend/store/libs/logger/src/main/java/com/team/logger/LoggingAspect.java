@@ -30,8 +30,11 @@ public class LoggingAspect {
    */
   @AfterThrowing(pointcut = "springBeanPointcut()", throwing = "e")
   public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-    log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
-      joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL");
+    log.error("Exception in {}.{}() with message = {}",
+      joinPoint.getSignature().getDeclaringTypeName(),
+      joinPoint.getSignature().getName(),
+      e.getMessage() != null ? e.getMessage() : "NULL"
+    );
   }
 
   /**
@@ -47,7 +50,7 @@ public class LoggingAspect {
       log.debug("Enter: {}.{}() with argument[s] = {}",
         joinPoint.getSignature().getDeclaringTypeName(),
         joinPoint.getSignature().getName(),
-        cutLarge(Arrays.toString(joinPoint.getArgs()))
+        cutLargeLogMessage(Arrays.toString(joinPoint.getArgs()))
       );
     }
     try {
@@ -56,13 +59,13 @@ public class LoggingAspect {
         log.debug("Exit: {}.{}() with result = {}",
           joinPoint.getSignature().getDeclaringTypeName(),
           joinPoint.getSignature().getName(),
-          cutLarge(String.valueOf(result))
+          cutLargeLogMessage(String.valueOf(result))
         );
       }
       return result;
     } catch (IllegalArgumentException e) {
       log.error("Illegal argument: {} in {}.{}()",
-        cutLarge(Arrays.toString(joinPoint.getArgs())),
+        cutLargeLogMessage(Arrays.toString(joinPoint.getArgs())),
         joinPoint.getSignature().getDeclaringTypeName(),
         joinPoint.getSignature().getName()
       );
@@ -70,7 +73,7 @@ public class LoggingAspect {
     }
   }
 
-  private String cutLarge(String toString) {
+  private String cutLargeLogMessage(String toString) {
     return toString.length() >= 400 ? toString.substring(0, 400) + "..." : toString;
   }
 }

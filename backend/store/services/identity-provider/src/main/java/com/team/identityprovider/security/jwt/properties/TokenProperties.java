@@ -1,6 +1,6 @@
 package com.team.identityprovider.security.jwt.properties;
 
-import com.team.basejwt.properties.TokenMetadata;
+import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;

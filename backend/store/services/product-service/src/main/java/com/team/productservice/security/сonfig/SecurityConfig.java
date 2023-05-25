@@ -1,61 +1,48 @@
 package com.team.productservice.security.сonfig;
 
-import com.team.basejwt.properties.TokenMetadata;
-import com.team.jwtcommon.filter.AccessTokenFilter;
-import jakarta.servlet.http.HttpServletRequest;
+import com.team.jwt.filter.AccessTokenFilter;
+import com.team.jwt.properties.TokenMetadata;
+import com.team.security.config.Role;
+import com.team.security.config.SecurityConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
+
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
+@ComponentScan("com.team.security")
 public class SecurityConfig {
   private final AccessTokenFilter accessTokenFilter;
+  private final SecurityConfigurer securityConfigurer;
 
   @Autowired
-  public SecurityConfig(AuthenticationManager authenticationManager, TokenMetadata tokenMetadata) {
+  public SecurityConfig(AuthenticationManager authenticationManager,
+                        TokenMetadata tokenMetadata,
+                        SecurityConfigurer securityConfigurer) {
     this.accessTokenFilter = new AccessTokenFilter(authenticationManager, tokenMetadata);
+    this.securityConfigurer = securityConfigurer;
   }
 
   @Bean
   public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
-    http
-      .cors().configurationSource(this::corsConfigurationSource).and()
-      .csrf().disable()
-      .httpBasic().disable()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeHttpRequests(this::authorizeHttpRequestsCustomizer)
-      .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+    return securityConfigurer.createChain(http, accessTokenFilter, this::authorizeCustomizer);
   }
 
-  private CorsConfiguration corsConfigurationSource(HttpServletRequest request) {
-    CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-    corsConfiguration.addAllowedMethod(HttpMethod.PUT);
-    corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
-    return corsConfiguration;
-  }
-
-  private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-    registry.requestMatchers("/v3/api-docs/**").permitAll();
-    registry.requestMatchers("/swagger-ui/**").permitAll();
-    registry.requestMatchers("/error").permitAll();
-    registry.requestMatchers("/actuator/**").permitAll();
-    registry.requestMatchers(HttpMethod.GET, "/api/products").permitAll();
-    registry.requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.GET, "/api/products/{id}").permitAll();
-    registry.requestMatchers(HttpMethod.PUT, "/api/products/{id}").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.DELETE, "/api/products/{id}").hasRole("ADMIN");
-    registry.requestMatchers(HttpMethod.GET, "/api/products/filter/{category-id}").permitAll();
-    registry.requestMatchers(HttpMethod.GET, "/api/categories/root").permitAll();
-    registry.requestMatchers(HttpMethod.GET, "/api/categories/{id}").permitAll();
-    registry.requestMatchers(HttpMethod.GET, "/api/categories/{id}/subs").permitAll();
+  private void authorizeCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+    registry.requestMatchers(GET, "/api/products").permitAll();
+    registry.requestMatchers(POST, "/api/products").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(GET, "/api/products/{id}").permitAll();
+    registry.requestMatchers(PUT, "/api/products/{id}").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(DELETE, "/api/products/{id}").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(GET, "/api/products/filter/{category-id}").permitAll();
+    registry.requestMatchers(GET, "/api/categories/root").permitAll();
+    registry.requestMatchers(GET, "/api/categories/{id}").permitAll();
+    registry.requestMatchers(GET, "/api/categories/{id}/subs").permitAll();
   }
 }
