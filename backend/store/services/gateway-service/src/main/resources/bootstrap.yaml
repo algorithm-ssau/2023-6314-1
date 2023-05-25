@@ -11,3 +11,13 @@ spring:
 
   main:
     web-application-type: reactive
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

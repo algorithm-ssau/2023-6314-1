@@ -33,7 +33,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChainUsers(HttpSecurity http) throws Exception {
     return securityConfigurer.createChain(http, accessTokenFilter, this::authorizeCustomizer);
   }
-
+  
   private void authorizeCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
     registry.requestMatchers(GET, "/api/orders").hasRole(Role.ADMIN.getName());
     registry.requestMatchers(POST, "/api/orders").authenticated();

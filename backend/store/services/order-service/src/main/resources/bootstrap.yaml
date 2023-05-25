@@ -21,3 +21,13 @@ jwt:
 
 topic:
   name: t.product.quantity.update
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

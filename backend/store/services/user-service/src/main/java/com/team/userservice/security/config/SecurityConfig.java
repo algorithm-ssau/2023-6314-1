@@ -40,6 +40,7 @@ public class SecurityConfig {
 
   private void authorizeCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
     registry.requestMatchers("/api/users/activate").permitAll();
+    registry.requestMatchers("/actuator/**").permitAll();
     registry.requestMatchers(POST, "/api/users").permitAll();
     registry.requestMatchers(GET, "/api/users").hasRole(Role.ADMIN.getName());
     registry.requestMatchers(GET, "/api/users/{id}").hasRole(Role.ADMIN.getName());
