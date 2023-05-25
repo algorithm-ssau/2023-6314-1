@@ -99,6 +99,8 @@ services:
     image: product-service
     ports:
       - "8001:8001"
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
       - product-database
       - image-service
@@ -125,6 +127,8 @@ services:
     container_name: order-service
     build: order-service/
     image: order-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
     ports:
       - "8003:8003"
     depends_on:
