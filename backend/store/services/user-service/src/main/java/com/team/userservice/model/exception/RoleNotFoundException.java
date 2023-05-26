@@ -1,6 +1,8 @@
 package com.team.userservice.model.exception;
 
-public class RoleNotFoundException extends RuntimeException {
+import com.team.base.view.exception.NotFoundException;
+
+public class RoleNotFoundException extends NotFoundException {
   public RoleNotFoundException() {
     super();
   }

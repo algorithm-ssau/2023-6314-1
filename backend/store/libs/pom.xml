@@ -13,6 +13,7 @@
         <module>jwt</module>
         <module>logger</module>
         <module>security</module>
+        <module>base</module>
     </modules>
 
     <properties>

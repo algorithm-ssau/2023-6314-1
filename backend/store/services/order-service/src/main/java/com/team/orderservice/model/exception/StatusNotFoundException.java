@@ -1,6 +1,8 @@
 package com.team.orderservice.model.exception;
 
-public class StatusNotFoundException extends RuntimeException {
+import com.team.base.view.exception.NotFoundException;
+
+public class StatusNotFoundException extends NotFoundException {
   public StatusNotFoundException() {
     super();
   }

@@ -1,4 +1,4 @@
-package com.team.imageservice.controller;
+package com.team.imageservice.view.controller;
 
 import com.team.imageservice.model.Image;
 import com.team.imageservice.service.contract.ImageService;

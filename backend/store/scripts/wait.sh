@@ -1,8 +1,6 @@
 #!/bin/bash
 # wait.sh
 
-set -e
-
 host="$1"
 port="$2"
 url="http://$host:$port/actuator/health"
