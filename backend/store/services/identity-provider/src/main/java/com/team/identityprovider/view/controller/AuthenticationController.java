@@ -1,21 +1,22 @@
-package com.team.identityprovider.controller;
+package com.team.identityprovider.view.controller;
 
-import com.team.jwt.properties.TokenMetadata;
 import com.team.identityprovider.model.RefreshSession;
-import com.team.identityprovider.dto.AuthenticationDto;
-import com.team.identityprovider.dto.RequestMetadata;
 import com.team.identityprovider.security.details.ProjectionUserDetails;
-import com.team.identityprovider.service.impl.UsernamePasswordAuthenticationService;
-import io.jsonwebtoken.Claims;
 import com.team.identityprovider.service.contract.RefreshSessionService;
 import com.team.identityprovider.service.contract.TokenService;
+import com.team.identityprovider.service.impl.UsernamePasswordAuthenticationService;
+import com.team.identityprovider.view.dto.AuthenticationDto;
+import com.team.identityprovider.view.dto.RequestMetadata;
+import com.team.jwt.properties.TokenMetadata;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 
@@ -77,10 +78,5 @@ public class AuthenticationController {
 
     refreshSessionService.deleteByToken(refreshToken);
     return ResponseEntity.ok().build();
-  }
-
-  @ExceptionHandler(AuthenticationException.class)
-  public ResponseEntity<?> handle(AuthenticationException ex) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(ex.getMessage());
   }
 }
