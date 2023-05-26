@@ -1,6 +1,8 @@
 package com.team.userservice.model.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import com.team.base.view.exception.NotFoundException;
+
+public class UserNotFoundException extends NotFoundException {
   public UserNotFoundException() {
     super();
   }

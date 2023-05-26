@@ -1,6 +1,8 @@
 package com.team.imageservice.model.exception;
 
-public class ImageNotFoundException extends ImageException {
+import com.team.base.view.exception.NotFoundException;
+
+public class ImageNotFoundException extends NotFoundException {
   public ImageNotFoundException() {
     super();
   }
