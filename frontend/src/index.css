@@ -1,0 +1,128 @@
+body {
+  margin: 0;
+  background-color: #dfe2e6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.site-container {
+  min-height: 100vh;
+}
+.img-thumbnail {
+  height: 80px;
+}
+.Link-style{
+  text-decoration: none;
+  color: #404040;
+}
+.Link-style:hover{
+  text-decoration: none;
+  color: #ae8b8b;
+}
+.small-container {
+  max-width: 600px;
+}
+header a {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+.img-large {
+  position: absolute;
+  left: 200px;
+  width: 30%;
+}
+main {
+  flex: 1;
+}
+.btn-primary,
+.btn-outline-primary {
+  background-color: #dfe2e6;
+  color: #000000;
+}
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.description{
+  color: #ffffff;  
+}
+
+.description:hover{
+  color: #dfe2e6;
+}
+.product {
+  border: 1px #404040 solid;
+  margin: 1rem;
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 1),-23px 0 20px -23px rgba(0, 0, 0, .8),23px 0 20px -23px rgba(0, 0, 0, .8),
+   0 0 40px rgba(0, 0, 0, .1) inset;
+   border-radius:0 0 10px 10px;
+   background: rgb(55,110,172);
+   background: linear-gradient(90deg, rgba(55,110,172,1) 60%, rgba(0,212,255,1) 100%);
+}
+.product img {
+  width: 100%;
+  max-width: 400px;
+  height: 400px;
+}
+.product-info {
+  padding: 1rem;
+}
+
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
+}
+
+@media screen and (max-width: 770px) {
+  .img-large{
+    position: relative;   
+    width: 70vw;
+    left: 40px;    
+  }
+}
+@media screen and (min-width: 770px) and (max-width: 1000px) {
+  .img-large{    
+    position: absolute;   
+    left: 100px;       
+    
+  }
+}
+
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+}
+
+.site-container {
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: 240px;
+}
+.active-nav {
+  left: 0;
+}
+
+.text-bold {
+  font-weight: bold;
+}

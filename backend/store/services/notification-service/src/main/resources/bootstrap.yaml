@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: notification-service
+
+  cloud:
+    config:
+      uri: http://config-service:8888
+      fail-fast: true
+      username: admin
+      password: admin
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

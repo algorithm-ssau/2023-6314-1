@@ -1,0 +1,289 @@
+version: "3.9"
+
+services:
+  config-service:
+    container_name: config-service
+    build: config-service/
+    image: config-service
+    ports:
+      - "8888:8888"
+    restart: "on-failure"
+
+  discovery-service:
+    container_name: discovery-service
+    build: discovery-service/
+    image: discovery-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 && \ 
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar discovery-service-0.0.1-SNAPSHOT.jar"]
+
+  gateway-service:
+    container_name: gateway-service
+    build: gateway-service/
+    image: gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+      - discovery-service
+      - product-service
+      - user-service
+      - order-service
+      - identity-provider
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh product-service 8001 & \
+      sh ./wait.sh user-service 8002 & \
+      sh ./wait.sh order-service 8003 & \
+      sh ./wait.sh identity-provider 8075 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar gateway-service-0.0.1-SNAPSHOT.jar"]
+
+
+  notification-service:
+    container_name: notification-service
+    build: notification-service/
+    image: notification-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8005:8005"
+    depends_on:
+      - config-service
+      - discovery-service
+      - user-service
+      - kafka
+      - kafdrop
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh user-service 8002 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar notification-service-0.0.1-SNAPSHOT.jar"]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    restart: "on-failure"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    volumes:
+      - zookeeper-secrets:/etc/zookeeper/secrets
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    restart: "on-failure"
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_HOSTNAME: kafka
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    volumes:
+      - kafka-secrets:/etc/kafka/secrets
+      - kafka-data:/var/lib/kafka/data
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    restart: "on-failure"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+
+  product-service:
+    container_name: product-service
+    build: product-service/
+    image: product-service
+    ports:
+      - "8001:8001"
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    depends_on:
+      - product-database
+      - image-service
+      - discovery-service
+      - config-service
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh image-service 8005 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar product-service-0.0.1-SNAPSHOT.jar"]
+
+  user-service:
+    container_name: user-service
+    build: user-service/
+    image: user-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8002:8002"
+    depends_on:
+      - kafka
+      - user-database
+      - discovery-service
+      - config-service
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar user-service-0.0.1-SNAPSHOT.jar"]
+
+  order-service:
+    container_name: order-service
+    build: order-service/
+    image: order-service
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8003:8003"
+    depends_on:
+      - order-database
+      - discovery-service
+      - config-service
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar order-service-0.0.1-SNAPSHOT.jar"]
+
+  image-service:
+    container_name: image-service
+    build: image-service/
+    image: image-service
+    depends_on:
+      - config-service
+      - discovery-service
+      - image-database
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar image-service-0.0.1-SNAPSHOT.jar"]
+
+  identity-provider:
+    container_name: identity-provider
+    build: identity-provider/
+    image: identity-provider
+    ports:
+      - "8075:8075"
+    depends_on:
+      - user-database
+      - user-service
+      - discovery-service
+      - config-service
+    restart: "on-failure"
+    volumes:
+      - ../scripts/wait.sh:/wait.sh
+    entrypoint: [sh, -c,
+      "sh ./wait.sh config-service 8888 & \
+      sh ./wait.sh discovery-service 8761 & \
+      sh ./wait.sh user-service 8002 & \
+      wait $! && \
+      java -Xmn30m -Xms60m -Xmx64m -Xss256k -jar identity-provider-0.0.1-SNAPSHOT.jar"]
+
+  order-database:
+    container_name: order-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - order-database-volume:/var/lib/postgresql/data
+    restart: "on-failure"
+
+  user-database:
+    container_name: user-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - user-database-volume:/var/lib/postgresql/data
+    restart: "on-failure"
+
+  image-database:
+    container_name: image-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - image-database-volume:/var/lib/postgresql/data
+    restart: "on-failure"
+
+  product-database:
+    container_name: product-database
+    image: postgres:15.2-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - product-database-volume:/var/lib/postgresql/data
+    restart: "on-failure"
+
+  python-service:
+    container_name: python-service
+    build: python-service/
+    ports:
+      - "8004:8004"
+    restart: always
+
+volumes:
+  product-database-volume:
+  user-database-volume:
+  order-database-volume:
+  image-database-volume:
+  kafka-secrets:
+  kafka-data:
+  zookeeper-secrets:
+  zookeeper-data:
+  zookeeper-logs:
