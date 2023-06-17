@@ -5,7 +5,7 @@
 6314 Никитин Евгений. Основная роль - Frontend developer
 6314 Примосудов Сергей. Основная роль - Frontend developer
 6313 Коннов Кирилл. Основная роль - Backend developer
-6314 Кажуков Паавел. Основная роль - Backend developer
+6314 Кажуков Павел. Основная роль - Backend developer
 ```
 # Backend
 
