@@ -69,4 +69,10 @@ public class CommonRefreshSessionService implements RefreshSessionService {
   public boolean existsByToken(String refreshToken) {
     return repository.existsByRefreshToken(refreshToken);
   }
+
+  @Scheduled(cron = "0 0 1 * * ?")
+  public void removeExpiredSessions() {
+    repository.deleteExpired();
+    log.info("Removed expired refresh sessions");
+  }
 }
