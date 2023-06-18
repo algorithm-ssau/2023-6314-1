@@ -1,6 +1,7 @@
 package com.team.identityprovider.security.config;
 
 import com.team.identityprovider.security.jwt.filter.RefreshTokenFilter;
+import com.team.identityprovider.view.resolve.HttpServletResolver;
 import com.team.jwt.properties.TokenMetadata;
 import com.team.security.config.SecurityConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,10 +23,11 @@ public class SecurityConfig {
   private final RefreshTokenFilter refreshTokenFilter;
   private final SecurityConfigurer securityConfigurer;
 
-  public SecurityConfig(@Qualifier("refreshTokenMetadata") TokenMetadata tokenMetadata,
+  public SecurityConfig(@Qualifier("refreshMetadata") TokenMetadata tokenMetadata,
                         AuthenticationManager authenticationManager,
-                        SecurityConfigurer securityConfigurer) {
-    this.refreshTokenFilter = new RefreshTokenFilter(authenticationManager, tokenMetadata);
+                        SecurityConfigurer securityConfigurer,
+                        HttpServletResolver httpServletResolver) {
+    this.refreshTokenFilter = new RefreshTokenFilter(authenticationManager, tokenMetadata, httpServletResolver);
     this.securityConfigurer = securityConfigurer;
   }
 

@@ -79,7 +79,7 @@ public class OrderController {
   public ResponseEntity<OrderDto.Response.Common> deleteMineOrders(JwtAuthenticationToken authenticationToken) {
     ResponseEntity<List<OrderDto.Response.Common>> all = getAll(authenticationToken);
     List<OrderDto.Response.Common> body = Objects.requireNonNull(all.getBody());
-    body.forEach(dto -> orderService.cancelById(dto.getBase().getId()));
+    body.forEach(dto -> orderService.cancelById(dto.getGeneralInfo().getId()));
     return ResponseEntity.ok().build();
   }
 }

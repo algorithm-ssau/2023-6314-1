@@ -10,7 +10,7 @@ import lombok.Value;
 import java.time.OffsetDateTime;
 
 @Value
-public class ActivationDto {
+public class ActivationDto implements IdentifyByEmail {
   @NotBlank String name;
   @Email String email;
   @FutureOrPresent OffsetDateTime created;

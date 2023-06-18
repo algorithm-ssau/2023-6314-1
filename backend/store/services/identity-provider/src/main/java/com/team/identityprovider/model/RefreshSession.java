@@ -7,14 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Data
 @NoArgsConstructor
 public class RefreshSession {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
+  @NotBlank
+  @Column(columnDefinition = "text")
+  private String refreshToken;
 
   @NotNull
   private Long userId;
@@ -25,22 +27,33 @@ public class RefreshSession {
   @NotBlank
   private String userBrowserFingerPrint;
 
-  @Column(name = "created", columnDefinition = "timestamp")
-  private Date created = new Date();
-
-  @NotBlank
-  @Column(columnDefinition = "text")
-  private String refreshToken;
+  @Column(name = "expired", columnDefinition = "timestamp")
+  private Date expired;
 
   public RefreshSession(
     Long userId,
     String userIp,
     String userBrowserFingerPrint,
-    String refreshToken
+    String refreshToken,
+    Date expired
   ) {
     this.userId = userId;
     this.userIp = userIp;
     this.userBrowserFingerPrint = userBrowserFingerPrint;
     this.refreshToken = refreshToken;
+    this.expired = expired;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    RefreshSession that = (RefreshSession) o;
+    return Objects.equals(userId, that.userId) && Objects.equals(userIp, that.userIp) && Objects.equals(userBrowserFingerPrint, that.userBrowserFingerPrint);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(userId, userIp, userBrowserFingerPrint);
   }
 }

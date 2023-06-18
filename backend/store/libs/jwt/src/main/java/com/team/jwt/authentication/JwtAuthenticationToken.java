@@ -59,4 +59,14 @@ public class JwtAuthenticationToken implements Authentication {
   public String getName() {
     return "JwtAuthenticationToken";
   }
+
+  @Override
+  public String toString() {
+    return "JwtAuthenticationToken{" +
+      "token='" + token + '\'' +
+      ", tokenMetadata=" + tokenMetadata +
+      ", authorities=" + authorities +
+      ", authenticated=" + authenticated +
+      '}';
+  }
 }

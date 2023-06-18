@@ -36,7 +36,7 @@ public class TokenProperties {
   }
 
   @Bean
-  public TokenMetadata accessTokenMetadata() {
+  public TokenMetadata accessMetadata() {
     return new TokenMetadata(
       accessHeader,
       Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecret)),
@@ -45,7 +45,7 @@ public class TokenProperties {
   }
 
   @Bean
-  public TokenMetadata refreshTokenMetadata() {
+  public TokenMetadata refreshMetadata() {
     return new TokenMetadata(
       refreshHeader,
       Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecret)),

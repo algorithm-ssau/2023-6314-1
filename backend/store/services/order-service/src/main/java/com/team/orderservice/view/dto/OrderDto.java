@@ -84,7 +84,7 @@ public enum OrderDto {;
   public enum Response {;
     @Value
     public static class Common implements User, Products {
-      Base base;
+      GeneralInfo generalInfo;
       List<ProductDto.Response.Common> products;
       UserDto.Response.Common user;
 
@@ -98,7 +98,7 @@ public enum OrderDto {;
         @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
         @JsonProperty("user") UserDto.Response.Common user
       ) {
-        this.base = new Base(id, address, status, payloadDateTime, arrivalDateTime);
+        this.generalInfo = new GeneralInfo(id, address, status, payloadDateTime, arrivalDateTime);
         this.products = products;
         this.user = user;
       }
@@ -106,7 +106,7 @@ public enum OrderDto {;
 
     @Value
     public static class Simple implements UserId, ProductsIds {
-      Base base;
+      GeneralInfo generalInfo;
       List<Long> productsIds;
       Long userId;
 
@@ -120,14 +120,14 @@ public enum OrderDto {;
         @JsonProperty("arrivalDateTime") OffsetDateTime arrivalDateTime,
         @JsonProperty("userId") Long userId
       ) {
-        this.base = new Base(id, address, status, payloadDateTime, arrivalDateTime);
+        this.generalInfo = new GeneralInfo(id, address, status, payloadDateTime, arrivalDateTime);
         this.productsIds = productsIds;
         this.userId = userId;
       }
     }
 
     @Value
-    public static class Base implements
+    public static class GeneralInfo implements
       Id, AddressResponse, PayloadDateTime, ArrivalDateTime, StatusResponse
     {
       Long id;
@@ -137,7 +137,7 @@ public enum OrderDto {;
       OffsetDateTime arrivalDateTime;
 
       @JsonCreator
-      public Base(
+      public GeneralInfo(
         @JsonProperty("id") Long id,
         @JsonProperty("address") AddressDto.Response.Common address,
         @JsonProperty("status") StatusDto.Response.Common status,

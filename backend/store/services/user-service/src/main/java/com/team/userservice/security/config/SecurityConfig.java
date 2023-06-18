@@ -45,6 +45,7 @@ public class SecurityConfig {
     registry.requestMatchers(GET, "/api/users").hasRole(Role.ADMIN.getName());
     registry.requestMatchers(GET, "/api/users/{id}").hasRole(Role.ADMIN.getName());
     registry.requestMatchers(PUT, "/api/users/{id}").hasRole(Role.ADMIN.getName());
+    registry.requestMatchers(PATCH, "/api/users/email").hasAnyRole(Role.USER.getName(), Role.ADMIN.getName());
     registry.requestMatchers(DELETE, "/api/users/{id}").hasRole(Role.ADMIN.getName());
   }
 

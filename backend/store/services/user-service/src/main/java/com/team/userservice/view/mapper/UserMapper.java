@@ -1,5 +1,6 @@
 package com.team.userservice.view.mapper;
 
+import com.team.userservice.view.dto.RoleDto;
 import com.team.userservice.view.dto.UserDto;
 import com.team.userservice.model.User;
 import com.team.userservice.infrastructure.seed.SetupUser;
@@ -22,7 +23,7 @@ public enum UserMapper {;
           dto.getName(),
           dto.getEmail(),
           encodedPassword,
-          roleMapper.toDomain(dto.getRole())
+          roleMapper.toDomain(RoleDto.USER)
         );
       }
     }

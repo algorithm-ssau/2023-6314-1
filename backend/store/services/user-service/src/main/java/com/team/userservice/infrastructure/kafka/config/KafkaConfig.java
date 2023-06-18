@@ -23,9 +23,6 @@ import static org.apache.kafka.clients.producer.ProducerConfig.*;
 @Configuration
 @Slf4j
 public class KafkaConfig {
-  @Value("${topic.name}")
-  private String topicName;
-
   private final KafkaProperties kafkaProperties;
 
   @Autowired
@@ -53,10 +50,17 @@ public class KafkaConfig {
   }
 
   @Bean
-  public NewTopic topic() {
-    log.info("Topic name expected: t.activation.link, actual: {}", topicName);
+  public NewTopic activationTopic() {
     return TopicBuilder
-      .name(topicName)
+      .name("t.activation.link")
+      .partitions(3)
+      .replicas(1)
+      .build();
+  }
+
+  @Bean NewTopic updateEmailTopic() {
+    return TopicBuilder
+      .name("t.activation.update")
       .partitions(3)
       .replicas(1)
       .build();
