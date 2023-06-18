@@ -3,7 +3,9 @@ package com.team.identityprovider.service.impl;
 import com.team.identityprovider.model.RefreshSession;
 import com.team.identityprovider.infrastructure.repository.RefreshSessionRepository;
 import com.team.identityprovider.service.contract.RefreshSessionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class CommonRefreshSessionService implements RefreshSessionService {
   private static final Long MAX_COUNT_OF_SESSIONS_BY_USER = 2L;
   private final RefreshSessionRepository repository;
@@ -23,27 +26,24 @@ public class CommonRefreshSessionService implements RefreshSessionService {
   @Override
   public void save(RefreshSession newRefreshSession) {
     var userId = newRefreshSession.getUserId();
-    var savedRefreshSessions = repository.findByUserId(userId);
-    var currentCountOfSessionByUser = savedRefreshSessions.size();
-    deleteAllByUserIfExceeded(userId, currentCountOfSessionByUser);
-    updateIfExists(savedRefreshSessions, newRefreshSession);
+    var savedRefreshSessionsList = repository.findByUserId(userId);
+    var currentCountOfSessionByUser = savedRefreshSessionsList.size();
 
+    ifExceededDeleteAllSessions(userId, currentCountOfSessionByUser);
+    updateExistSession(savedRefreshSessionsList, newRefreshSession);
     repository.save(newRefreshSession);
   }
 
-  private void deleteAllByUserIfExceeded(Long userId, long currentCountOfSessionByUser) {
+  private void ifExceededDeleteAllSessions(Long userId, long currentCountOfSessionByUser) {
     if (currentCountOfSessionByUser > MAX_COUNT_OF_SESSIONS_BY_USER) {
-      repository.deleteAllByUserId(userId);
+      deleteByUserId(userId);
     }
   }
 
-  private void updateIfExists(
-    List<RefreshSession> savedRefreshSessions,
-    RefreshSession newRefreshSession
-  ) {
-    for (RefreshSession savedRefreshSession : savedRefreshSessions) {
-      if (isEqualsUserForSessions(savedRefreshSession, newRefreshSession)) {
-        newRefreshSession.setId(savedRefreshSession.getId());
+  private void updateExistSession(List<RefreshSession> savedRefreshSessions, RefreshSession next) {
+    for (RefreshSession session : savedRefreshSessions) {
+      if (session.equals(next)) {
+        next.setRefreshToken(session.getRefreshToken());
         break;
       }
     }

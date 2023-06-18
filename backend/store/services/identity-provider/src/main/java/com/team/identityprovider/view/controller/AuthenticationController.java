@@ -4,9 +4,11 @@ import com.team.identityprovider.model.RefreshSession;
 import com.team.identityprovider.security.details.ProjectionUserDetails;
 import com.team.identityprovider.service.contract.RefreshSessionService;
 import com.team.identityprovider.service.contract.TokenService;
+import com.team.identityprovider.service.impl.CommonTokenService;
 import com.team.identityprovider.service.impl.UsernamePasswordAuthenticationService;
 import com.team.identityprovider.view.dto.AuthenticationDto;
 import com.team.identityprovider.view.dto.RequestMetadata;
+import com.team.identityprovider.view.resolve.HttpServletResolver;
 import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,65 +20,96 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Key;
 import java.util.Arrays;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
   private final TokenService tokenService;
   private final RefreshSessionService refreshSessionService;
-  private final UsernamePasswordAuthenticationService authenticationService;
-  private final TokenMetadata accessTokenMetadata;
-  private final TokenMetadata refreshTokenMetadata;
+  private final UsernamePasswordAuthenticationService authService;
+  private final TokenMetadata accessMetadata;
+  private final TokenMetadata refreshMetadata;
+  private final HttpServletResolver httpResolver;
 
   @Autowired
   public AuthenticationController(TokenService tokenService,
-                                  RefreshSessionService refreshSessionService,
-                                  UsernamePasswordAuthenticationService authenticationService,
-                                  TokenMetadata accessTokenMetadata,
-                                  TokenMetadata refreshTokenMetadata) {
+                                  RefreshSessionService sessionService,
+                                  UsernamePasswordAuthenticationService authService,
+                                  TokenMetadata accessMetadata,
+                                  TokenMetadata refreshMetadata,
+                                  HttpServletResolver httpResolver) {
     this.tokenService = tokenService;
-    this.refreshSessionService = refreshSessionService;
-    this.authenticationService = authenticationService;
-    this.accessTokenMetadata = accessTokenMetadata;
-    this.refreshTokenMetadata = refreshTokenMetadata;
+    this.refreshSessionService = sessionService;
+    this.authService = authService;
+    this.accessMetadata = accessMetadata;
+    this.refreshMetadata = refreshMetadata;
+    this.httpResolver = httpResolver;
   }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Valid @RequestBody AuthenticationDto.Request.Common dto,
                                  HttpServletRequest request) {
-    authenticationService.authenticate(dto.getEmail(), dto.getPassword());
-    return generateTokenResponse(request);
+    authService.authenticate(dto.getEmail(), dto.getPassword());
+    Claims claims = authService.obtainClaimsFromAuthentication();
+
+    String accessToken = tokenService.generateToken(claims, accessMetadata);
+    String refreshToken = tokenService.generateToken(claims, refreshMetadata);
+
+    ProjectionUserDetails userDetails = authService.obtainUserDetailsFromAuthentication();
+    RequestMetadata requestMetadata = new RequestMetadata(request);
+    Long userId = userDetails.getId();
+    Date expired = refreshMetadata.expiredInterval().getExpired();
+    saveRefreshSession(requestMetadata, userId, refreshToken, expired);
+    
+    return ResponseEntity.ok(new AuthenticationDto.Response.Common(accessToken, refreshToken));
   }
 
   @PostMapping("/refresh")
   public ResponseEntity<?> refresh(HttpServletRequest request) {
-    return generateTokenResponse(request);
-  }
+    String oldRefreshToken = httpResolver.getTokenFromCookie(request, refreshMetadata);
+    RefreshSession presentSession = refreshSessionService.findByToken(oldRefreshToken);
+    Date expired = presentSession.getExpired();
+    String header = refreshMetadata.getHeader();
+    Key secretKey = refreshMetadata.getSecretKey();
+    Claims claims = authService.obtainClaimsFromAuthentication();
+    TokenMetadata newRefreshMetadata = new TokenMetadata(header, secretKey, expired);
 
-  private ResponseEntity<AuthenticationDto.Response.Common> generateTokenResponse(HttpServletRequest request) {
-    Claims claims = authenticationService.obtainClaimsFromAuthentication();
-    var accessToken = tokenService.generateToken(claims, accessTokenMetadata);
-    var refreshToken = tokenService.generateToken(claims, refreshTokenMetadata);
+    String accessToken = tokenService.generateToken(claims, accessMetadata);
+    String refreshToken = tokenService.generateToken(claims, newRefreshMetadata);
 
-    ProjectionUserDetails userDetails = authenticationService.obtainUserDetailsFromAuthentication();
-    saveRefreshSession(new RequestMetadata(request), userDetails.getId(), refreshToken);
+    ProjectionUserDetails userDetails = authService.obtainUserDetailsFromAuthentication();
+    RequestMetadata requestMetadata = new RequestMetadata(request);
+    Long userId = userDetails.getId();
+    saveRefreshSession(requestMetadata, userId, refreshToken, expired);
+
     return ResponseEntity.ok(new AuthenticationDto.Response.Common(accessToken, refreshToken));
-  }
-
-  private void saveRefreshSession(RequestMetadata requestMetadata, long userId, String refreshToken) {
-    var refreshSession = new RefreshSession(userId, requestMetadata.getRemoteAddress(), requestMetadata.getUserAgent(), refreshToken);
-    refreshSessionService.save(refreshSession);
   }
 
   @PostMapping("/logout")
   public ResponseEntity<?> logout(HttpServletRequest request) {
     String refreshToken = Arrays.stream(request.getCookies())
-      .filter(cookie -> cookie.getName().equals(refreshTokenMetadata.getHeader()))
+      .filter(cookie -> cookie.getName().equals(refreshMetadata.getHeader()))
       .findAny().orElseThrow(IllegalAccessError::new)
       .getValue();
 
     refreshSessionService.deleteByToken(refreshToken);
     return ResponseEntity.ok().build();
+  }
+
+  private void saveRefreshSession(RequestMetadata requestMetadata,
+                                  long userId,
+                                  String refreshToken,
+                                  Date expired) {
+    var refreshSession = new RefreshSession(
+      userId,
+      requestMetadata.getRemoteAddress(),
+      requestMetadata.getUserAgent(),
+      refreshToken,
+      expired
+    );
+    refreshSessionService.save(refreshSession);
   }
 }
