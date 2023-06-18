@@ -58,8 +58,11 @@ public class MapperFacade {
     return createRequestProductMapper.toDomain(dto, imagesIds, category);
   }
 
-  public Product updateRequestProductToDomain(ProductDto.Request.Update dto, List<Long> imagesIds) {
-    return updateRequestProductMapper.toDomain(dto, imagesIds);
+  public Product updateRequestProductToDomain(Long presentProductId,
+                                              ProductDto.Request.Update dto,
+                                              List<Long> imagesIds) {
+    Category category = categoryService.findById(dto.getCategoryId());
+    return updateRequestProductMapper.toDomain(presentProductId, dto, imagesIds, category);
   }
 
   public ProductDto.Response.Common toCommonResponseProductDtoWithAllImages(Product product) {

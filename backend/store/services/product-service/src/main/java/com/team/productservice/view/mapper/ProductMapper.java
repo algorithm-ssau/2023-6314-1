@@ -27,21 +27,18 @@ public enum ProductMapper {;
 
     @Component
     public static final class Update {
-      private final CategoryMapper.Request.Common mapper;
-
-      @Autowired
-      public Update(CategoryMapper.Request.Common mapper) {
-        this.mapper = mapper;
-      }
-
-      public Product toDomain(ProductDto.Request.Update dto, List<Long> imagesId) {
+      public Product toDomain(Long productId,
+                              ProductDto.Request.Update dto,
+                              List<Long> imagesId,
+                              Category category) {
         return Product.builder()
+          .id(productId)
           .name(dto.getName())
           .description(dto.getDescription())
           .cost(dto.getCost())
           .countInStock(dto.getCountInStock())
           .imageIds(imagesId)
-          .category(mapper.toDomain(dto.getCategory()))
+          .category(category)
           .build();
       }
     }

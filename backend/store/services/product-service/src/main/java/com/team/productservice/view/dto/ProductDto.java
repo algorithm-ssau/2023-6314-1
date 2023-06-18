@@ -102,13 +102,13 @@ public enum ProductDto {;
     }
 
     @Value
-    public static class Update implements Name, Description, Cost, CountInStock, ImagesBytes, CategoryRequest {
+    public static class Update implements Name, Description, Cost, CountInStock, ImagesBytes, CategoryId {
       String name;
       String description;
       BigDecimal cost;
       Long countInStock;
       byte[][] imagesBytes;
-      CategoryDto.Request.Common category;
+      Long categoryId;
 
       @JsonCreator
       public Update(
@@ -117,14 +117,14 @@ public enum ProductDto {;
         @JsonProperty("cost") BigDecimal cost,
         @JsonProperty("countInStock") Long countInStock,
         @JsonProperty("imagesBytes") byte[][] imagesBytes,
-        @JsonProperty("category") CategoryDto.Request.Common category
+        @JsonProperty("categoryId") Long categoryId
       ) {
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.countInStock = countInStock;
         this.imagesBytes = imagesBytes;
-        this.category = category;
+        this.categoryId = categoryId;
       }
 
       @Override
@@ -135,6 +135,7 @@ public enum ProductDto {;
           ", cost=" + cost +
           ", countInStock=" + countInStock +
           ", imagesBytesSize=" + imagesBytes.length +
+          ", categoryId=" + categoryId +
           '}';
       }
     }

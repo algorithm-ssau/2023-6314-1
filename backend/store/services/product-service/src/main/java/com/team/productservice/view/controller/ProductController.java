@@ -72,7 +72,7 @@ public class ProductController {
       .map(mapperFacade::toBase64Image)
       .toList();
     List<Long> imageIds = imageServiceClient.saveAll(imagesContent);
-    product = mapperFacade.updateRequestProductToDomain(dto, imageIds);
+    product = mapperFacade.updateRequestProductToDomain(id, dto, imageIds);
 
     productService.update(product);
     return ResponseEntity.ok().build();
