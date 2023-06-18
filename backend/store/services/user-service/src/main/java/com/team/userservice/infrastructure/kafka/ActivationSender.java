@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ActivationSender {
-  @Value("${topic.name}")
-  private String activationTopic;
-
   private final KafkaTemplate<String, String> kafkaTemplate;
 
   @Autowired
@@ -19,8 +16,7 @@ public class ActivationSender {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void sendActivation(String message) {
-    kafkaTemplate.send(activationTopic, message);
-    log.info("SEND activation with message: {}", message);
+  public void sendActivation(String topic, String message) {
+    kafkaTemplate.send(topic, message);
   }
 }
