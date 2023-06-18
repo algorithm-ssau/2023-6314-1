@@ -21,23 +21,20 @@ public enum UserDto {;
 
   public enum Request {;
     @Value
-    public static class Common implements Name, EmailAddress, Password, Role {
+    public static class Common implements Name, EmailAddress, Password {
       String name;
       String email;
       String password;
-      RoleDto role;
 
       @JsonCreator
       public Common(
         @JsonProperty("name") String name,
         @JsonProperty("email") String email,
-        @JsonProperty("password") String password,
-        @JsonProperty("role") RoleDto role
+        @JsonProperty("password") String password
       ) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
       }
     }
 
