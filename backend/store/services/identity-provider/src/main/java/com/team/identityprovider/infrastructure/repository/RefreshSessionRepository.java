@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface RefreshSessionRepository extends JpaRepository<RefreshSession, Long> {
   List<RefreshSession> findByUserId(Long userId);
+  RefreshSession findByRefreshToken(String refreshToken);
   void deleteAllByUserId(Long userId);
   void deleteByUserId(Long userId);
   void deleteByRefreshToken(String refreshToken);

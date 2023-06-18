@@ -49,10 +49,9 @@ public class CommonRefreshSessionService implements RefreshSessionService {
     }
   }
 
-  private boolean isEqualsUserForSessions(RefreshSession savedRefreshSession, RefreshSession newRefreshSession) {
-    return savedRefreshSession.getUserId().equals(newRefreshSession.getUserId())
-        && savedRefreshSession.getUserIp().equals(newRefreshSession.getUserIp())
-        && savedRefreshSession.getUserBrowserFingerPrint().equals(newRefreshSession.getUserBrowserFingerPrint());
+  @Override
+  public RefreshSession findByToken(String refreshToken) {
+    return repository.findByRefreshToken(refreshToken);
   }
 
   @Override
