@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Value;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 
 public enum UserDto {;
@@ -36,6 +37,19 @@ public enum UserDto {;
         this.email = email;
         this.password = password;
       }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Common common = (Common) o;
+        return Objects.equals(name, common.name) && Objects.equals(email, common.email);
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(name, email);
+      }
     }
 
     @Value
@@ -53,6 +67,19 @@ public enum UserDto {;
         this.name = name;
         this.password = password;
         this.role = role;
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Update update = (Update) o;
+        return Objects.equals(name, update.name) && Objects.equals(password, update.password) && role == update.role;
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(name, role);
       }
     }
 
@@ -98,6 +125,19 @@ public enum UserDto {;
         this.created = created;
         this.updated = updated;
       }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Common common = (Common) o;
+        return Objects.equals(id, common.id) && Objects.equals(name, common.name) && Objects.equals(email, common.email) && Objects.equals(active, common.active) && role == common.role;
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(id, name, email, active, role);
+      }
     }
 
     @Value
@@ -118,6 +158,19 @@ public enum UserDto {;
         this.activationLink = activationLink;
         this.email = email;
         this.created = created;
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activation that = (Activation) o;
+        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(activationLink, that.activationLink);
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(name, email, activationLink);
       }
     }
   }
