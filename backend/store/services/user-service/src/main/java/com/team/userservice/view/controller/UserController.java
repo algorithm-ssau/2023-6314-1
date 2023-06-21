@@ -65,7 +65,7 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<UserDto.Response.Common> create(HttpServletRequest httpServletRequest,
-                                                        @Valid @RequestBody UserDto.Request.Common userRequestDto) {
+                                  @Valid @RequestBody UserDto.Request.Common userRequestDto) {
     User user = mapperFacade.commonRequestToDomain(userRequestDto);
     userService.create(user);
 
@@ -114,7 +114,7 @@ public class UserController {
       throw new IllegalArgumentException("Activation token is invalid");
     }
     String email = tokenProvider.obtainEmail(activateToken);
-    userService.activate(email);
+    userService.activateUserByEmail(email);
     return ResponseEntity.ok().build();
   }
 }

@@ -74,7 +74,7 @@ public class CommonUserService implements UserService {
   }
 
   @Override
-  public void activate(String email) {
+  public void activateUserByEmail(String email) {
     User user = findByEmail(email);
     user.setActive(true);
     update(user.getId(), user);

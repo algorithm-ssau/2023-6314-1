@@ -11,5 +11,5 @@ public interface UserService {
   void deleteById(Long id);
   void create(User user);
   void update(Long id, User userWithEmptyFields);
-  void activate(String email);
+  void activateUserByEmail(String email);
 }
