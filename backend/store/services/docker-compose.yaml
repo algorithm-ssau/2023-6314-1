@@ -5,19 +5,19 @@ services:
     container_name: config-service
     build: config-service/
     image: config-service
-    ports:
-      - "8888:8888"
     restart: "on-failure"
+    networks:
+      - service-network
 
   discovery-service:
     container_name: discovery-service
     build: discovery-service/
     image: discovery-service
-    ports:
-      - "8761:8761"
     depends_on:
       - config-service
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -28,8 +28,7 @@ services:
     container_name: gateway-service
     build: gateway-service/
     image: gateway-service
-    ports:
-      - "8080:8080"
+
     depends_on:
       - config-service
       - discovery-service
@@ -38,6 +37,10 @@ services:
       - order-service
       - identity-provider
     restart: "on-failure"
+    networks:
+      - service-network
+    ports:
+      - "8080:8080"
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -57,8 +60,6 @@ services:
     image: notification-service
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-    ports:
-      - "8005:8005"
     depends_on:
       - config-service
       - discovery-service
@@ -66,6 +67,8 @@ services:
       - kafka
       - kafdrop
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -79,11 +82,11 @@ services:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     restart: "on-failure"
+    networks:
+      - service-network
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
     volumes:
       - zookeeper-secrets:/etc/zookeeper/secrets
       - zookeeper-data:/var/lib/zookeeper/data
@@ -93,8 +96,8 @@ services:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
     restart: "on-failure"
-    ports:
-      - "29092:29092"
+    networks:
+      - service-network
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -113,6 +116,8 @@ services:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
     restart: "on-failure"
+    networks:
+      - service-network
     ports:
       - "9000:9000"
     environment:
@@ -122,8 +127,6 @@ services:
     container_name: product-service
     build: product-service/
     image: product-service
-    ports:
-      - "8001:8001"
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
@@ -132,6 +135,8 @@ services:
       - discovery-service
       - config-service
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -147,14 +152,14 @@ services:
     image: user-service
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-    ports:
-      - "8002:8002"
     depends_on:
       - kafka
       - user-database
       - discovery-service
       - config-service
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -169,13 +174,13 @@ services:
     image: order-service
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-    ports:
-      - "8003:8003"
     depends_on:
       - order-database
       - discovery-service
       - config-service
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -193,6 +198,8 @@ services:
       - discovery-service
       - image-database
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -205,14 +212,14 @@ services:
     container_name: identity-provider
     build: identity-provider/
     image: identity-provider
-    ports:
-      - "8075:8075"
     depends_on:
       - user-database
       - user-service
       - discovery-service
       - config-service
     restart: "on-failure"
+    networks:
+      - service-network
     volumes:
       - ../scripts/wait.sh:/wait.sh
     entrypoint: [sh, -c,
@@ -233,6 +240,8 @@ services:
       - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - order-database-volume:/var/lib/postgresql/data
     restart: "on-failure"
+    networks:
+      - service-network
 
   user-database:
     container_name: user-database
@@ -245,6 +254,8 @@ services:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - user-database-volume:/var/lib/postgresql/data
     restart: "on-failure"
+    networks:
+      - service-network
 
   image-database:
     container_name: image-database
@@ -257,6 +268,8 @@ services:
       - ./image-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - image-database-volume:/var/lib/postgresql/data
     restart: "on-failure"
+    networks:
+      - service-network
 
   product-database:
     container_name: product-database
@@ -269,13 +282,15 @@ services:
       - ./product-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - product-database-volume:/var/lib/postgresql/data
     restart: "on-failure"
+    networks:
+      - service-network
 
   python-service:
     container_name: python-service
     build: python-service/
-    ports:
-      - "8004:8004"
     restart: always
+    networks:
+      - service-network
 
 volumes:
   product-database-volume:
@@ -287,3 +302,7 @@ volumes:
   zookeeper-secrets:
   zookeeper-data:
   zookeeper-logs:
+
+networks:
+  service-network:
+    driver: bridge
