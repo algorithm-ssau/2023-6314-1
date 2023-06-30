@@ -40,7 +40,7 @@ public abstract class AbstractTokenFilter extends OncePerRequestFilter {
         var authentication = authenticationManager.authenticate(authenticationToken);
         securityContextHolderStrategy.getContext().setAuthentication(authentication);
       }
-    } catch (JwtException ex) {
+    } catch (JwtException | IllegalArgumentException ex) {
       log.error(ex.getMessage());
     }
     filterChain.doFilter(request, response);
