@@ -31,7 +31,7 @@ export default function SignupScreen() {
     }
 
     try {
-      const { data } = await Axios.post('http://localhost:8002/api/users', {
+      const { data } = await Axios.post('http://localhost:8080/api/users', {
         name,
         email,
         password,

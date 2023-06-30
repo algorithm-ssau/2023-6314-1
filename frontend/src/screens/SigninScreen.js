@@ -23,7 +23,7 @@ export default function SigninScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('http://localhost:8075/api/auth/login', {
+      const { data } = await Axios.post('http://localhost:8080/api/auth/login', {
         email,
         password,
       });
