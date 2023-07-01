@@ -34,8 +34,7 @@ export default function SignupScreen() {
       const { data } = await Axios.post('http://localhost:8080/api/users', {
         name,
         email,
-        password,
-        role: "user",
+        password
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
