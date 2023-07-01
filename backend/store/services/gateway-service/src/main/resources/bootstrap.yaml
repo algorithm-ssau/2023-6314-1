@@ -3,11 +3,27 @@ spring:
     name: gateway-service
 
   cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedHeaders:
+              - content-type
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+
     config:
       uri: http://config-service:8888
       fail-fast: true
       username: admin
       password: admin
+
 
   main:
     web-application-type: reactive
