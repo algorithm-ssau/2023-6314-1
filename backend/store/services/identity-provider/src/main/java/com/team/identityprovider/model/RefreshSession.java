@@ -13,7 +13,11 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 public class RefreshSession {
+
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
+
   @NotBlank
   @Column(columnDefinition = "text")
   private String refreshToken;
