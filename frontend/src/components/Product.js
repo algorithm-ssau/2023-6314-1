@@ -14,7 +14,7 @@ const Product=({product})=>{
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find((x) => x.id === product.id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`http://localhost:8001/api/products/${item.id}`);
+    const { data } = await axios.get(`http://localhost:8080/api/products/${item.id}`);
     if (data.countInStock < quantity) {
       window.alert('Простите, продуктов не осталось на складе');
       return;

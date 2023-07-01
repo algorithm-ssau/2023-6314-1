@@ -18,7 +18,7 @@ export default function CartScreen() {
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-      const { data } = await axios.get(`http://localhost:8001/api/products/${item.id}`);     
+      const { data } = await axios.get(`http://localhost:8080/api/products/${item.id}`);
       if (data.countInStock < quantity) {
          window.alert('Простите, продуктов не осталось на складе');
          return;

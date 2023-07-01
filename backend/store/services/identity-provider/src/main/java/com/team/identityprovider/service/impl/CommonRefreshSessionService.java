@@ -43,7 +43,7 @@ public class CommonRefreshSessionService implements RefreshSessionService {
   private void updateExistSession(List<RefreshSession> savedRefreshSessions, RefreshSession next) {
     for (RefreshSession session : savedRefreshSessions) {
       if (session.equals(next)) {
-        next.setRefreshToken(session.getRefreshToken());
+        next.setId(session.getId());
         break;
       }
     }

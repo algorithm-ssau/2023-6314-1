@@ -4,11 +4,10 @@ import com.team.identityprovider.model.RefreshSession;
 import com.team.identityprovider.security.details.ProjectionUserDetails;
 import com.team.identityprovider.service.contract.RefreshSessionService;
 import com.team.identityprovider.service.contract.TokenService;
-import com.team.identityprovider.service.impl.CommonTokenService;
 import com.team.identityprovider.service.impl.UsernamePasswordAuthenticationService;
 import com.team.identityprovider.view.dto.AuthenticationDto;
 import com.team.identityprovider.view.dto.RequestMetadata;
-import com.team.identityprovider.view.resolve.HttpServletResolver;
+import com.team.identityprovider.view.resolve.HttpServletRequestResolver;
 import com.team.jwt.properties.TokenMetadata;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ public class AuthenticationController {
   private final UsernamePasswordAuthenticationService authService;
   private final TokenMetadata accessMetadata;
   private final TokenMetadata refreshMetadata;
-  private final HttpServletResolver httpResolver;
+  private final HttpServletRequestResolver httpResolver;
 
   @Autowired
   public AuthenticationController(TokenService tokenService,
@@ -40,7 +39,7 @@ public class AuthenticationController {
                                   UsernamePasswordAuthenticationService authService,
                                   TokenMetadata accessMetadata,
                                   TokenMetadata refreshMetadata,
-                                  HttpServletResolver httpResolver) {
+                                  HttpServletRequestResolver httpResolver) {
     this.tokenService = tokenService;
     this.refreshSessionService = sessionService;
     this.authService = authService;
