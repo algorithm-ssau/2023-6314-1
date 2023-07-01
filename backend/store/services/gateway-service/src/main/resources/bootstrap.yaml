@@ -8,15 +8,8 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins: "http://localhost:3000"
-            allowedHeaders:
-              - content-type
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - PATCH
-              - DELETE
-              - OPTIONS
+            allowedHeaders: "*"
+            allowedMethods: "*"
 
     config:
       uri: http://config-service:8888
