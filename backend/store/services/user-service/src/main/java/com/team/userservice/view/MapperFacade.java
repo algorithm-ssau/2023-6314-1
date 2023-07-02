@@ -5,10 +5,13 @@ import com.team.userservice.service.impl.TokenBuilder;
 import com.team.userservice.view.dto.UserDto;
 import com.team.userservice.view.mapper.KafkaMessageMapper;
 import com.team.userservice.view.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@PropertySource("classpath:server-config.properties")
 public class MapperFacade {
   private final UserMapper.Request.Common commonRequestUserMapper;
   private final UserMapper.Request.Update updateRequestUserMapper;
@@ -18,6 +21,9 @@ public class MapperFacade {
 
   private final PasswordEncoder passwordEncoder;
   private final TokenBuilder tokenBuilder;
+
+  @Value("${address}")
+  private String serverAddress;
 
   public MapperFacade(UserMapper.Request.Common commonRequestUserMapper,
                       UserMapper.Request.Update updateRequestUserMapper,
@@ -47,6 +53,10 @@ public class MapperFacade {
 
   public UserDto.Response.Common toCommonResponseDto(User user) {
     return commonResponseUserMapper.toDto(user);
+  }
+
+  public UserDto.Response.Activation toActivationResponseDto(User user) {
+    return toActivationResponseDto(user, serverAddress);
   }
 
   public UserDto.Response.Activation toActivationResponseDto(User user, String urlRoot) {

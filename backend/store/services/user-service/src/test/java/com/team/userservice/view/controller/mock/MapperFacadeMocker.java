@@ -10,7 +10,6 @@ import com.team.userservice.view.dto.UserDto;
 import java.time.OffsetDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 
 public class MapperFacadeMocker {
@@ -50,7 +49,7 @@ public class MapperFacadeMocker {
 
   public void toActivationResponseDtoMock() {
     doAnswer(invoc -> {
-      String urlRoot = invoc.getArgument(1, String.class);
+      String urlRoot = "http://localhost:8080";
       User user = invoc.getArgument(0, User.class);
       return new UserDto.Response.Activation(
         user.getName(),
@@ -59,7 +58,7 @@ public class MapperFacadeMocker {
         OffsetDateTime.now()
       );
     }).when(mapperFacade)
-      .toActivationResponseDto(any(User.class), anyString());
+      .toActivationResponseDto(any(User.class));
   }
 
   public void activationDtoToKafkaMessageMock(ObjectMapper objectMapper) {
