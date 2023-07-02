@@ -3,14 +3,12 @@ package com.team.userservice.view.controller;
 import com.team.jwt.authentication.JwtAuthenticationToken;
 import com.team.jwt.properties.TokenMetadata;
 import com.team.jwt.service.JwtSecurityProvider;
-import com.team.userservice.view.dto.UserDto;
+import com.team.userservice.infrastructure.kafka.ActivationSender;
 import com.team.userservice.model.User;
 import com.team.userservice.service.contract.UserService;
-import com.team.userservice.infrastructure.kafka.ActivationSender;
 import com.team.userservice.service.impl.TokenProvider;
-import com.team.userservice.service.impl.UrlMatcher;
 import com.team.userservice.view.MapperFacade;
-import jakarta.servlet.http.HttpServletRequest;
+import com.team.userservice.view.dto.UserDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,6 @@ import java.util.List;
 @Slf4j
 public class UserController {
   private final UserService userService;
-  private final UrlMatcher urlMatcher;
   private final ActivationSender activationSender;
   private final TokenProvider tokenProvider;
   private final MapperFacade mapperFacade;
@@ -35,13 +32,11 @@ public class UserController {
   @Autowired
   public UserController(UserService userService,
                         MapperFacade mapperFacade,
-                        UrlMatcher urlMatcher,
                         ActivationSender activationSender,
                         TokenProvider tokenProvider,
                         JwtSecurityProvider securityProvider,
                         TokenMetadata tokenMetadata) {
     this.userService = userService;
-    this.urlMatcher = urlMatcher;
     this.activationSender = activationSender;
     this.tokenProvider = tokenProvider;
     this.mapperFacade = mapperFacade;
@@ -64,13 +59,11 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<UserDto.Response.Common> create(HttpServletRequest httpServletRequest,
-                                  @Valid @RequestBody UserDto.Request.Common userRequestDto) {
+  public ResponseEntity<UserDto.Response.Common> create(@Valid @RequestBody UserDto.Request.Common userRequestDto) {
     User user = mapperFacade.commonRequestToDomain(userRequestDto);
     userService.create(user);
 
-    String urlRoot = urlMatcher.getUrlRoot(httpServletRequest);
-    UserDto.Response.Activation dto = mapperFacade.toActivationResponseDto(user, urlRoot);
+    UserDto.Response.Activation dto = mapperFacade.toActivationResponseDto(user);
     String message = mapperFacade.activationDtoToKafkaMessage(dto);
     activationSender.sendActivation("t.activation.link", message);
 
@@ -87,15 +80,13 @@ public class UserController {
 
   @PatchMapping("/email")
   public ResponseEntity<UserDto.Response.Common> updateEmail(JwtAuthenticationToken authenticationToken,
-                                                             HttpServletRequest request,
                                                              @Valid @RequestBody UserDto.Request.UpdateEmail userRequestDto) {
     String token = authenticationToken.getPrincipal();
     Long id = securityProvider.parseUserId(token, tokenMetadata);
     userService.update(id, User.builder().active(false).email(userRequestDto.getEmail()).build());
     User user = userService.findById(id);
 
-    String urlRoot = urlMatcher.getUrlRoot(request);
-    UserDto.Response.Activation dto = mapperFacade.toActivationResponseDto(user, urlRoot);
+    UserDto.Response.Activation dto = mapperFacade.toActivationResponseDto(user);
     String message = mapperFacade.activationDtoToKafkaMessage(dto);
     activationSender.sendActivation("t.activation.update", message);
 
@@ -115,6 +106,6 @@ public class UserController {
     }
     String email = tokenProvider.obtainEmail(activateToken);
     userService.activateUserByEmail(email);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("Mail has been successfully verified!");
   }
 }
