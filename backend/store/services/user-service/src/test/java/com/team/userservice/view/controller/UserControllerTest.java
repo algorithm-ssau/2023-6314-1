@@ -9,9 +9,8 @@ import com.team.userservice.model.Role;
 import com.team.userservice.model.User;
 import com.team.userservice.service.contract.UserService;
 import com.team.userservice.service.impl.TokenProvider;
-import com.team.userservice.service.impl.UrlMatcher;
 import com.team.userservice.view.MapperFacade;
-import com.team.userservice.view.controller.context.UserControllerContextConfiguration;
+import com.team.userservice.view.controller.context.UserControllerTestContextConfiguration;
 import com.team.userservice.view.controller.data.TestDataGenerator;
 import com.team.userservice.view.controller.mock.*;
 import com.team.userservice.view.dto.RoleDto;
@@ -38,16 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-@Import(UserControllerContextConfiguration.class)
+@Import(UserControllerTestContextConfiguration.class)
 @AutoConfigureMockMvc(printOnlyOnFailure = false, addFilters = false)
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
   @MockBean
   private UserService userService;
-
-  @MockBean
-  private UrlMatcher urlMatcher;
 
   @MockBean
   private ActivationSender activationSender;
@@ -76,9 +72,6 @@ class UserControllerTest {
 
   @Autowired
   private MapperFacadeMocker mapperFacadeMocker;
-
-  @Autowired
-  private UrlMatcherMocker urlMatcherMocker;
 
   @Autowired
   private ActivationSenderMocker activationSenderMocker;
@@ -138,7 +131,6 @@ class UserControllerTest {
     mapperFacadeMocker.toActivationResponseDtoMock();
     mapperFacadeMocker.activationDtoToKafkaMessageMock(objectMapper);
     userServiceMocker.createMock(users);
-    urlMatcherMocker.getUrlRootMock();
     activationSenderMocker.sendActivationMock(broker);
 
     int usersCountBefore = users.size();
@@ -187,7 +179,6 @@ class UserControllerTest {
 
     userServiceMocker.updateMock(users);
     userServiceMocker.findByIdMock(users);
-    urlMatcherMocker.getUrlRootMock();
     mapperFacadeMocker.toActivationResponseDtoMock();
     mapperFacadeMocker.activationDtoToKafkaMessageMock(objectMapper);
     activationSenderMocker.sendActivationMock(broker);
